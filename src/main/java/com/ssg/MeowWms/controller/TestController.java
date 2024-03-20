@@ -10,4 +10,9 @@ public class TestController {
     public void test(){
 
     }
+
+    @GetMapping("/common/layout/layout")
+    public void test1(){
+
+    }
 }
