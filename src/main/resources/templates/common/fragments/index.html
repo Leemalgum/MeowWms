@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/fragments/header :: header-fragment">
+    <!-- Header Fragment -->
+</head>
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar Fragment -->
+            <nav th:replace="common/fragments/topbar :: topbar-fragment"></nav>
+            <!-- Sidebar Fragment -->
+            <div th:replace="common/fragments/sidebar :: sidebar-fragment"></div>
+        </div>
+        <div class="container-fluid">
+            <!-- Content를 작업하는 부분 (여기에 콘텐츠를 추가하세요) -->
+
+        </div>
+    <footer th:replace="common/fragments/footer :: footer-fragment"></footer>
+        </div>
+</div>
+    <div th:replace="common/fragments/modal :: modal-fragment"></div>
+<!-- 이 부분에 실제 페이지의 콘텐츠가 들어갑니다. -->
+<!-- Content Area - 끝 부분 -->
+
+<!-- Footer Fragment -->
+
+<!-- Modals Fragment -->
+
+<!-- Scripts Fragment -->
+
+</body>
+</html>
