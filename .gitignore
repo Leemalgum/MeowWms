@@ -244,6 +244,3 @@ gradle/wrapper/gradle-wrapper.properties
 gradlew
 gradlew.bat
 settings.gradle
-src/main/java/com/ssg/MeowWms/MeowWmsApplication.java
-src/main/resources/application.properties
-src/test/java/com/ssg/MeowWms/MeowWmsApplicationTests.java
