@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Title</title>
+    <!-- Header 프래그먼트 포함 -->
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+</head>
+<body>
+
+<!-- 페이지 래퍼 -->
+<div id="wrapper">
+    <!-- 사이드바 -->
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <!-- 콘텐츠 래퍼 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- 메인 콘텐츠 -->
+        <div id="content">
+            <!-- 탑바 -->
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+
+            <!-- 페이지 콘텐츠 시작 -->
+            <div class="container-fluid">
+                <!-- Search Filters -->
+                <div class="row mb-4">
+                    <div class="col-md-2">
+                        <label for="expenseYear">년도 선택</label>
+                        <select class="form-control" id="expenseYear" name="expenseYear">
+                            <option value="">전체</option>
+                            <!-- Option values should be dynamically generated -->
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="warehouseNo">창고 번호</label>
+                        <select class="form-control" id="warehouseNo" name="warehouseNo">
+                            <option value="">전체</option>
+                            <!-- Option values should be dynamically generated -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-success">조회</button>
+                        <button class="btn btn-secondary">초기화</button>
+                        <button class="btn btn-info">총 정산 내역 엑셀 다운로드</button>
+                    </div>
+                </div>
+
+                <!-- Chart Card -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">총정산 그래프</h6>
+                                <div class="dropdown no-arrow">
+                                    <!-- 여기에 드롭다운 메뉴를 추가하거나 필요한 다른 요소를 넣을 수 있습니다 -->
+                                </div>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="chart-area">
+                                    <!-- Chart.js Canvas -->
+                                    <canvas id="myAreaChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Section -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <!-- Table head and body -->
+                        </table>
+                    </div>
+                </div>
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>총 지출</th>
+                        <th>총 매출</th>
+                        <th>이익</th>
+                        <th>당기 순이익</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Table rows will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 푸터 -->
+        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+    </div>
+</div>
+
+<!-- 스크롤 탑 버튼 -->
+<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+
+<!-- 로그아웃 모달 -->
+<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+
+<!-- 스크립트 -->
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable();
+    });
+</script>
+</body>
+</html>
