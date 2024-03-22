@@ -8,4 +8,11 @@
         insert into Warehouse(name, category_id, manager_id, volume, latitude, longitude)
         values (#{name}, #{categoryId}, #{managerId}, #{volume}, #{latitude}, #{longitude})
     </select>
+
+    <!--    창고 한 개 가져오기-->
+    <select id="selectOne" resultType="com.ssg.meowwms.domain.WarehouseVO">
+        select *
+        from Warehouse
+        where id = #{warehouseId}
+    </select>
 </mapper>
