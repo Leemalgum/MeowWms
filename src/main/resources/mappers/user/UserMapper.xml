@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssg.meowwms.mapper.UserMapper">
+<mapper namespace="com.ssg.meowwms.mapper.User.UserMapper">
 
     <select id="insertUser">
         insert into User(uid, uname, birth, upw, email, tel)
@@ -16,5 +16,37 @@
             email = #{email}
         WHERE uid = #{uid}
     </update>
+
+    <select id="selectUser" resultType="com.ssg.meowwms.domain.User.UserVO">
+        select *
+        from User
+        where uid = #{uid}
+    </select>
+
+    <select id="selectAll" resultType="com.ssg.meowwms.domain.User.UserVO">
+        select *
+        from User
+        <where>
+            <!-- 권한에 대한 필터링 -->
+            <if test="rid != null and rid != ''">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+        </where>
+        order by uid desc
+    </select>
+
+    <select id="searchId" resultType="String">
+        select uid
+        from User
+        where uname = #{uname}
+          and email = #{email}
+    </select>
+
+    <select id="searchPw" resultType="String">
+        select upw
+        from User
+        where uname = #{uname}
+        and uid = #{uid}
+    </select>
 
 </mapper>

@@ -1,11 +1,9 @@
-package com.ssg.meowwms.mapper;
+package com.ssg.meowwms.mapper.User;
 
-import com.ssg.meowwms.domain.UserVO;
+import com.ssg.meowwms.domain.User.UserVO;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
@@ -18,7 +16,7 @@ public interface UserMapper {
 
     List<UserVO> selectAll();
 
-    UserVO searchId(String uname, String email);
+    String searchId(String uname, String email);
 
-    UserVO searchPw(String uname, String uid);
+    String searchPw(String uname, String uid);
 }

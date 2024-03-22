@@ -1,4 +1,4 @@
-package com.ssg.meowwms.domain;
+package com.ssg.meowwms.domain.User;
 
 public enum Status {
     ACTIVE,

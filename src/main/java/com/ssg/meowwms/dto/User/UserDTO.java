@@ -1,4 +1,4 @@
-package com.ssg.meowwms.dto;
+package com.ssg.meowwms.dto.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
