@@ -245,3 +245,6 @@ gradlew
 gradlew.bat
 settings.gradle
 /src/main/resources/application-db.properties
+database/config/mysql.cnf
+database/Dockerfile
+docker-compose.yml
