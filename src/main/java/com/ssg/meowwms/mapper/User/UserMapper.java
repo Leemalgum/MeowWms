@@ -14,7 +14,7 @@ public interface UserMapper {
 
     UserVO selectUser(String uid);
 
-    List<UserVO> selectAll();
+    List<UserVO> selectAll(int rid);
 
     String searchId(String uname, String email);
 

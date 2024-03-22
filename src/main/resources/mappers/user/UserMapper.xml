@@ -28,8 +28,8 @@
         from User
         <where>
             <!-- 권한에 대한 필터링 -->
-            <if test="rid != null and rid != ''">
-                AND title LIKE CONCAT('%', #{title}, '%')
+            <if test="rid != null">
+                AND rid = #{rid}
             </if>
         </where>
         order by uid desc

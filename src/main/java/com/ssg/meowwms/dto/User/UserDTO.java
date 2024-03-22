@@ -21,4 +21,5 @@ public class UserDTO {
     private String tel;
     private int rid;
     private int sid;
+    private LocalDate joinDate;
 }

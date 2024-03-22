@@ -24,8 +24,8 @@ public class UserVO {
     private String email;
     @NotNull
     private String tel;
-    @NotNull
     private int rid;
     @NotNull
     private int sid;
+    private LocalDate joinDate;
 }

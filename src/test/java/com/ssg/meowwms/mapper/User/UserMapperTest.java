@@ -53,7 +53,8 @@ class UserMapperTest {
 
     @Test
     void selectAll() {
-        List<UserVO> userVOList = userMapper.selectAll();
+        Integer rid = null;
+        List<UserVO> userVOList = userMapper.selectAll(rid);
         userVOList.forEach(log::info);
     }
 
