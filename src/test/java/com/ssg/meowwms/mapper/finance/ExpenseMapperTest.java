@@ -73,6 +73,8 @@ class ExpenseMapperTest {
         optionList.add(new OptionDTO("startDate", "2024-01-01"));
         optionList.add(new OptionDTO("endDate", "2024-12-31"));
 
+        optionList.add(new OptionDTO("type", "유지보수"));
+
         // 지출 금액 범위 검색 조건 추가
         optionList.add(new OptionDTO("minCost", 200000));
         optionList.add(new OptionDTO("maxCost", 500000));

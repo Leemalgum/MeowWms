@@ -87,10 +87,10 @@
         </where>
     </select>
 
-    <select id="sumExpensesByYear" resultType="com.ssg.meowwms.dto.ExpenseMonthDTO">
+    <select id="sumExpensesByYear" resultType="com.ssg.meowwms.dto.finance.ExpenseMonthDTO">
         SELECT
-            MONTH(expense_date) AS expense_month,
-            SUM(cost) AS total_cost
+            MONTH(expense_date) AS expenseMonth,
+            SUM(cost) AS totalExpense
         FROM
             Expense
         WHERE
@@ -99,8 +99,7 @@
         GROUP BY
             MONTH(expense_date)
         ORDER BY
-            expense_month;
-
+            expenseMonth;
     </select>
 
 </mapper>

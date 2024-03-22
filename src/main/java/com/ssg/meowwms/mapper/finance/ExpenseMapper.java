@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.finance;
 
 import com.ssg.meowwms.domain.finance.ExpenseVO;
 import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.finance.ExpenseMonthDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,5 +22,5 @@ public interface ExpenseMapper {
 
     int sumExpenses(@Param("optionList")List<OptionDTO> optionList);
 
-    int sumExpensesByYear(@Param("warehouseId") int warehouseId, @Param("year") String year);
+    List<ExpenseMonthDTO> sumExpensesByYear(@Param("warehouseId") int warehouseId, @Param("year") String year);
 }
