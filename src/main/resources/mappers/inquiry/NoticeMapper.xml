@@ -9,8 +9,40 @@
         VALUES (#{userId}, #{type}, #{title}, #{content}, now())
     </insert>
 
-    <select id="selectAllNotices" resultType="com.ssg.meowwms.domain.inquiry.NoticeVO">
-        SELECT * FROM Notice
+    <resultMap id="noticeResultMap" type="com.ssg.meowwms.domain.inquiry.NoticeVO">
+        <result property="no" column="no"/>
+        <result property="type" column="type"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="userId" column="user_id"/>
+        <result property="noticeDate" column="notice_date"/>
+    </resultMap>
+
+    <select id="selectAllNotices" parameterType="java.util.List" resultMap="noticeResultMap">
+        SELECT no, type, title, content, user_id, notice_date FROM Notice
+        <where>
+            <if test="options != null">
+                <foreach collection="options" item="option" separator=" ">
+                    <choose>
+                        <when test="option.type == 'postType'">
+                            AND type LIKE #{option.value}
+                        </when>
+                        <when test="option.type == 'content'">
+                            AND content LIKE CONCAT('%', #{option.value}, '%')
+                        </when>
+                        <when test="option.type == 'title'">
+                            AND title LIKE CONCAT('%', #{option.value}, '%')
+                        </when>
+                        <when test="option.type == 'contentTitle'">
+                            AND (title LIKE CONCAT('%', #{option.value}, '%') OR content LIKE CONCAT('%', #{option.value}, '%'))
+                        </when>
+                        <when test="option.type == 'writer'">
+                            AND user_id = #{option.value}
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
+        </where>
     </select>
 
     <select id="selectNotice" parameterType="int" resultType="com.ssg.meowwms.domain.inquiry.NoticeVO">
