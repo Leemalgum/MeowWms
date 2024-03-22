@@ -15,5 +15,4 @@ public class RetrievalTimelineDTO {
     private LocalDateTime orderTime;
     private LocalDateTime workingTime;
     private LocalDateTime finishedTime;
-
 }

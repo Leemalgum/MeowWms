@@ -16,4 +16,5 @@ public class WaybillDTO {
     private LocalDate departureDate;
     private LocalDate arrivalDate;
     private int status;
+
 }

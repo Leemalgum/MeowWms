@@ -35,5 +35,4 @@ public class ShippingOrdersStatusVO {
     @NotNull
     @Positive(message = "배차 상태는 0 이상이여야 합니다.")
     private int allocatedStatus;
-
 }

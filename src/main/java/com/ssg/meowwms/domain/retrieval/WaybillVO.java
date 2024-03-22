@@ -58,5 +58,4 @@ public class WaybillVO {
     @NotNull
     @Positive(message = "운송장 상태는 0 이상이여야 합니다.")
     private int status;
-
 }

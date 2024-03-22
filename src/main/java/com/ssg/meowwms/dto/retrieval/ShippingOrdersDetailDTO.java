@@ -12,5 +12,4 @@ public class ShippingOrdersDetailDTO {
     private int shippingOrdersId;
     private int productId;
     private int quantity;
-
 }

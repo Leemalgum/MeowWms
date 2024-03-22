@@ -42,5 +42,4 @@ public class ShippingOrdersDetailVO {
     @NotNull
     @Positive(message = "상품 수량은 0 이상이여야 합니다.")
     private int quantity;
-
 }

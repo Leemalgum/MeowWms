@@ -11,4 +11,5 @@ public class ShippingOrdersStatusDTO {
     private int id;
     private int approvedStatus;
     private int allocatedStatus;
+
 }

@@ -62,5 +62,4 @@ public class ShippingOrdersVO {
     @NotNull
     @JsonFormat(pattern ="yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate expectedDate;
-
 }

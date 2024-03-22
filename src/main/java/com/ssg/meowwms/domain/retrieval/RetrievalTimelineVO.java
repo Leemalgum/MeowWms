@@ -47,5 +47,4 @@ public class RetrievalTimelineVO {
      */
     @JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime finishedTime;
-
 }

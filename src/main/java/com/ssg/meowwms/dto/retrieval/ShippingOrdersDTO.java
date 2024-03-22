@@ -16,5 +16,4 @@ public class ShippingOrdersDTO {
     private String streetNumberAddress;
     private String detailAddress;
     private LocalDate expectedDate;
-
 }
