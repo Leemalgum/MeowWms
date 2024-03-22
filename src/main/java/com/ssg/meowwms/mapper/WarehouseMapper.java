@@ -1,10 +1,12 @@
 package com.ssg.meowwms.mapper;
 
 import com.ssg.meowwms.domain.WarehouseVO;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 창고 테이블과의 연결 작업을 수행합니다.
  */
+@Mapper
 public interface WarehouseMapper {
 
     /**
@@ -20,5 +22,5 @@ public interface WarehouseMapper {
      * @param warehouseId
      * @return
      */
-    WarehouseVO selectOne(Long warehouseId);
+    WarehouseVO selectOne(int warehouseId);
 }
