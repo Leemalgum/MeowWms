@@ -33,6 +33,7 @@
         select *
         from User
         <where>
+            //select * from table where id like %%''
             <!-- 권한에 대한 필터링 -->
             <if test='rid != null'>
                 AND rid = #{rid}

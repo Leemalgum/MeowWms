@@ -30,6 +30,7 @@ class UserMapperTest {
                 .build();
         userMapper.insertUser(userVO);
         log.info("----userVO-----" + userVO);
+    }
 
 
     @Test
@@ -57,7 +58,7 @@ class UserMapperTest {
         List<UserVO> userVOList = userMapper.selectAll();
         userVOList.forEach(log::info);
     }
-//select * from table where id like %%''
+
     @Test
     void selectSearch() {
         int rid = 2;
