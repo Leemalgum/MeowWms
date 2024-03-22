@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.User;
 
 import com.ssg.meowwms.domain.User.UserVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -14,7 +15,8 @@ public interface UserMapper {
 
     UserVO selectUser(String uid);
 
-    List<UserVO> selectAll(int rid);
+    List<UserVO> selectAll();
+    List<UserVO> selectSearch(int rid);
 
     String searchId(String uname, String email);
 

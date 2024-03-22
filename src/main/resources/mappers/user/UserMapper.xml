@@ -26,9 +26,15 @@
     <select id="selectAll" resultType="com.ssg.meowwms.domain.User.UserVO">
         select *
         from User
+        order by uid desc
+    </select>
+
+    <select id="selectSearch" resultType="com.ssg.meowwms.domain.User.UserVO">
+        select *
+        from User
         <where>
             <!-- 권한에 대한 필터링 -->
-            <if test="rid != null">
+            <if test='rid != null'>
                 AND rid = #{rid}
             </if>
         </where>

@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,7 +30,7 @@ class UserMapperTest {
                 .build();
         userMapper.insertUser(userVO);
         log.info("----userVO-----" + userVO);
-    }
+
 
     @Test
     void updateStatus() {
@@ -53,8 +54,14 @@ class UserMapperTest {
 
     @Test
     void selectAll() {
-        Integer rid = null;
-        List<UserVO> userVOList = userMapper.selectAll(rid);
+        List<UserVO> userVOList = userMapper.selectAll();
+        userVOList.forEach(log::info);
+    }
+//select * from table where id like %%''
+    @Test
+    void selectSearch() {
+        int rid = 2;
+        List<UserVO> userVOList = userMapper.selectSearch(null);
         userVOList.forEach(log::info);
     }
 
