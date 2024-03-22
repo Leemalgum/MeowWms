@@ -3,5 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssg.meowwms.mapper.WarehouseMapper">
-
+    <!--    창고 등록-->
+    <select id="insert">
+        insert into Warehouse(name, category_id, manager_id, volume, latitude, longitude)
+        values (#{name}, #{categoryId}, #{managerId}, #{volume}, #{latitude}, #{longitude})
+    </select>
 </mapper>
