@@ -13,4 +13,12 @@ public interface WarehouseMapper {
      * @param warehouseVO
      */
     void insert(WarehouseVO warehouseVO);
+
+    /**
+     * 창고 테이블에서 warehouseId에 해당하는 창고 정보를 가져와 WarehouseVO로 반환합니다.
+     *
+     * @param warehouseId
+     * @return
+     */
+    WarehouseVO selectOne(Long warehouseId);
 }
