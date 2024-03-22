@@ -1,13 +1,14 @@
 package com.ssg.meowwms.mapper.inquiry;
 
 import com.ssg.meowwms.domain.inquiry.InquiryVO;
+import com.ssg.meowwms.dto.OptionDTO;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,6 +19,30 @@ class InquiryMapperTest {
 
     @Autowired
     private InquiryMapper inquiryMapper;
+    private List<OptionDTO> options;
+
+    @BeforeEach
+    void setUp() {
+        // Initialize your test conditions here
+        options = new ArrayList<>();
+        // Example option, adjust according to your actual test needs
+        options.add(new OptionDTO("postType", "질문"));
+        options.add(new OptionDTO("writer", "admin"));
+    }
+
+    @Test
+    void selectAllInquiriesTest() {
+
+        List<InquiryVO> results = inquiryMapper.selectAllInquiries(options);
+
+        assertThat(results).isNotNull();
+        assertThat(results.size()).isGreaterThan(0);
+
+        for (InquiryVO inquiry : results) {
+            assertThat(inquiry.getPostType()).isEqualTo("질문");
+            assertThat(inquiry.getUserId()).isEqualTo("admin");
+        }
+    }
 
     @Test
     void insertInquiry() {
@@ -30,20 +55,17 @@ class InquiryMapperTest {
         inquiryMapper.insertInquiry(inquiry);
     }
 
-    @Test
-    void selectAllInquiries() {
-        List<InquiryVO> inquiries = inquiryMapper.selectAllInquiries();
-    }
 
     @Test
     void selectInquiry() {
         InquiryVO inquiry = inquiryMapper.selectInquiry(11);
-        System.out.println(inquiry);
+        assertThat(inquiry.getUserId()).isEqualTo("admin");
     }
 
     @Test
     void deleteInquiry() {
         inquiryMapper.deleteInquiry(21);
+        inquiryMapper.selectInquiry(21);
     }
 
     @Test
