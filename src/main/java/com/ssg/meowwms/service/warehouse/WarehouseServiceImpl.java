@@ -3,7 +3,7 @@ package com.ssg.meowwms.service.warehouse;
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
-import com.ssg.meowwms.mapper.WarehouseMapper;
+import com.ssg.meowwms.mapper.warehouse.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;

@@ -2,7 +2,6 @@ package com.ssg.meowwms.mapper.warehouse;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
-import com.ssg.meowwms.mapper.WarehouseMapper;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
