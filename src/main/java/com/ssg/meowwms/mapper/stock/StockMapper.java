@@ -10,9 +10,9 @@ import java.util.List;
 @Mapper
 public interface StockMapper {
     List<StockVO> selectAllStock();
-    List<StockVO> selectStockByMainCategory(int categoryId);
-    List<StockVO> selectStockByMiddleCategory(int categoryId);
-    List<StockVO> selectStockBySubCategory(int categoryId);
+    List<StockVO> selectStockByMainCategory(String mainCategory);
+    List<StockVO> selectStockByMiddleCategory(String middleCategoryId);
+    List<StockVO> selectStockBySubCategory(String subCategoryId);
 
     List<ProductStatusVO> selectProductStatusList();
     List<WarehouseStatusVO> selectWarehouseStatusList();

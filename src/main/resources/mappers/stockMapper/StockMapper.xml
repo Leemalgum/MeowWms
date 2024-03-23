@@ -9,21 +9,21 @@
         select * from Stock s
         Join Warehouse w on w.id = s.warehouse_id
         Join Category c on c.id = w.category_id
-        where c.main_category = #{categoryId};
+        where c.main_category = #{mainCategory};
     </select>
 
     <select id="selectStockByMiddleCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
         select * from Stock s
         Join Warehouse w on w.id = s.warehouse_id
         Join Category c on c.id = w.category_id
-        where c.middle_category = #{categoryId};
+        where c.middle_category = #{middleCategory};
     </select>
 
     <select id="selectStockBySubCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
         select * from Stock s
         Join Warehouse w on w.id = s.warehouse_id
         Join Category c on c.id = w.category_id
-        where c.sub_category = #{categoryId};
+        where c.sub_category = #{subCategory};
     </select>
 
 <!--    <select id="selectWarehouseStatusList" resultType="com.ssg.meowwms.domain.stock.StockVO"> &lt;!&ndash; Update resultType &ndash;&gt;-->
