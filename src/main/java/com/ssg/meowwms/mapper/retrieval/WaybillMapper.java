@@ -2,7 +2,7 @@ package com.ssg.meowwms.mapper.retrieval;
 
 import com.ssg.meowwms.domain.retrieval.ShippingOrdersVO;
 import com.ssg.meowwms.domain.retrieval.WaybillVO;
-import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

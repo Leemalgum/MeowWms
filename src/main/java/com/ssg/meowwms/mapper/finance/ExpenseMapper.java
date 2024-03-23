@@ -1,7 +1,7 @@
 package com.ssg.meowwms.mapper.finance;
 
 import com.ssg.meowwms.domain.finance.ExpenseVO;
-import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.finance.ExpenseMonthDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

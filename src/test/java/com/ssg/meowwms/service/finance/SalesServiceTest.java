@@ -1,7 +1,7 @@
 package com.ssg.meowwms.service.finance;
 
 import com.ssg.meowwms.domain.finance.SalesVO;
-import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.finance.SalesDTO;
 import com.ssg.meowwms.dto.finance.SalesMonthDTO;
 import com.ssg.meowwms.mapper.finance.SalesMapper;
