@@ -11,5 +11,6 @@ public class ShippingOrdersDetailDTO {
     private int id;
     private int shippingOrdersId;
     private int productId;
+    private String productName;
     private int quantity;
 }
