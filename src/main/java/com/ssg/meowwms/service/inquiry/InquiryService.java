@@ -1,19 +1,14 @@
 package com.ssg.meowwms.service.inquiry;
-//고객센터
+
+import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.inquiry.InquiryDTO;
+
+import java.util.List;
+
 public interface InquiryService {
-    public void getNotice();
-
-    public void addNotice();
-
-    public void modifyNotice();
-
-    public void removeNotice();
-
-    public void getInquiry();
-
-    public void addInquiry();
-
-    public void removeInquiry();
-
-    public void modifyInquiry();
+    void insertInquiry(InquiryDTO inquiry);
+    List<InquiryDTO> selectAllInquiries(List<OptionDTO> options);
+    InquiryDTO selectInquiry(int postNum);
+    void deleteInquiry(int postNum);
+    void updateInquiry(InquiryDTO inquiry);
 }
