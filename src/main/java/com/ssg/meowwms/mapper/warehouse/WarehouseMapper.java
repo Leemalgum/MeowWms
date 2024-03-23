@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.warehouse;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
+import com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -36,4 +37,12 @@ public interface WarehouseMapper {
      * @return
      */
     List<WarehouseVO> selectAll(@Param("optionList")List<OptionDTO> optionList);
+
+    /**
+     * 파라미터로 주어진 창고 아이디에 해당하는 창고의 상세정보를 반환합니다.
+     *
+     * @param warehouseId
+     * @return
+     */
+    List<WarehouseDetailDTO> getWarehouseDetail(int warehouseId);
 }
