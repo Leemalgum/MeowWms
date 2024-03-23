@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Title</title>
+    <!-- Header 프래그먼트 포함 -->
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+</head>
+<body>
+
+<!-- 페이지 래퍼 -->
+<div id="wrapper">
+    <!-- 사이드바 -->
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <!-- 콘텐츠 래퍼 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- 메인 콘텐츠 -->
+        <div id="content">
+            <!-- 탑바 -->
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+
+            <!-- 페이지 콘텐츠 시작 -->
+            <div class="container-fluid">
+                <h1 class="h3 mb-2 text-gray-800">창고 관리</h1>
+                <p class="mb-4">
+                    DataTables is a third party plugin that is used to generate the
+                    demo table below. For more information about DataTables, please
+                    visit the
+                    <a target="_blank" href="https://datatables.net"
+                    >official DataTables documentation</a
+                    >
+                </p>
+
+                <!-- 창고 등록 양식 -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">창고 등록</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- 창고 이름 입력 -->
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label for="productId-input">창고 이름</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input
+                                                    type="text"
+                                                    id="productId-input"
+                                                    class="form-control"
+                                                    required
+                                                    autocomplete="false"
+                                                    placeholder="창고 이름을 입력하세요."
+                                            />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <!-- 전체 간격을 일정하게 열 맞춤 -->
+                                            <button
+                                                    id="retrieval-register-button"
+                                                    class="btn btn-success"
+                                            >
+                                                중복 확인
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <br/>
+
+                                    <!-- 창고 분류 입력 -->
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label for="majorType-input">창고 분류</label>
+                                        </div>
+                                        <!-- 대분류 -->
+                                        <div class="col-md-3">
+                                            <select id="majorType-input" class="form-control">
+                                                <option value="" selected disabled hidden>
+                                                    --- 대분류 ---
+                                                </option>
+                                                <option value="major1">대분류 옵션 1</option>
+                                                <option value="major2">대분류 옵션 2</option>
+                                                <option value="major3">대분류 옵션 3</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 중분류 -->
+                                        <div class="col-md-3">
+                                            <select id="majorType-input" class="form-control">
+                                                <option value="" selected disabled hidden>
+                                                    --- 중분류 ---
+                                                </option>
+                                                <option value="major1">대분류 옵션 1</option>
+                                                <option value="major2">대분류 옵션 2</option>
+                                                <option value="major3">대분류 옵션 3</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 소분류 -->
+                                        <div class="col-md-3">
+                                            <select id="majorType-input" class="form-control">
+                                                <option value="" selected disabled hidden>
+                                                    --- 소분류 ---
+                                                </option>
+                                                <option value="major1">대분류 옵션 1</option>
+                                                <option value="major2">대분류 옵션 2</option>
+                                                <option value="major3">대분류 옵션 3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br/>
+
+                                    <!-- 창고 관리자 선택 -->
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label for="productId-input">창고 관리자</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select id="warehouse-manager" class="form-control">
+                                                <option value="" selected disabled hidden>
+                                                    --- 창고 관리자를 선택하세요. ---
+                                                </option>
+                                                <option value="manager1">관리자 1</option>
+                                                <option value="manager2">관리자 2</option>
+                                                <option value="manager3">관리자 3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br/>
+
+                                    <!-- 창고 크기 입력 -->
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label for="location-input"
+                                            >창고 크기(m<sup>3</sup>)</label
+                                            >
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input
+                                                    type="number"
+                                                    id="location-input"
+                                                    class="form-control"
+                                            />
+                                        </div>
+
+                                        <!-- 전체 간격을 일정하게 열 맞춤 -->
+                                    </div>
+                                    <br/>
+
+                                    <!-- 창고 위치 입력 -->
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label for="address">창고 위치</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input
+                                                    type="search"
+                                                    id="address"
+                                                    class="form-control"
+                                                    placeholder="창고 주소를 입력하세요."
+                                            />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button
+                                                    id="retrieval-register-button"
+                                                    class="btn btn-success"
+                                                    type="button"
+                                                    onclick="handleSearch()"
+                                            >
+                                                위치 확인
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <br/>
+
+                                    <!-- 카카오맵 -->
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-10">
+                                            <div
+                                                    id="map"
+                                                    style="width: 100%; height: 600px"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align: center">
+                                    <!-- 전체 간격을 일정하게 열 맞춤 -->
+                                    <button
+                                            id="retrieval-register-button"
+                                            class="btn btn-primary"
+                                    >
+                                        창고 등록
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 푸터 -->
+        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+    </div>
+</div>
+
+<!-- 스크롤 탑 버튼 -->
+<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+
+<!-- 로그아웃 모달 -->
+<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+
+<!-- 스크립트 -->
+
+<!-- 카카오맵 api -->
+<script
+        type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7a41ce0dd37c22d03fc4b8624754162b&libraries=services"
+></script>
+
+<script>
+    var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+            level: 3, // 지도의 확대 레벨
+        };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
+    if (navigator.geolocation) {
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                var lat = position.coords.latitude, // 위도
+                    lon = position.coords.longitude; // 경도
+
+                var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 생성합니다
+
+                // 지도 중심을 변경하고, 마커가 표시될 위치와 마커의 위치를 같이 이동시킵니다
+                map.setCenter(locPosition);
+                map.setLevel(3);
+
+                // 마커와 인포윈도우를 표시합니다
+                displayMarker(locPosition);
+            },
+            function (error) {
+                console.error(error);
+            }
+        );
+    } else {
+        alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.");
+    }
+
+    // 주소로 좌표를 검색합니다
+    function searchAddress(address) {
+        var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체를 생성합니다
+
+        geocoder.addressSearch(address, function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                var marker = new kakao.maps.Marker({
+                    map: map,
+                    position: coords,
+                });
+                var infowindow = new kakao.maps.InfoWindow({
+                    content:
+                        '<div style="width:150px;text-align:center;padding:6px 0;">' +
+                        document.getElementById("productId-input").value +
+                        "</div>",
+                });
+                infowindow.open(map, marker);
+                map.setCenter(coords);
+            } else {
+                alert("지도 검색에 실패했습니다: " + status);
+            }
+        });
+    }
+
+    // 위치 확인 버튼 클릭 이벤트 처리
+    function handleSearch() {
+        var address = document.getElementById("address").value; // 입력된 주소값 가져오기
+        searchAddress(address); // 주소로 검색하여 마커 표시
+    }
+</script>
+
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+
+</body>
+</html>
