@@ -6,9 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface DispatchMapper {
-    void insertdispatch(DispatchVO dispatchVO);
+    void insertDispatch(DispatchVO dispatchVO);
     DispatchVO selectOneById(int id);
     List<DispatchVO> selectAll();
-    void updatedispatch(DispatchVO dispatchVO);
-    void deletedispatch(int id);
+    void updateDispatch(DispatchVO dispatchVO);
+    void deleteDispatch(int id);
 }
