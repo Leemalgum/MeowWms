@@ -27,7 +27,7 @@
                             and name = #{option.value}
                         </when>
                         <when test="option.type == 'categoryId'">
-                            and category_id = #{option.value}
+                            and categoryId = #{option.value}
                         </when>
                         <when test="option.type == 'latitude'">
                             and latitude = #{option.value}
