@@ -23,6 +23,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modify(UserDTO userDTO) {
+        UserVO userVO = modelMapper.map(userDTO, UserVO.class);
+        userMapper.update(userVO);
 
     }
 

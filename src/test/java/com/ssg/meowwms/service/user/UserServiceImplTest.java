@@ -32,6 +32,18 @@ class UserServiceImplTest {
 
     @Test
     void modify() {
+        UserDTO userDTO = UserDTO.builder()
+                .uid("makeum")
+                .uname("맑음쓰테스트")
+                .birth(LocalDate.parse("1998-12-25"))
+                .upw("makeum")
+                .sid(1)
+                .rid(2)
+                .email("makeum@test.com")
+                .tel("01011112222")
+                .build();
+        userService.modify(userDTO);
+        log.info("----userDTO-----" + userDTO);
     }
 
     @Test
