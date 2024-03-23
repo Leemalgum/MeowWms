@@ -5,6 +5,7 @@ import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.validation.constraints.Min;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 
@@ -42,11 +43,13 @@ public class ShippingOrdersVO {
     /**
      * 도로명 주소 : 255자 제한
      */
+    @Nullable
     private String streetNameAddress;
 
     /**
      * 지번 주소 : 255자 제한
      */
+    @Nullable
     private String streetNumberAddress;
 
     /**
