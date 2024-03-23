@@ -1,11 +1,9 @@
-package com.ssg.meowwms.domain.User;
+package com.ssg.meowwms.domain.user;
 
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Builder
