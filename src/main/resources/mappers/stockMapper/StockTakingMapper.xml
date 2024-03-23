@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.stock.StockTakingMapper"> <!-- Update namespace -->
+
+    <insert id="insertStocktaking" parameterType="com.ssg.meowwms.domain.stock.StockTakingVO">
+        INSERT INTO Stocktaking VALUES (#{stockTakingId}, #{stockId}, #{plannedDate}, #{inspector}, #{status}, #{statusDetail})
+    </insert>
+
+    <update id="updateStocktaking"> <!-- Update resultType -->
+        UPDATE Stocktaking
+        SET stocktaking_Id = #{stockTakingId},
+        stock_id = #{stockId},
+        planned_date = #{plannedDate},
+        inspector = #{inspector},
+        status = #{status},
+        status_detail = #{statusDetail}
+        WHERE stocktaking_id = #{stockTakingId};
+
+    </update>
+
+    <select id="deleteStocktaking" resultType="com.ssg.meowwms.domain.stock.StockTakingVO"> <!-- Update resultType -->
+        DELETE FROM Stocktaking where stocktaking_id = #{stockTakingId};
+    </select>
+
+    <select id="selectAllStocktaking" resultType="com.ssg.meowwms.domain.stock.StockTakingVO"> <!-- Update resultType -->
+        SELECT * FROM Stocktaking;
+    </select>
+
+    <select id="selectOneStocktaking" resultType="com.ssg.meowwms.domain.stock.StockTakingVO"> <!-- Update resultType -->
+        SELECT * FROM Stocktaking where stocktaking_id = #{stockTakingId};
+    </select>
+
+
+
+
+
+
+
+
+</mapper>

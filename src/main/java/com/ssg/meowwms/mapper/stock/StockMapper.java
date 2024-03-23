@@ -15,6 +15,7 @@ public interface StockMapper {
     List<StockVO> selectStockByMiddleCategory(String middleCategoryId);
     List<StockVO> selectStockBySubCategory(String subCategoryId);
 
+    // TODO:: replace with VO
     List<ProductStatusVO> selectProductStatusList(
             Date from,
             Date to,
