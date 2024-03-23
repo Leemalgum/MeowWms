@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.stock.StockMapper"> <!-- Update namespace -->
+    <select id="selectAllStock" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
+        SELECT * FROM Stock;
+    </select>
+
+    <select id="selectStockByMainCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
+        select * from Stock s
+        Join Warehouse w on w.id = s.warehouse_id
+        Join Category c on c.id = w.category_id
+        where c.main_category = #{categoryId};
+    </select>
+
+    <select id="selectStockByMiddleCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
+        select * from Stock s
+        Join Warehouse w on w.id = s.warehouse_id
+        Join Category c on c.id = w.category_id
+        where c.middle_category = #{categoryId};
+    </select>
+
+    <select id="selectStockBySubCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
+        select * from Stock s
+        Join Warehouse w on w.id = s.warehouse_id
+        Join Category c on c.id = w.category_id
+        where c.sub_category = #{categoryId};
+    </select>
+
+<!--    <select id="selectWarehouseStatusList" resultType="com.ssg.meowwms.domain.stock.StockVO"> &lt;!&ndash; Update resultType &ndash;&gt;-->
+<!--        select * from Stock s-->
+<!--        Join Warehouse w on w.id = s.warehouse_id-->
+<!--        Join Category c on c.id = w.category_id;-->
+<!--    </select>-->
+
+
+
+
+</mapper>

@@ -46,7 +46,10 @@ public class StockTakingDetailDTO {
     /**
      * 조정 수량 : 전산재고 - 실사재고
      */
-    private int adjustmentQuantity = this.computerizedStock - this.actualStock;;
+    private int adjustmentQuantity;
+    {
+        adjustmentQuantity = this.computerizedStock - this.actualStock;
+    }
 
     /**
      * 재고 실사 상태 값 : 완료, 미완료, 오류
@@ -84,4 +87,5 @@ public class StockTakingDetailDTO {
                 ", statusDetail='" + statusDetail + '\'' +
                 '}';
     }
+
 }
