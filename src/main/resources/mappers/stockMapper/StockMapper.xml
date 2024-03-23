@@ -32,7 +32,77 @@
 <!--        Join Category c on c.id = w.category_id;-->
 <!--    </select>-->
 
+    <select id="selectProductStatusList" resultType="com.ssg.meowwms.domain.stock.ProductStatusVO">
+        SELECT
+            sm.approved_datetime AS approvedDatetime,
+            s.id AS stockId,
+            w.id AS warehouseId,
+            w.name AS warehouseName,
+            c.sub_category AS warehouseSubCategory,
+            p.id AS productId,
+            p.name AS productName,
+            s.quantity AS stockQuantity,
+            p.price AS productPrice
+        FROM
+            Stock s
+                JOIN Warehouse w ON w.id = s.warehouse_id
+                JOIN Category c ON c.id = w.category_id
+                JOIN Product p ON p.id = s.product_id
+                JOIN Stock_Movement sm ON sm.product_id = p.id
+        WHERE
+            (
+                sm.approved_datetime BETWEEN #{from} AND #{to}
+                    OR s.id LIKE CONCAT('%', #{searchTerm}, '%')
+                    OR w.id LIKE CONCAT('%', #{searchTerm}, '%')
+                    OR w.name LIKE CONCAT('%', #{searchTerm}, '%')
+                    OR c.sub_category LIKE CONCAT('%', #{searchTerm}, '%')
+                    OR p.id LIKE CONCAT('%', #{searchTerm}, '%')
+                    OR p.name LIKE CONCAT('%', #{searchTerm}, '%')
+                    OR s.quantity LIKE CONCAT('%', #{searchTerm}, '%')
+                    OR p.price LIKE CONCAT('%', #{searchTerm}, '%')
+                )
+          AND c.main_category LIKE CONCAT('%', #{mainCategory}, '%')
+          AND c.middle_category LIKE CONCAT('%', #{middleCategory}, '%')
+          AND c.sub_category LIKE CONCAT('%', #{subCategory}, '%')
+          AND p.id LIKE CONCAT('%', #{productId}, '%')
+          AND w.id LIKE CONCAT('%', #{warehouseId}, '%');
+    </select>
 
 
+<!--    <select id="selectWarehouseStatusList" resultType="com.ssg.meowwms.domain.stock.WarehouseStatusVO">-->
+<!--        SELECT-->
+<!--            sm.approved_datetime AS approvedDatetime,-->
+<!--            s.id AS stockId,-->
+<!--            w.id AS warehouseId,-->
+<!--            w.name AS warehouseName,-->
+<!--            c.sub_category AS warehouseSubCategory,-->
+<!--            p.id AS productId,-->
+<!--            p.name AS productName,-->
+<!--            s.quantity AS stockQuantity,-->
+<!--            p.price AS productPrice-->
+<!--        FROM-->
+<!--            Stock s-->
+<!--                JOIN Warehouse w ON w.id = s.warehouse_id-->
+<!--                JOIN Category c ON c.id = w.category_id-->
+<!--                JOIN Product p ON p.id = s.product_id-->
+<!--                JOIN Stock_Movement sm ON sm.product_id = p.id-->
+<!--        WHERE-->
+<!--            (-->
+<!--                sm.approved_datetime BETWEEN #{from} AND #{to}-->
+<!--                    OR s.id LIKE CONCAT('%', #{searchTerm}, '%')-->
+<!--                    OR w.id LIKE CONCAT('%', #{searchTerm}, '%')-->
+<!--                    OR w.name LIKE CONCAT('%', #{searchTerm}, '%')-->
+<!--                    OR c.sub_category LIKE CONCAT('%', #{searchTerm}, '%')-->
+<!--                    OR p.id LIKE CONCAT('%', #{searchTerm}, '%')-->
+<!--                    OR p.name LIKE CONCAT('%', #{searchTerm}, '%')-->
+<!--                    OR s.quantity LIKE CONCAT('%', #{searchTerm}, '%')-->
+<!--                    OR p.price LIKE CONCAT('%', #{searchTerm}, '%')-->
+<!--                )-->
+<!--          AND c.main_category LIKE CONCAT('%', #{mainCategory}, '%')-->
+<!--          AND c.middle_category LIKE CONCAT('%', #{middleCategory}, '%')-->
+<!--          AND c.sub_category LIKE CONCAT('%', #{subCategory}, '%')-->
+<!--          AND p.id LIKE CONCAT('%', #{productId}, '%')-->
+<!--          AND w.id LIKE CONCAT('%', #{warehouseId}, '%');-->
+<!--    </select>-->
 
 </mapper>

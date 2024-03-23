@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Date;
+
 
 @Log4j2
 @ExtendWith(SpringExtension.class)
@@ -46,8 +48,14 @@ public class StockMapperTests {
         stockMapper.selectStockBySubCategory("유제품");
     }
 
-//    @Test
-//    public void testSelectProductStatusList() {
-//        stockMapper.selectProductStatusList();
-//    }
+    @Test
+    public void testSelectProductStatusList() {
+        log.info("/test select Product Status List...");
+        // 현재 없는 데이터 테스팅
+        log.info(stockMapper.selectProductStatusList(new Date(), new Date(), "ahhh", "냉장", "식품", "유제품", 1, 1));
+        // 있는 데이터 테스팅
+        log.info(stockMapper.selectProductStatusList(new Date(), new Date(), "", "냉장", "식품", "유제품", 1, 1));
+        // 실제 코드
+        stockMapper.selectProductStatusList(new Date(), new Date(), "1", "냉장", "식품", "유제품", 1, 1);
+    }
 }
