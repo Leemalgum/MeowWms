@@ -1,4 +1,4 @@
-package com.ssg.meowwms.domain;
+package com.ssg.meowwms.domain.warehouse;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

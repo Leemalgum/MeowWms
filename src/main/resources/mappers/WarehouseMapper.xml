@@ -10,7 +10,7 @@
     </select>
 
     <!--    창고 한 개 가져오기-->
-    <select id="selectOne" resultType="com.ssg.meowwms.domain.WarehouseVO">
+    <select id="selectOne" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
         select *
         from Warehouse
         where id = #{warehouseId}

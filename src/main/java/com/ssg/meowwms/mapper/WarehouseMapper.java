@@ -1,6 +1,6 @@
 package com.ssg.meowwms.mapper;
 
-import com.ssg.meowwms.domain.WarehouseVO;
+import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
