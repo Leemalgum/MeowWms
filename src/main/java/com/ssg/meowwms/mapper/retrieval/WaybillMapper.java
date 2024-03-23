@@ -12,7 +12,7 @@ import java.util.List;
 public interface WaybillMapper {
     void insertWaybill(WaybillVO waybillVO);
     WaybillVO selectOneById(int id);
-    List<WaybillVO> selectAll(@Param("options") List<OptionDTO> options);
+    List<WaybillVO> selectAll();
     void updateWaybill(WaybillVO waybillVO);
     void deleteWaybill(int id);
     List<ShippingOrdersVO> search(@Param("options") List<OptionDTO> options);
