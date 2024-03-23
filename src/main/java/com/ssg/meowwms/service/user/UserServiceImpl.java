@@ -30,7 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getOne(String id) {
-        return null;
+        UserVO userVO = userMapper.selectUser(id);
+        return modelMapper.map(userVO, UserDTO.class);
     }
 
     @Override

@@ -48,6 +48,8 @@ class UserServiceImplTest {
 
     @Test
     void getOne() {
+        UserDTO userDTO = userService.getOne("makeum");
+        log.info(userDTO);
     }
 
     @Test
