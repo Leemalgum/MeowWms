@@ -51,14 +51,14 @@ public class ProductStatusVO {
      */
     @NotNull
     @Length(max = 45, message = "카테고리 이름은 45자 이하여야 합니다")
-    private int warehouseSubCategory;
+    private String warehouseSubCategory;
 
     /**
      * 제품 아이디 : 1 이상, Auto Increment
      */
     @NotNull
     @Min(value = 1, message = "제품 ID 는 1이상 이여야 합니다")
-    private String productId;
+    private int productId;
 
     /**
      * 제품 이름 : 45자 제한

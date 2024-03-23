@@ -1,6 +1,6 @@
 package com.ssg.meowwms.service.inquiry;
 
-import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.inquiry.NoticeDTO;
 import com.ssg.meowwms.domain.inquiry.NoticeVO;
 import com.ssg.meowwms.mapper.inquiry.NoticeMapper;
