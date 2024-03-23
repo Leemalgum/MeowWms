@@ -1,6 +1,7 @@
-package com.ssg.meowwms.mapper;
+package com.ssg.meowwms.mapper.warehouse;
 
 import com.ssg.meowwms.domain.WarehouseVO;
+import com.ssg.meowwms.mapper.WarehouseMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
