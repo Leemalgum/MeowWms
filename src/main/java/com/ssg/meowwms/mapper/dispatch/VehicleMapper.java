@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
 public interface VehicleMapper {
     void insertVehicle(VehicleVO vehicleVO);
     VehicleVO selectOneByNum(String num);
-    List<VehicleVO> selectAll(@Param("options") List<OptionDTO> options);
+    List<VehicleVO> selectAll();
     void updateVehicle(String num);
     void deleteVehicle(String num);
     List<ShippingOrdersVO> search(@Param("options") List<OptionDTO> options);
