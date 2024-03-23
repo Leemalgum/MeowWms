@@ -1,7 +1,6 @@
 package com.ssg.meowwms.service;
 
-import com.ssg.meowwms.domain.warehouse.WarehouseVO;
-import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.service.warehouse.WarehouseService;
 import lombok.extern.log4j.Log4j2;
