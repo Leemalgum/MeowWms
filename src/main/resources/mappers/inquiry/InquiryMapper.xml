@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.inquiry.InquiryMapper">
+    <resultMap id="inquiryResultMap" type="com.ssg.meowwms.domain.inquiry.InquiryVO">
+        <result property="postNum" column="post_num"/>
+        <result property="postType" column="post_type"/>
+        <result property="postTitle" column="post_title"/>
+        <result property="userId" column="user_id"/>
+        <result property="postContent" column="post_content"/>
+        <result property="postDate" column="post_date"/>
+        <result property="response" column="response"/>
+    </resultMap>
+
+    <select id="selectAllInquiries" parameterType="java.util.List" resultMap="inquiryResultMap">
+        SELECT post_num, post_type, post_title, user_id, post_content, post_date, response FROM Inquiry
+        <where>
+            <if test="options != null">
+                <foreach collection="options" item="option" separator=" ">
+                    <choose>
+                        <when test="option.type == 'postType'">
+                            AND post_type = #{option.value}
+                        </when>
+                        <when test="option.type == 'content'">
+                            AND post_content LIKE CONCAT('%', #{option.value}, '%')
+                        </when>
+                        <when test="option.type == 'title'">
+                            AND post_title LIKE CONCAT('%', #{option.value}, '%')
+                        </when>
+                        <when test="option.type == 'contentTitle'">
+                            AND (post_title LIKE CONCAT('%', #{option.value}, '%') OR post_content LIKE CONCAT('%', #{option.value}, '%'))
+                        </when>
+                        <when test="option.type == 'writer'">
+                            AND user_id = #{option.value}
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!-- select 쿼리에서 resultMap을 사용하도록 수정 -->
+    <select id="selectInquiry" parameterType="int" resultMap="inquiryResultMap">
+        SELECT post_num, post_type, post_title, user_id, post_content, post_date, response FROM Inquiry WHERE post_num = #{postNum}
+    </select>
+
+    <delete id="deleteInquiry" parameterType="int">
+        DELETE FROM Inquiry WHERE post_num = #{postNum}
+    </delete>
+
+    <update id="updateInquiry" parameterType="com.ssg.meowwms.domain.inquiry.InquiryVO">
+        UPDATE Inquiry SET post_type = #{postType}, post_content = #{postContent},
+                           post_title = #{postTitle}, post_date = now() WHERE post_num = #{postNum}
+    </update>
+
+    <insert id="insertInquiry" parameterType="com.ssg.meowwms.domain.inquiry.InquiryVO">
+        INSERT INTO Inquiry (post_type, post_title, user_id, post_content, post_date)
+        VALUES (#{postType}, #{postTitle}, #{userId}, #{postContent}, now())
+    </insert>
+
+
+</mapper>
