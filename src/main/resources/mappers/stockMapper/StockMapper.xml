@@ -82,8 +82,7 @@
                 JOIN Shipping_Orders_Detail sod on p.id = sod.product_id
         WHERE
             (
-                sm.approved_datetime BETWEEN #{from} AND #{to}
-                OR  w.name LIKE CONCAT('%', #{warehouseName}, '%')
+                w.name LIKE CONCAT('%', #{warehouseName}, '%')
             )
           AND c.main_category LIKE CONCAT('%', #{mainCategory}, '%')
           AND c.middle_category LIKE CONCAT('%', #{middleCategory}, '%')
