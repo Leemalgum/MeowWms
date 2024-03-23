@@ -1,7 +1,7 @@
 package com.ssg.meowwms.service.warehouse;
 
-import com.ssg.meowwms.domain.WarehouseVO;
+import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 
 public interface WarehouseService {
-    public void register(WarehouseVO warehouseVO);
+    public void register(WarehouseDTO warehouseDTO);
 }
