@@ -12,8 +12,12 @@ public class WarehouseController {
 
     @GetMapping("/register")
     public String getRegister() {
-
         return "views/warehouse/register";
+    }
+
+    @GetMapping("/list")
+    public String getList() {
+        return "views/warehouse/list";
     }
 
     @GetMapping("/read")
