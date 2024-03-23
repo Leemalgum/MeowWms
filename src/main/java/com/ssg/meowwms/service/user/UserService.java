@@ -10,5 +10,5 @@ public interface UserService {
     UserDTO getOne(String id);
     List<UserDTO> getList();
     String searchId(String uname, String email);
-    String searchPw(String name, String id);
+    String searchPw(String uname, String id);
 }

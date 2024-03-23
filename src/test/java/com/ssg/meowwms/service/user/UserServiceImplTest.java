@@ -67,5 +67,7 @@ class UserServiceImplTest {
 
     @Test
     void searchPw() {
+        String upw = userService.searchPw("user2","user2");
+        log.info(upw);
     }
 }

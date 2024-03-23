@@ -50,7 +50,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String searchPw(String name, String id) {
-        return null;
+    public String searchPw(String uname, String id) {
+        String upw = userMapper.searchId(uname, id);
+        return upw;
     }
 }
