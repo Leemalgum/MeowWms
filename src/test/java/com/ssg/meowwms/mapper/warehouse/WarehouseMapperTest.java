@@ -29,5 +29,4 @@ class WarehouseMapperTest {
 
         warehouseMapper.insert(warehouseVO);
     }
-
 }
