@@ -61,6 +61,8 @@ class UserServiceImplTest {
 
     @Test
     void searchId() {
+        String uid = userService.searchId("user2", "user2@example.com");
+        log.info(uid);
     }
 
     @Test

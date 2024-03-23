@@ -44,12 +44,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO searchId(String name, String email) {
-        return null;
+    public String searchId(String uname, String email) {
+        String uid = userMapper.searchId(uname, email);
+        return uid;
     }
 
     @Override
-    public UserDTO searchPw(String name, String id) {
+    public String searchPw(String name, String id) {
         return null;
     }
 }
