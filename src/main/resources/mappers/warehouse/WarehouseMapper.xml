@@ -15,4 +15,29 @@
         from Warehouse
         where id = #{warehouseId}
     </select>
+    
+    <select id="selectAll" parameterType="java.util.List" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+        select *
+        from Warehouse
+        <where>
+            <if test="optionList != null">
+                <foreach collection="optionList" item="option">
+                    <choose>
+                        <when test="option.type == 'name'">
+                            and name = #{option.value}
+                        </when>
+                        <when test="option.type == 'categoryId'">
+                            and categoryId = #{option.value}
+                        </when>
+                        <when test="option.type == 'latitude'">
+                            and latitude = #{option.value}
+                        </when>
+                        <when test="option.type == 'longitude'">
+                            and longitude = #{option.value}
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

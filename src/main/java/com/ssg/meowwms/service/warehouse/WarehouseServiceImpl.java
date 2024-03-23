@@ -1,12 +1,16 @@
 package com.ssg.meowwms.service.warehouse;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
+import com.ssg.meowwms.dto.OptionDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.mapper.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -24,5 +28,14 @@ public class WarehouseServiceImpl implements WarehouseService{
         log.info("WarehouseVO: " + warehouseVO);
 
         warehouseMapper.insert(warehouseVO);
+    }
+
+    @Override
+    public List<WarehouseDTO> selectAll(List<OptionDTO> optionList) {
+        List<WarehouseVO> warehouseVOList = warehouseMapper.selectAll(optionList);
+
+        return warehouseVOList.stream()
+                .map(warehouseVO -> modelMapper.map(warehouseVO, WarehouseDTO.class))
+                .collect(Collectors.toList());
     }
 }
