@@ -24,7 +24,7 @@ import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 @Log4j2
-class InquiryServiceImplTest {
+class InquiryServiceTest {
 
     @MockBean
     private InquiryMapper inquiryMapper;
