@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Log4j2
 @SpringBootTest
@@ -54,6 +55,8 @@ class UserServiceImplTest {
 
     @Test
     void getList() {
+        List<UserDTO> userDTOList = userService.getList();
+        userDTOList.forEach(log::info);
     }
 
     @Test

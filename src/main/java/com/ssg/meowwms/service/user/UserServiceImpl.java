@@ -36,7 +36,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getList() {
-        return null;
+        List<UserDTO> userDTOList = userMapper.selectAll()
+                .stream()
+                .map(userVO -> modelMapper.map(userVO, UserDTO.class))
+                .toList();
+        return userDTOList;
     }
 
     @Override
