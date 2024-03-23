@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.finance.SalesMapper">
+
+    <!-- Result Map -->
+    <resultMap id="salesResultMap" type="com.ssg.meowwms.domain.finance.SalesVO">
+        <result property="id" column="id"/>
+        <result property="amount" column="amount"/>
+        <result property="date" column="date"/>
+        <result property="warehouseId" column="warehouse_id"/>
+        <!-- Add more fields as needed -->
+    </resultMap>
+
+    <!-- Insert -->
+    <insert id="insertSales" parameterType="com.ssg.meowwms.domain.finance.SalesVO">
+        INSERT INTO Sales (amount, sales_date, warehouse_id, type)
+        VALUES (#{amount}, #{salesDate}, #{warehouseId}, #{type})
+    </insert>
+
+    <!-- Select by Id -->
+    <select id="selectSalesById" parameterType="int" resultMap="salesResultMap">
+        SELECT * FROM Sales WHERE id = #{id}
+    </select>
+
+    <!-- Select All with Options -->
+    <select id="selectAll" parameterType="java.util.List" resultMap="salesResultMap">
+        SELECT * FROM Sales
+        <where>
+            <if test="optionList != null">
+                <!-- Example for handling options, adjust according to actual OptionDTO fields -->
+                <foreach item="option" index="index" collection="optionList" open="" separator="AND" close="">
+                    <if test="option.type == 'date'">
+                        AND date = #{option.value}
+                    </if>
+                    <!-- Add more conditions based on OptionDTO -->
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!-- Delete -->
+    <delete id="deleteSales" parameterType="int">
+        DELETE FROM Sales WHERE id = #{id}
+    </delete>
+
+    <!-- Update -->
+    <update id="updateSales" parameterType="com.ssg.meowwms.domain.finance.SalesVO">
+        UPDATE Sales
+        SET amount = #{amount}, sales_date = #{salesDate}, warehouse_id = #{warehouseId}, type = #{type}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Sum Sales -->
+    <select id="sumSales" parameterType="java.util.List" resultType="int">
+        SELECT SUM(amount) FROM Sales
+        <where>
+            <!-- Add conditions based on OptionDTO -->
+        </where>
+    </select>
+
+    <select id="sumSalesByYear" resultType="com.ssg.meowwms.dto.finance.SalesMonthDTO">
+        SELECT
+            MONTH(sales_date) AS salesMonth,
+            SUM(amount) AS totalSales
+        FROM
+            Sales
+        WHERE
+            warehouse_id = #{warehouseId}
+          AND YEAR(sales_date) = #{year}
+        GROUP BY
+            MONTH(sales_date)
+        ORDER BY
+            salesMonth;
+    </select>
+
+</mapper>
