@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -49,13 +52,19 @@ public class StockMapperTests {
     }
 
     @Test
-    public void testSelectProductStatusList() {
+    public void testSelectProductStatusList() throws ParseException {
         log.info("/test select Product Status List...");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFormat.parse("2025-03-23");
+        Date lastyear = dateFormat.parse("2023-03-23");
+
         // 현재 없는 데이터 테스팅
         log.info(stockMapper.selectProductStatusList(new Date(), new Date(), "ahhh", "냉장", "식품", "유제품", 1, 1));
-        // 있는 데이터 테스팅
-        log.info(stockMapper.selectProductStatusList(new Date(), new Date(), "", "냉장", "식품", "유제품", 1, 1));
+        // 날짜 테스팅
+        log.info(stockMapper.selectProductStatusList(date, date, "", "냉장", "식품", "유제품", 1, 1));
+        log.info(stockMapper.selectProductStatusList(lastyear, date, "", "냉장", "식품", "유제품", 1, 1));
+
         // 실제 코드
-        stockMapper.selectProductStatusList(new Date(), new Date(), "1", "냉장", "식품", "유제품", 1, 1);
+        stockMapper.selectProductStatusList(lastyear, date, "1", "냉장", "식품", "유제품", 1, 1);
     }
 }

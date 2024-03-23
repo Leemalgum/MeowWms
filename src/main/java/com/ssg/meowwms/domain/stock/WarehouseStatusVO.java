@@ -50,6 +50,7 @@ public class WarehouseStatusVO {
 
     /**
      * 제품 상세정보 : 빈값 가능
+     * 종우님이 하신거 가져다가 빌드할때 추가하기.
      */
     @Nullable
     private String detail;

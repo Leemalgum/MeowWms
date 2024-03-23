@@ -25,7 +25,14 @@ public interface StockMapper {
             int productId,
             int warehouseId
     );
-    List<WarehouseStatusVO> selectWarehouseStatusList();
+    List<WarehouseStatusVO> selectWarehouseStatusList(
+            Date from,
+            Date to,
+            String warehouseName,
+            String mainCategory,
+            String middleCategory,
+            String subCategory
+    );
 
 
 }
