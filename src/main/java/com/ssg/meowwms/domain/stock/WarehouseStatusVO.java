@@ -39,7 +39,7 @@ public class WarehouseStatusVO {
      */
     @NotNull
     @Length(max = 45, message = "카테고리 이름은 45자 이하여야 합니다")
-    private int warehouseSubCategory;
+    private String warehouseSubCategory;
 
     /**
      * 제품 이름 : 45자 제한
@@ -50,6 +50,7 @@ public class WarehouseStatusVO {
 
     /**
      * 제품 상세정보 : 빈값 가능
+     * 종우님이 하신거 가져다가 빌드할때 추가하기.
      */
     @Nullable
     private String detail;
