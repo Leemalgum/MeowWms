@@ -1,17 +1,16 @@
-package com.ssg.meowwms.mapper.User;
+package com.ssg.meowwms.mapper.user;
 
-import com.ssg.meowwms.domain.User.UserVO;
+import com.ssg.meowwms.domain.user.UserVO;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.lang.Nullable;
 
 import java.util.List;
 
 @Mapper
 public interface UserMapper {
 
-    void insertUser(UserVO userVO);
+    void insert(UserVO userVO);
 
-    void updateStatus(UserVO userVO);
+    void update(UserVO userVO);
 
     UserVO selectUser(String uid);
 
