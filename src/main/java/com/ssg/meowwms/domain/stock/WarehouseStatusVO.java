@@ -39,7 +39,7 @@ public class WarehouseStatusVO {
      */
     @NotNull
     @Length(max = 45, message = "카테고리 이름은 45자 이하여야 합니다")
-    private int warehouseSubCategory;
+    private String warehouseSubCategory;
 
     /**
      * 제품 이름 : 45자 제한

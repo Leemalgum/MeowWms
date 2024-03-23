@@ -103,29 +103,32 @@ public class StockMapperTests {
         );
     }
 
-//    @Test
-//    public void testSelectWarehouseStatusList()  {
-//        log.info("/test select Warehouse Status List...");
-////        warehouseName,
-////        mainCategory,
-////        middleCategory,
-////        subCategory
-//
-//        // 현재 없는 데이터 테스팅
-//        // 실험 코드
-//        log.info(stockMapper.selectWarehouseStatusList(
-//            "운양동 우유 창고"
-//            ,"냉장"
-//            , "식품"
-//            , "유제품"
-//        ));
-//        // 실제 테스팅
-//        stockMapper.selectWarehouseStatusList(
-//                "운양동 우유 창고"
-//                ,"냉장"
-//                , "식품"
-//                , "유제품"
-//        );
-//    }
+    /**
+     * TODO:: detail 은 종우님이 만든 창고 디테일 가져다 쓰기
+     */
+    @Test
+    public void testSelectWarehouseStatusList()  {
+        log.info("/test select Warehouse Status List...");
+//        warehouseName,
+//        mainCategory,
+//        middleCategory,
+//        subCategory
+
+        // 현재 없는 데이터 테스팅
+        // 실험 코드
+        log.info(stockMapper.selectWarehouseStatusList(
+            "운양동 우유 창고"
+            ,"냉장"
+            , "식품"
+            , "유제품"
+        ));
+        // 실제 테스팅
+        stockMapper.selectWarehouseStatusList(
+                "운양동 우유 창고"
+                ,"냉장"
+                , "식품"
+                , "유제품"
+        );
+    }
 
 }

@@ -71,7 +71,7 @@
             c.sub_category AS warehouseSubCategory,
             p.name AS productName,
             s.quantity AS stockQuantity,
-            p.quantity AS inbundQuantity,
+            (SELECT quantity FROM Product WHERE id = s.product_id) AS inboundQuantity,
             sod.quantity AS outboundQuantity
         FROM
             Stock s
@@ -82,7 +82,7 @@
                 JOIN Shipping_Orders_Detail sod on p.id = sod.product_id
         WHERE
             (
-                w.name LIKE CONCAT('%', #{warehouseName}, '%')
+             w.name LIKE CONCAT('%', #{warehouseName}, '%')
             )
           AND c.main_category LIKE CONCAT('%', #{mainCategory}, '%')
           AND c.middle_category LIKE CONCAT('%', #{middleCategory}, '%')
