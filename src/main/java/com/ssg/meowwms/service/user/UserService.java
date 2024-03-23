@@ -9,6 +9,6 @@ public interface UserService {
     void modify(UserDTO userDTO);
     UserDTO getOne(String id);
     List<UserDTO> getList();
-    UserDTO searchId(String name, String email);
-    UserDTO searchPw(String name, String id);
+    String searchId(String uname, String email);
+    String searchPw(String name, String id);
 }
