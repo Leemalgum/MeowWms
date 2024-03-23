@@ -15,7 +15,8 @@
         from Warehouse
         where id = #{warehouseId}
     </select>
-    
+
+    <!--    검색 조건에 해당하는 창고 전체 가져오기-->
     <select id="selectAll" parameterType="java.util.List" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
         select *
         from Warehouse
@@ -39,5 +40,25 @@
                 </foreach>
             </if>
         </where>
+    </select>
+
+    <select id="getWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
+        select w.name,
+               c.main_category,
+               c.middle_category,
+               c.sub_category,
+               w.latitude,
+               w.longitude,
+               u.uid,
+               p.id,
+               p.name,
+               s.quantity,
+               p.volume
+        from Warehouse w
+                 join Stock s on w.id = s.warehouse_id
+                 join Product p on s.product_id = p.id
+                 join Category c on w.category_id = c.id
+                 join User u on w.manager_id = u.uid
+        where w.id = #{warehouseId}
     </select>
 </mapper>
