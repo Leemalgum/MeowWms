@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.user;
 
 import com.ssg.meowwms.domain.user.UserVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface UserMapper {
     List<UserVO> selectAll();
     List<UserVO> selectSearch(int rid);
 
-    String searchId(String uname, String email);
+    String searchId(@Param("uname") String uname, @Param("email") String email);
 
-    String searchPw(String uname, String uid);
+    String searchPw(@Param("uname") String uname, @Param("uid") String uid);
 }

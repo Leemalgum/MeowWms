@@ -68,8 +68,8 @@ class UserMapperTest {
 
     @Test
     void searchId() {
-        String uname = "이맑음";
-        String email = "updateEmail@test.com";
+        String uname = "user2";
+        String email = "user2@example.com";
         String uid = userMapper.searchId(uname, email);
         log.info(uid);
     }
