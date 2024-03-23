@@ -15,4 +15,9 @@ public class WarehouseController {
 
         return "views/warehouse/register";
     }
+
+    @GetMapping("/read")
+    public String getRead() {
+        return "views/warehouse/read";
+    }
 }
