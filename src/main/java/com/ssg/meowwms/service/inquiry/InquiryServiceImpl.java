@@ -1,7 +1,7 @@
 package com.ssg.meowwms.service.inquiry;
 
 import com.ssg.meowwms.domain.inquiry.InquiryVO;
-import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.inquiry.InquiryDTO;
 import com.ssg.meowwms.mapper.inquiry.InquiryMapper;
 import lombok.RequiredArgsConstructor;

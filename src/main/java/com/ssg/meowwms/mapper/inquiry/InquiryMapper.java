@@ -1,11 +1,9 @@
 package com.ssg.meowwms.mapper.inquiry;
 
 import com.ssg.meowwms.domain.inquiry.InquiryVO;
-import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
 
 import java.util.List;
 

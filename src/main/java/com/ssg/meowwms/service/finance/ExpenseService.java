@@ -1,6 +1,6 @@
 package com.ssg.meowwms.service.finance;
 
-import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.finance.ExpenseDTO;
 import com.ssg.meowwms.dto.finance.ExpenseMonthDTO;
 
