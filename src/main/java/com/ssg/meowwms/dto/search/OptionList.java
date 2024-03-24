@@ -19,4 +19,8 @@ public class OptionList {
     public void add(OptionDTO optionDTO){
         optionList.add(optionDTO);
     }
+
+    public List<OptionDTO> getOptionList() {
+        return optionList;
+    }
 }

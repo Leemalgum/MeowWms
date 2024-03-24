@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.retrieval.ShippingOrdersMapper">
+
+    <insert id="insertShippingOrder">
+        INSERT INTO Shipping_Orders(uid, postcode, street_name_address, street_number_address, detail_address, expected_date)
+        VALUES (#{uid}, #{postcode}, #{streetNameAddress}, #{streetNumberAddress}, #{detailAddress}, #{expectedDate})
+    </insert>
+
+    <select id="selectOneById" parameterType="int" resultType="com.ssg.meowwms.domain.retrieval.ShippingOrdersVO">
+        SELECT * FROM Shipping_Orders WHERE id = #{id}
+    </select>
+
+    <update id="updateShippingOrder" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersVO">
+        UPDATE Shipping_Orders
+        SET postcode = #{postcode}, street_name_address = #{streetNameAddress}, street_number_address = #{streetNumberAddress},
+            detail_address = #{detailAddress}, expected_date = #{expectedDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteShippingOrder" parameterType="int">
+        DELETE FROM Shipping_Orders WHERE id = #{id}
+    </delete>
+
+    <select id="selectByOptions" parameterType="java.util.List" resultType="com.ssg.meowwms.dto.retrieval.ShippingOrdersListDTO">
+        SELECT so.id, so.expected_date, so.uid, sod.product_id, p.name as product_name, sos.approved_status,
+        sos.allocated_status
+        FROM Shipping_Orders so
+        INNER JOIN Shipping_Orders_Detail sod ON so.id = sod.shipping_orders_id
+        LEFT JOIN Shipping_Orders_Status sos ON so.id = sos.id
+        INNER JOIN Product p ON sod.product_id = p.id
+        <where>
+            <if test="options != null">
+                <foreach collection="options" item="option" separator=" ">
+                    <choose>
+                        <when test="option.type == 'id'">
+                            AND so.id = #{option.value}
+                        </when>
+                        <when test="option.type == 'uid'">
+                            AND so.uid LIKE #{option.value}
+                        </when>
+                        <when test="option.type == 'product_id'">
+                            AND sod.product_id = #{option.value}
+                        </when>
+                        <when test="option.type == 'product_name'">
+                            AND p.name LIKE CONCAT('%', #{option.value}, '%')
+                        </when>
+                        <otherwise>
+                            <if test="option.type == 'expected_date'">
+                                AND so.expected_date = #{option.value}
+                            </if>
+                            <if test="option.type == 'approved_status'">
+                                AND sos.approved_status = #{option.value}
+                            </if>
+                            <if test="option.type == 'allocated_status'">
+                                AND sos.allocated_status = #{option.value}
+                            </if>
+                        </otherwise>
+                    </choose>
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectShopAddressByShopName"  parameterType="java.lang.String" resultType="com.ssg.meowwms.domain.user.MemberVO">
+        SELECT *
+        FROM Member
+        WHERE uid = #{uid}
+    </select>
+
+</mapper>

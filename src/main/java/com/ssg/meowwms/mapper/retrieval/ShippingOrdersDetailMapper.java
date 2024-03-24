@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ShippingOrdersDetailMapper {
     void insertShippingOrderDetail(ShippingOrdersDetailVO shippingOrdersDetailVO);
-    ShippingOrdersDetailVO selectOnelById(String id);
-    void updateShippingOrderDetail(ShippingOrdersDetailVO shippingOrdersDetailVO);
-    void deleteShippingOrderDetail(String id);
+    ShippingOrdersDetailVO selectOneByShippingOrderId(int shippingOrdersId);
+    void updateShippingOrderDetailById(ShippingOrdersDetailVO shippingOrdersDetailVO);
+    void deleteShippingOrderDetailById(int id);
 }
