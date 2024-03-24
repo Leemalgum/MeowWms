@@ -1,6 +1,7 @@
 package com.ssg.meowwms.service.category;
 
 import com.ssg.meowwms.dto.category.CategoryDTO;
+import com.ssg.meowwms.dto.category.MainCategoryDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,5 +25,13 @@ public class CategoryServiceTest {
         List<CategoryDTO> categories = categoryService.getAllCategories();
 
         log.info(categories);
+    }
+
+    @Test
+    @DisplayName("대분류만 중복 없이 조회")
+    void getMainCategories() {
+        List<MainCategoryDTO> mainCategories = categoryService.getMainCategories();
+
+        log.info(mainCategories);
     }
 }
