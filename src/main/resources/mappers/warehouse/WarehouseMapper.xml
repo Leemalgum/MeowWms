@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.WarehouseMapper">
+    <!--    창고 등록-->
+    <select id="insert">
+        insert into Warehouse(name, category_id, manager_id, volume, latitude, longitude)
+        values (#{name}, #{categoryId}, #{managerId}, #{volume}, #{latitude}, #{longitude})
+    </select>
+
+    <!--    창고 한 개 가져오기-->
+    <select id="selectOne" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+        select *
+        from Warehouse
+        where id = #{warehouseId}
+    </select>
+    
+    <select id="selectAll" parameterType="java.util.List" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+        select *
+        from Warehouse
+        <where>
+            <if test="optionList != null">
+                <foreach collection="optionList" item="option">
+                    <choose>
+                        <when test="option.type == 'name'">
+                            and name = #{option.value}
+                        </when>
+                        <when test="option.type == 'categoryId'">
+                            and categoryId = #{option.value}
+                        </when>
+                        <when test="option.type == 'latitude'">
+                            and latitude = #{option.value}
+                        </when>
+                        <when test="option.type == 'longitude'">
+                            and longitude = #{option.value}
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

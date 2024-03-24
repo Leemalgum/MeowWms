@@ -1,7 +1,8 @@
 package com.ssg.meowwms.mapper.inquiry;
 
 import com.ssg.meowwms.domain.inquiry.InquiryVO;
-import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
+@Log4j2
 class InquiryMapperTest {
 
     @Autowired
@@ -59,13 +61,14 @@ class InquiryMapperTest {
     @Test
     void selectInquiry() {
         InquiryVO inquiry = inquiryMapper.selectInquiry(11);
+        log.info(inquiry);
         assertThat(inquiry.getUserId()).isEqualTo("admin");
     }
 
     @Test
     void deleteInquiry() {
         inquiryMapper.deleteInquiry(21);
-        inquiryMapper.selectInquiry(21);
+        assertThat(inquiryMapper.selectInquiry(21)).isNull();
     }
 
     @Test

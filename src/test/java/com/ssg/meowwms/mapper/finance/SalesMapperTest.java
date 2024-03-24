@@ -1,7 +1,7 @@
 package com.ssg.meowwms.mapper.finance;
 
 import com.ssg.meowwms.domain.finance.SalesVO;
-import com.ssg.meowwms.dto.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.finance.SalesMonthDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
