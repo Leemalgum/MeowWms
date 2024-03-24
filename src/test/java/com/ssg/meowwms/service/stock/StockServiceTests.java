@@ -1,4 +1,4 @@
-package com.ssg.meowwms.service;
+package com.ssg.meowwms.service.stock;
 
 import com.ssg.meowwms.service.stock.StockService;
 import lombok.extern.log4j.Log4j2;
