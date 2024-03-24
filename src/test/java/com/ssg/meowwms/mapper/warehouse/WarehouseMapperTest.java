@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.warehouse;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
+import com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,5 +51,15 @@ class WarehouseMapperTest {
         List<WarehouseVO> warehouseVOList = warehouseMapper.selectAll(optionList);
 
         log.info(warehouseVOList);
+    }
+
+    @Test
+    @DisplayName("창고 상세")
+    void getWarehouseDetail() {
+        int warehouseId = 1;
+
+        List<WarehouseDetailDTO> warehouseDetailList = warehouseMapper.getWarehouseDetail(warehouseId);
+
+        log.info(warehouseDetailList);
     }
 }
