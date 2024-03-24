@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>문의글 및 공지사항 조회</title>
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+</head>
+<body>
+
+<div id="wrapper">
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+        <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+
+        <div class="container-fluid">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-primary" id="viewInquiriesButton">문의글 보기</button>
+                    <button type="button" id="showNoticesButton" class="btn btn-info">공지사항</button>
+                    <button type="button" class="btn btn-warning" id="myPostsButton">내 글 보기</button>
+                </div>
+                <a href="modify-content" class="btn btn-success">글쓰기</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>카테고리</th>
+                        <th>글번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>등록일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- DataTables will fill the data here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 검색 조건 입력 폼 -->
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <select class="custom-select" id="searchType">
+                                <option selected>검색 타입 선택</option>
+                                <option value="writer">작성자</option>
+                                <option value="title">제목</option>
+                                <option value="content">내용</option>
+                                <option value="titleContent">제목+내용</option>
+                            </select>
+                        </div>
+                        <input type="text" class="form-control" id="searchKeyword" placeholder="검색어를 입력하세요...">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="button" id="button-search">검색</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+</div>
+
+<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var currentDataTable = "inquiries"; // 현재 보고 있는 데이터 타입
+
+    $(document).ready(function() {
+        loadInquiriesData(); // 초기 페이지 로딩 시 문의글 데이터 로드
+    });
+
+    $('#showNoticesButton').click(function() {
+        currentDataTable = "notices"; // 공지사항 데이터 로드로 상태 변경
+        loadNoticesData(); // 검색 조건 없이 공지사항 데이터 로드
+    });
+
+    $('#viewInquiriesButton').click(function() {
+        currentDataTable = "inquiries"; // 문의글 데이터 로드로 상태 변경
+        loadInquiriesData(); // 검색 조건 없이 문의글 데이터 로드
+    });
+
+    $('#button-search').click(function() {
+        var searchType = $('#searchType').val();
+        var searchKeyword = $('#searchKeyword').val();
+        // 현재 상태에 따라 적절한 데이터 로드
+        if (currentDataTable === "inquiries") {
+            loadInquiriesData(searchType, searchKeyword);
+        } else if (currentDataTable === "notices") {
+            loadNoticesData(searchType, searchKeyword);
+        }
+    });
+
+    function loadInquiriesData(searchType = '', searchKeyword = '') {
+        var params = new URLSearchParams({
+            searchType: searchType,
+            searchKeyword: searchKeyword
+        }).toString();
+
+        if($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').DataTable().destroy();
+        }
+
+        $('#dataTable').DataTable({
+            "ajax": {
+                "url": `/views/inquiry/data?${params}`,
+                "type": "GET",
+                "dataSrc": ""
+            },
+            "columns": [
+                { "data": "postNum" },
+                { "data": "postType" },
+                {
+                    "data": "postTitle",
+                    "render": function(data, type, row) {
+                        return `<a href="/views/inquiry/read-content/${row.postNum}">${data}</a>`;
+                    }
+                },
+                { "data": "userId" },
+                {
+                    "data": "postDate",
+                    "render": function(data) {
+                        return moment(data).format('YYYY-MM-DD');
+                    }
+                }
+            ],
+            "searching": false,
+            "paging": true,
+            "ordering": true,
+            "info": true,
+            "pageLength": 10
+        });
+    }
+
+    function loadNoticesData(searchType = '', searchKeyword = '') {
+        var params = new URLSearchParams({
+            searchType: searchType,
+            searchKeyword: searchKeyword
+        }).toString();
+
+        if($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').DataTable().destroy();
+        }
+
+        $('#dataTable').DataTable({
+            "ajax": {
+                "url": `/views/inquiry/noticeData?${params}`,
+                "type": "GET",
+                "dataSrc": ""
+            },
+            "columns": [
+                { "data": "no" },
+                { "data": "type" },
+                {
+                    "data": "title",
+                    "render": function(data, type, row) {
+                        return `<a href="/views/inquiry/read-content/${row.no}">${data}</a>`;
+                    }
+                },
+                { "data": "userId" },
+                {
+                    "data": "noticeDate",
+                    "render": function(data) {
+                        return moment(data).format('YYYY-MM-DD');
+                    }
+                }
+            ],
+            "searching": false,
+            "paging": true,
+            "ordering": true,
+            "info": true,
+            "pageLength": 10
+        });
+    }
+    /*]]>*/
+</script>
+
+
+
+
+</body>
+</html>

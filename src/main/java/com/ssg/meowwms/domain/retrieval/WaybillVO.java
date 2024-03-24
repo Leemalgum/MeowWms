@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 
@@ -43,12 +44,14 @@ public class WaybillVO {
     /**
      * 출발일 : yyyy-MM-dd 형식, 한국(서울) 시간
      */
+    @Nullable
     @JsonFormat(pattern ="yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate departureDate;
 
     /**
      * 도착일 : yyyy-MM-dd 형식, 한국(서울) 시간
      */
+    @Nullable
     @JsonFormat(pattern ="yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate arrivalDate;
 
