@@ -20,4 +20,11 @@
         from Category
         where main_category = #{mainCategory}
     </select>
+
+    <select id="selectSubCategories" resultType="com.ssg.meowwms.dto.category.SubCategoryDTO">
+        select distinct sub_category as subCategory
+        from Category
+        where main_category = #{mainCategory}
+          and middle_category = #{middleCategory}
+    </select>
 </mapper>
