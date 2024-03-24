@@ -1,4 +1,4 @@
-package com.ssg.meowwms.dto;
+package com.ssg.meowwms.domain.storage;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ProductDTO {
+public class ProductVO {
     private int id;
     private int categoryId;
     private String name;
@@ -20,5 +20,4 @@ public class ProductDTO {
     @Min(value = 0)
     private int quantity;
     private int volume;
-    private String userId;
 }

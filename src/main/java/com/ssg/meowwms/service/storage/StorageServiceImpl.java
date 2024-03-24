@@ -1,9 +1,9 @@
 package com.ssg.meowwms.service.storage;
 
-import com.ssg.meowwms.domain.ProductVO;
-import com.ssg.meowwms.domain.StockMovementVO;
-import com.ssg.meowwms.dto.ProductDTO;
-import com.ssg.meowwms.dto.StockMovementDTO;
+import com.ssg.meowwms.domain.storage.ProductVO;
+import com.ssg.meowwms.domain.storage.StockMovementVO;
+import com.ssg.meowwms.dto.storage.ProductDTO;
+import com.ssg.meowwms.dto.storage.StockMovementDTO;
 import com.ssg.meowwms.dto.stock.StockDTO;
 import com.ssg.meowwms.mapper.storage.ProductMapper;
 import com.ssg.meowwms.mapper.storage.StockMovementMapper;

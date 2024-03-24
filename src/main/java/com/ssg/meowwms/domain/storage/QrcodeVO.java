@@ -1,4 +1,4 @@
-package com.ssg.meowwms.dto;
+package com.ssg.meowwms.domain.storage;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class QrcodeDTO {
+public class QrcodeVO {
     private int id;
     private int productId;
     private Blob barcodeData;

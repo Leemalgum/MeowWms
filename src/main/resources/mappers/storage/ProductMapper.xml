@@ -3,12 +3,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssg.meowwms.mapper.storage.ProductMapper">
-    <insert id="productInsert" parameterType="com.ssg.meowwms.domain.ProductVO">
+    <insert id="productInsert" parameterType="com.ssg.meowwms.domain.storage.ProductVO">
         INSERT INTO Product (category_id, name, brand, price, sale_price, quantity, volume)
         VALUES (#{categoryId}, #{name}, #{brand}, #{price}, #{salePrice}, #{quantity}, #{volume})
     </insert>
 
-    <update id="productUpdate" parameterType="com.ssg.meowwms.domain.ProductVO">
+    <update id="productUpdate" parameterType="com.ssg.meowwms.domain.storage.ProductVO">
         UPDATE Product
         SET category_id=#{categoryId}, name=#{name}, brand=#{brand}, price=#{price}, sale_price=#{salePrice}, quantity=#{quantity}
         WHERE id=#{id}

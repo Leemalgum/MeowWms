@@ -1,15 +1,13 @@
 package com.ssg.meowwms.service;
 
-import com.ssg.meowwms.domain.ProductVO;
-import com.ssg.meowwms.dto.ProductDTO;
-import com.ssg.meowwms.dto.StockMovementDTO;
+import com.ssg.meowwms.dto.storage.ProductDTO;
+import com.ssg.meowwms.dto.storage.StockMovementDTO;
 import com.ssg.meowwms.service.storage.StorageService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;

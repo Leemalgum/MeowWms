@@ -1,7 +1,6 @@
 package com.ssg.meowwms.mapper.storage;
 
-import com.ssg.meowwms.domain.QrcodeVO;
-import com.ssg.meowwms.dto.QrcodeDTO;
+import com.ssg.meowwms.domain.storage.QrcodeVO;
 import org.apache.ibatis.annotations.Param;
 
 public interface QrMapper {

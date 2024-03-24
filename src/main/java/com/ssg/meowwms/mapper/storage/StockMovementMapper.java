@@ -1,6 +1,6 @@
 package com.ssg.meowwms.mapper.storage;
 
-import com.ssg.meowwms.domain.StockMovementVO;
+import com.ssg.meowwms.domain.storage.StockMovementVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

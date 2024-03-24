@@ -1,7 +1,7 @@
 package com.ssg.meowwms.service.storage;
 
-import com.ssg.meowwms.dto.ProductDTO;
-import com.ssg.meowwms.dto.StockMovementDTO;
+import com.ssg.meowwms.dto.storage.ProductDTO;
+import com.ssg.meowwms.dto.storage.StockMovementDTO;
 import com.ssg.meowwms.dto.stock.StockDTO;
 
 import java.sql.Blob;
