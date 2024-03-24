@@ -8,21 +8,21 @@
     <select id="selectStockByMainCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
         select * from Stock s
         Join Warehouse w on w.id = s.warehouse_id
-        Join Category c on c.id = w.category_id
+        Join Category c on c.id = w.categoryId
         where c.main_category = #{mainCategory};
     </select>
 
     <select id="selectStockByMiddleCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
         select * from Stock s
         Join Warehouse w on w.id = s.warehouse_id
-        Join Category c on c.id = w.category_id
+        Join Category c on c.id = w.categoryId
         where c.middle_category = #{middleCategory};
     </select>
 
     <select id="selectStockBySubCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
         select * from Stock s
         Join Warehouse w on w.id = s.warehouse_id
-        Join Category c on c.id = w.category_id
+        Join Category c on c.id = w.categoryId
         where c.sub_category = #{subCategory};
     </select>
 
@@ -41,7 +41,7 @@
         FROM
             Stock s
                 JOIN Warehouse w ON w.id = s.warehouse_id
-                JOIN Category c ON c.id = w.category_id
+                JOIN Category c ON c.id = w.categoryId
                 JOIN Product p ON p.id = s.product_id
                 JOIN Stock_Movement sm ON sm.product_id = p.id
         WHERE
@@ -76,7 +76,7 @@
         FROM
             Stock s
                 JOIN Warehouse w ON w.id = s.warehouse_id
-                JOIN Category c ON c.id = w.category_id
+                JOIN Category c ON c.id = w.categoryId
                 JOIN Product p ON p.id = s.product_id
                 JOIN Stock_Movement sm ON sm.product_id = p.id
                 JOIN Shipping_Orders_Detail sod on p.id = sod.product_id
