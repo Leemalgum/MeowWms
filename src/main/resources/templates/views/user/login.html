@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Page Title</title>
     <!-- Header 프래그먼트 포함 -->
-    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+    <th:block th:replace="~{common/fragments/index :: header-fragment}"></th:block>
 </head>
 
 <body class="bg-gradient-primary">
@@ -26,14 +26,12 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">로그인</h1>
                                 </div>
-                                <form class="user">
+                                <form class="user" action="/views/user/login" method="post">
                                     <div class="form-group">
-                                        <input type="text" class="form-control form-control-user"
-                                               id="id" placeholder="아이디">
+                                        <input type="text" class="form-control form-control-user" id="username" name="username" placeholder="아이디">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user"
-                                               id="password" placeholder="비밀번호">
+                                        <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="비밀번호">
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
@@ -41,32 +39,15 @@
                                             <label class="custom-control-label" for="customCheck">로그인 상태 유지</label>
                                         </div>
                                     </div>
-                                    <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">
                                         로그인
-                                    </a>
-                                    <!-- <hr>
-                                    <a href="index.html" class="btn btn-google btn-user btn-block">
-                                        <i class="fab fa-google fa-fw"></i> Login with Google
-                                    </a>
-                                    <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                        <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                    </a>
+                                    </button>
                                 </form>
-                                <hr> -->
-                                    <div class="text-center">
-                                        <a class="small" href="#" data-target="#searchId" data-toggle="modal">아아디 찾기
-                                            | </a>
-                                        <a class="small" href="#" data-target="#searchPw" data-toggle="modal">비밀번호 찾기
-                                            |</a>
-                                        <a class="small" href="/views/user/register">회원가입</a>
-                                    </div>
-                                    <!-- <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="register.html">Create an Account!</a>
-                                    </div> -->
-                                </form>
+                                <div class="text-center">
+                                    <a class="small" href="#" data-target="#searchId" data-toggle="modal">아이디 찾기 | </a>
+                                    <a class="small" href="#" data-target="#searchPw" data-toggle="modal">비밀번호 찾기 |</a>
+                                    <a class="small" href="/views/user/register">회원가입</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -79,19 +60,18 @@
 
 </div>
 <!-- 스크롤 탑 버튼 -->
-<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+<th:block th:replace="~{common/fragments/index :: scroll-to-top-fragment}"></th:block>
 <!-- 로그아웃 모달 -->
-<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+<th:block th:replace="~{common/fragments/index :: logout-modal-fragment}"></th:block>
 <!-- 스크립트 -->
-<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+<th:block th:replace="~{common/fragments/index :: scripts-fragment}"></th:block>
 
-<!-- 아이디찾기 Modal-->
-<div class="modal fade" id="searchId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<!-- 아이디 찾기 Modal -->
+<div class="modal fade" id="searchId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"></h5>아이디 찾기</h5>
+                <h5 class="modal-title">아이디 찾기</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -112,19 +92,18 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                <a class="btn btn-primary" href="login.html">아아디 찾기</a>
+                <a class="btn btn-primary" href="login.html">아이디 찾기</a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 비밀번호 찾기 Modal-->
-<div class="modal fade" id="searchPw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+<!-- 비밀번호 찾기 Modal -->
+<div class="modal fade" id="searchPw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"></h5>비밀번호 찾기</h5>
+                <h5 class="modal-title">비밀번호 찾기</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -152,5 +131,4 @@
 </div>
 
 </body>
-
 </html>
