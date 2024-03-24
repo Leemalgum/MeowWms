@@ -43,7 +43,7 @@ public class ProductStatusDTO {
     /**
      * 창고 소분류 이름 : 45자 제한
      */
-    private int warehouseSubCategory;
+    private String warehouseSubCategory;
 
     /**
      * 제품 아이디 : 1 이상, Auto Increment

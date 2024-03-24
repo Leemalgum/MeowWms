@@ -12,10 +12,10 @@ import java.util.List;
 public interface StockMapper {
     List<StockVO> selectAllStock();
     List<StockVO> selectStockByMainCategory(String mainCategory);
-    List<StockVO> selectStockByMiddleCategory(String middleCategoryId);
-    List<StockVO> selectStockBySubCategory(String subCategoryId);
+    List<StockVO> selectStockByMiddleCategory(String middleCategory);
+    List<StockVO> selectStockBySubCategory(String subCategory);
 
-    // TODO:: replace with VO
+    // TODO:: replace with VO?
     List<ProductStatusVO> selectProductStatusList(
             Date from,
             Date to,

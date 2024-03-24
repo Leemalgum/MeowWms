@@ -93,7 +93,8 @@ public class StockMapperTests {
         ));
 
         // 실제 테스팅
-        stockMapper.selectProductStatusList(lastyear
+        stockMapper.selectProductStatusList(
+                lastyear
                 , date, "1"
                 , "냉장"
                 , "식품"
