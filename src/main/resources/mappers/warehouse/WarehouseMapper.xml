@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.warehouse.WarehouseMapper">
+    <!--    창고 등록-->
+    <select id="insert">
+        insert into Warehouse(name, category_id, manager_id, volume, latitude, longitude)
+        values (#{name}, #{categoryId}, #{managerId}, #{volume}, #{latitude}, #{longitude})
+    </select>
+
+    <!--    창고 한 개 가져오기-->
+    <select id="selectOne" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+        select *
+        from Warehouse
+        where id = #{warehouseId}
+    </select>
+
+    <!--    검색 조건에 해당하는 창고 전체 가져오기-->
+    <select id="selectAll" parameterType="java.util.List" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+        select *
+        from Warehouse
+        <where>
+            <if test="optionList != null">
+                <foreach collection="optionList" item="option">
+                    <choose>
+                        <when test="option.type == 'name'">
+                            and name = #{option.value}
+                        </when>
+                        <when test="option.type == 'category_id'">
+                            and categoryId = #{option.value}
+                        </when>
+                        <when test="option.type == 'latitude'">
+                            and latitude = #{option.value}
+                        </when>
+                        <when test="option.type == 'longitude'">
+                            and longitude = #{option.value}
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
+        select w.name,
+               c.main_category,
+               c.middle_category,
+               c.sub_category,
+               w.latitude,
+               w.longitude,
+               w.manager_id,
+               p.id as productId,
+               p.name as productName,
+               s.quantity as stockQuantity,
+               p.volume as productVolume
+        from Warehouse w
+                 join Stock s on w.id = s.warehouse_id
+                 join Product p on s.product_id = p.id
+                 join Category c on w.category_id = c.id
+                 join User u on w.manager_id = u.uid
+        where w.id = #{warehouseId}
+    </select>
+</mapper>

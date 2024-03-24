@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.finance.ExpenseMapper">
+
+    <insert id="insertExpense" parameterType="com.ssg.meowwms.domain.finance.ExpenseVO">
+        INSERT INTO Expense (warehouse_id, type, cost, expense_date)
+        VALUES (#{warehouseId}, #{type}, #{cost}, #{expenseDate})
+    </insert>
+
+    <select id="selectExpenseById" resultType="com.ssg.meowwms.domain.finance.ExpenseVO">
+        SELECT id, warehouse_id as warehouseId, type, expense_date as expenseDate, cost
+        FROM Expense
+        WHERE id = #{id}
+    </select>
+
+    <delete id="deleteExpense">
+        DELETE FROM Expense WHERE id = #{id}
+    </delete>
+
+    <update id="updateExpense" parameterType="com.ssg.meowwms.domain.finance.ExpenseVO">
+        UPDATE Expense SET type = #{type}, expense_date = #{expenseDate}, cost = #{cost}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectAll" parameterType="java.util.List" resultType="com.ssg.meowwms.domain.finance.ExpenseVO">
+        SELECT *
+        FROM Expense
+        <where>
+            <if test="optionList != null">
+                <foreach collection="optionList" item="option">
+                    <choose>
+                        <when test="option.type == 'expenseId'">
+                            AND id = #{option.value}
+                        </when>
+                        <when test="option.type == 'warehouseId'">
+                            AND warehouse_id = #{option.value}
+                        </when>
+                        <when test="option.type == 'startDate'">
+                            AND expense_date >= #{option.value}
+                        </when>
+                        <when test="option.type == 'endDate'">
+                            AND expense_date &lt;= #{option.value}
+                        </when>
+                        <when test="option.type == 'minCost'">
+                            AND cost >= #{option.value}
+                        </when>
+                        <when test="option.type == 'maxCost'">
+                            AND cost &lt;= #{option.value}
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
+
+    <select id="sumExpenses" parameterType="java.util.List" resultType="Integer">
+        SELECT SUM(cost)
+        FROM Expense
+        <where>
+            <if test="optionList != null">
+                <foreach collection="optionList" item="option">
+                    <choose>
+                        <when test="option.type == 'expenseId'">
+                            AND id = #{option.value}
+                        </when>
+                        <when test="option.type == 'warehouseId'">
+                            AND warehouse_id = #{option.value}
+                        </when>
+                        <when test="option.type == 'startDate'">
+                            AND expense_date >= #{option.value}
+                        </when>
+                        <when test="option.type == 'endDate'">
+                            AND expense_date &lt;= #{option.value}
+                        </when>
+                        <when test="option.type == 'minCost'">
+                            AND cost >= #{option.value}
+                        </when>
+                        <when test="option.type == 'maxCost'">
+                            AND cost &lt;= #{option.value}
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="sumExpensesByYear" resultType="com.ssg.meowwms.dto.finance.ExpenseMonthDTO">
+        SELECT
+            MONTH(expense_date) AS expenseMonth,
+            SUM(cost) AS totalExpense
+        FROM
+            Expense
+        WHERE
+            warehouse_id = #{warehouseId}
+          AND YEAR(expense_date) = #{year}
+        GROUP BY
+            MONTH(expense_date)
+        ORDER BY
+            expenseMonth;
+    </select>
+
+</mapper>

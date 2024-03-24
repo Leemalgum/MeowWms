@@ -15,7 +15,7 @@ public class MemberVO {
     @NotNull
     private String shopName;
     @NotNull
-    private int coRegNum;
+    private String coRegNum;
     @NotNull
     private String shopAddress;
     @NotNull
