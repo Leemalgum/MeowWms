@@ -13,7 +13,7 @@ public class MemberVO {
     @NotNull
     private String uid;
     @NotNull
-    private String shopName; 
+    private String shopName;
     @NotNull
     private String coRegNum;
     @NotNull

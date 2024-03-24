@@ -22,7 +22,7 @@ public class DispatchVO {
     private String warehouse_id;
 
     @NotNull
-    private String vehicle_status;
+    private int vehicle_status;
 
     @NotNull
     private LocalDateTime request_date;

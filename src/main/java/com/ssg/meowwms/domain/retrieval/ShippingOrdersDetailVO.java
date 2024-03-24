@@ -38,13 +38,6 @@ public class ShippingOrdersDetailVO {
     private int productId;
 
     /**
-     * 제품 이름 : 45자 길이 제한
-     */
-    @NotNull
-    @Length(max = 45, message = "제품 이름은 45자 이하 이여야 합니다")
-    private int productName;
-
-    /**
      * 상품 수량 : 0 이상
      */
     @NotNull
