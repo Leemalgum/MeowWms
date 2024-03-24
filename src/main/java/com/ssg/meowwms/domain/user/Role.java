@@ -1,4 +1,4 @@
-package com.ssg.meowwms.domain.User;
+package com.ssg.meowwms.domain.user;
 
 public enum Role {
     ADMIN,
