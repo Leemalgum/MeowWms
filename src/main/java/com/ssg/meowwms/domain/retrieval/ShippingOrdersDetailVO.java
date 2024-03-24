@@ -4,6 +4,7 @@ import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * 상세 출고 지시서 데이터를 담고 있는 객체
@@ -30,7 +31,7 @@ public class ShippingOrdersDetailVO {
     private int shippingOrdersId;
 
     /**
-     * 출고 지시서 아이디 : 1 이상, Auto Increment
+     * 제품 아이디 : 1 이상, Auto Increment
      */
     @NotNull
     @Min(value = 1, message = "상품 ID 는 1이상 이여야 합니다")
