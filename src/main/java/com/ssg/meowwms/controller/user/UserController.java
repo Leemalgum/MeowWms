@@ -25,6 +25,7 @@ public class UserController {
 
     /**
      * 로그인 요청
+     *
      * @return
      */
     @PostMapping("/login")
@@ -33,8 +34,9 @@ public class UserController {
 //        log.info(userDTO);
         return "redirect:/views/user/index";
     }
+
     @GetMapping("/index")
-    public void index(){
+    public void index() {
 
     }
 
@@ -48,11 +50,12 @@ public class UserController {
 
     /**
      * 회원가입 요청
+     *
      * @param userDTO
      * @return
      */
     @PostMapping("/register")
-    public String registerPost(@ModelAttribute UserDTO userDTO){
+    public String registerPost(@ModelAttribute UserDTO userDTO) {
         userService.register(userDTO);
         log.info(userDTO);
         return "redirect:/views/user/login";
@@ -62,7 +65,7 @@ public class UserController {
      * 내 정보 보기
      */
     @GetMapping("/myInfo")
-    public void getOne(){
+    public void getOne() {
 
     }
 
