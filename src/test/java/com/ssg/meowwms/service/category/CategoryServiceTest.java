@@ -2,6 +2,7 @@ package com.ssg.meowwms.service.category;
 
 import com.ssg.meowwms.dto.category.CategoryDTO;
 import com.ssg.meowwms.dto.category.MainCategoryDTO;
+import com.ssg.meowwms.dto.category.MiddleCategoryDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,5 +34,15 @@ public class CategoryServiceTest {
         List<MainCategoryDTO> mainCategories = categoryService.getMainCategories();
 
         log.info(mainCategories);
+    }
+
+    @Test
+    @DisplayName("주어진 대분류와 일치하는 중분류를 중복 없이 조회")
+    void getMiddleCategories() {
+        String mainCategory = "상온";
+
+        List<MiddleCategoryDTO> middleCategories = categoryService.getMiddleCategories(mainCategory);
+
+        log.info(middleCategories);
     }
 }
