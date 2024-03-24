@@ -2,6 +2,7 @@ package com.ssg.meowwms.service;
 
 import com.ssg.meowwms.domain.stock.Status;
 import com.ssg.meowwms.dto.stock.StockTakingDTO;
+import com.ssg.meowwms.service.stock.StockTakingService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 
 @Log4j2
 @ExtendWith(SpringExtension.class)
