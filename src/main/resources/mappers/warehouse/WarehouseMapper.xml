@@ -27,7 +27,7 @@
                         <when test="option.type == 'name'">
                             and name = #{option.value}
                         </when>
-                        <when test="option.type == 'categoryId'">
+git                        <when test="option.type == 'category_id'">
                             and categoryId = #{option.value}
                         </when>
                         <when test="option.type == 'latitude'">
