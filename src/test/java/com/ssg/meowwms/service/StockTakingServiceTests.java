@@ -53,11 +53,11 @@ public class StockTakingServiceTests {
     @Test
     @Transactional
     public void deleteStocktaking(){
-
+        stockTakingService.deleteStocktaking(1);
     }
     @Test
     public void selectAllStocktaking(){
-
+        stockTakingService.selectAllStocktaking();
     }
     @Test
     public void selectOneStocktaking(){
