@@ -1,20 +1,26 @@
-package com.ssg.meowwms.dto.User;
+package com.ssg.meowwms.domain.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import javax.validation.constraints.NotNull;
+
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MemberDTO {
+@ToString
+public class MemberVO {
+    @NotNull
     private String uid;
+    @NotNull
     private String shopName;
+    @NotNull
     private int coRegNum;
+    @NotNull
     private String shopAddress;
+    @NotNull
     private String businessType;
+    @NotNull
     private int onlineBusinessNumber;
     private String fax;
 }

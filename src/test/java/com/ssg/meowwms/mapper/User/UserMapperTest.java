@@ -1,17 +1,18 @@
-package com.ssg.meowwms.mapper.User;
+package com.ssg.meowwms.mapper.user;
 
-import com.ssg.meowwms.domain.User.UserVO;
-import com.ssg.meowwms.mapper.User.UserMapper;
+import com.ssg.meowwms.domain.user.UserVO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Log4j2
 @SpringBootTest
+@Transactional
 class UserMapperTest {
 
     @Autowired(required = false)
@@ -20,16 +21,17 @@ class UserMapperTest {
     @Test
     void insertUser() {
         UserVO userVO = UserVO.builder()
-                .uid("makeum")
+                .uid("makeum3")
                 .uname("이맑음")
                 .birth(LocalDate.parse("1998-12-25"))
                 .upw("makeum")
                 .email("makeum@test.com")
                 .tel("01011112222")
                 .build();
-        userMapper.insertUser(userVO);
+        userMapper.insert(userVO);
         log.info("----userVO-----" + userVO);
     }
+
 
     @Test
     void updateStatus() {
@@ -41,7 +43,7 @@ class UserMapperTest {
                 .tel("01011114444")
                 .email("updateEmail@test.com")
                 .build();
-        userMapper.updateStatus(userVO);
+        userMapper.update(userVO);
     }
 
     @Test
@@ -53,15 +55,21 @@ class UserMapperTest {
 
     @Test
     void selectAll() {
-        Integer rid = null;
-        List<UserVO> userVOList = userMapper.selectAll(rid);
+        List<UserVO> userVOList = userMapper.selectAll();
         userVOList.forEach(log::info);
     }
 
+//    @Test
+//    void selectSearch() {
+//        int rid = 2;
+//        List<UserVO> userVOList = userMapper.selectSearch(null);
+//        userVOList.forEach(log::info);
+//    }
+
     @Test
     void searchId() {
-        String uname = "이맑음";
-        String email = "updateEmail@test.com";
+        String uname = "user2";
+        String email = "user2@example.com";
         String uid = userMapper.searchId(uname, email);
         log.info(uid);
     }
