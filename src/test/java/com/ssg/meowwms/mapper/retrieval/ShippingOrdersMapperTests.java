@@ -26,7 +26,7 @@ public class ShippingOrdersMapperTests {
 
     @BeforeEach
     void setUp() {
-        options = new OptionList(new ArrayList<>());
+        options = new OptionList();
         options.add(new OptionDTO("id","1"));
         options.add(new OptionDTO("uid", "user2"));
     }
@@ -34,7 +34,7 @@ public class ShippingOrdersMapperTests {
     @Test
     void insertShippingOrderTest() {
         ShippingOrdersVO shippingOrdersVO = ShippingOrdersVO.builder()
-                .uid("user4")
+                .uid("user5")
                 .postcode("02395")
                 .streetNameAddress("서울시 강동구 신현로")
                 .detailAddress("송일빌딩 B105호")
