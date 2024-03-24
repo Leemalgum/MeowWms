@@ -5,18 +5,23 @@ import com.ssg.meowwms.dto.user.UserDTO;
 import com.ssg.meowwms.mapper.user.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     @Override
     public void register(UserDTO userDTO) {
+        String mpw = userDTO.getUpw();
+        userDTO.setUpw(passwordEncoder.encode(mpw));
         UserVO userVO = modelMapper.map(userDTO, UserVO.class);
         userMapper.insert(userVO);
     }
@@ -29,9 +34,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getOne(String id) {
+    public Optional<UserDTO> getOne(String id) {
         UserVO userVO = userMapper.selectUser(id);
-        return modelMapper.map(userVO, UserDTO.class);
+        if(userVO == null){
+            return Optional.empty();
+        }
+        UserDTO userDTO = modelMapper.map(userVO, UserDTO.class);
+        return Optional.ofNullable(userDTO);
     }
 
     @Override

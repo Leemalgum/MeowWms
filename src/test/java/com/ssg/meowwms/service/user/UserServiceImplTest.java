@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @SpringBootTest
@@ -49,7 +50,7 @@ class UserServiceImplTest {
 
     @Test
     void getOne() {
-        UserDTO userDTO = userService.getOne("makeum");
+        Optional<UserDTO> userDTO = userService.getOne("makeum");
         log.info(userDTO);
     }
 
