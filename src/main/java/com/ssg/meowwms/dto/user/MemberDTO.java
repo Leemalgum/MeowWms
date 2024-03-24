@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class MemberDTO {
     private String uid;
     private String shopName;
-    private int coRegNum;
+    private String coRegNum;
     private String shopAddress;
     private String businessType;
     private int onlineBusinessNumber;
