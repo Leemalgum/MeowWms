@@ -1,4 +1,4 @@
-package com.ssg.meowwms.controller.User;
+package com.ssg.meowwms.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
