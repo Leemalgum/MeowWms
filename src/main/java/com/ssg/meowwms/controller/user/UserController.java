@@ -29,9 +29,8 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public String loginPost() {
-//        userService
-//        log.info(userDTO);
+    public String login(@RequestParam String username, @RequestParam String password) {
+        System.out.println(username +" " + password);
         return "redirect:/views/user/index";
     }
 
