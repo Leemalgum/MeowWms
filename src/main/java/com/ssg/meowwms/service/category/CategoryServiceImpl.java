@@ -4,6 +4,7 @@ import com.ssg.meowwms.domain.category.CategoryVO;
 import com.ssg.meowwms.dto.category.CategoryDTO;
 import com.ssg.meowwms.dto.category.MainCategoryDTO;
 import com.ssg.meowwms.dto.category.MiddleCategoryDTO;
+import com.ssg.meowwms.dto.category.SubCategoryDTO;
 import com.ssg.meowwms.mapper.category.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,5 +38,10 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public List<MiddleCategoryDTO> getMiddleCategories(String mainCategory) {
         return categoryMapper.selectMiddleCategories(mainCategory);
+    }
+
+    @Override
+    public List<SubCategoryDTO> getSubCategories(String mainCategory, String middleCategory) {
+        return categoryMapper.selectSubCategories(mainCategory, middleCategory);
     }
 }
