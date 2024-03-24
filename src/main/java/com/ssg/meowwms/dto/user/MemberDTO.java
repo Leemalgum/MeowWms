@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MemberDTO {
-    private String uid;
+    private String uid; 
     private String shopName;
     private String coRegNum;
     private String shopAddress;
