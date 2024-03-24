@@ -5,6 +5,7 @@ import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.search.OptionList;
 import com.ssg.meowwms.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +33,10 @@ public class InquiryController {
     }
 
     // 사용자 인터페이스(UI)를 제공하는 뷰 페이지
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/inquiry")
     public String showInquiryPage() {
-        return "views/inquiry/inquiry"; // src/main/resources/templates/inquiryPage.html을 반환
+        return "views/inquiry/inquiry";
     }
 
     @GetMapping("/modify-content/{postNum}")
@@ -49,7 +51,26 @@ public class InquiryController {
 
     @GetMapping("/modify-content")
     public String showCreatePage(Model model) {
-        // 글쓰기 페이지로 이동
+        // 글쓰기 페이지로 이동, 비어 있는 InquiryDTO 객체를 추가
+        model.addAttribute("inquiry", new InquiryDTO());
         return "/views/inquiry/modify-content";
+    }
+
+    @GetMapping("/read-content/{postNum}")
+    public String showDetailPage(@PathVariable int postNum, Model model){
+        model.addAttribute("inquiryDTO", inquiryService.selectInquiry(postNum));
+
+        return "/views/inquiry/read-content";
+    }
+
+    @PostMapping("/modify-content")
+    public String submitForm(InquiryDTO inquiry, Model model) {
+        inquiry.setUserId("admin"); // 사용자 ID는 임시로 "admin"으로 설정
+        if (inquiry.getPostNum() == 0) { // postNum이 0이면 새 글 작성
+            inquiryService.insertInquiry(inquiry);
+        } else { // postNum이 0이 아니면 기존 글 수정
+            inquiryService.updateInquiry(inquiry);
+        }
+        return "redirect:/views/inquiry/inquiry"; // 글 목록 페이지로 리다이렉트
     }
 }
