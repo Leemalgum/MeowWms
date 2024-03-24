@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.retrieval.ShippingOrdersDetailMapper">
+    <insert id="insertShippingOrderDetail" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersDetailVO">
+        INSERT INTO Shipping_Orders_Detail (shipping_orders_id, product_id, quantity)
+        VALUES (#{shippingOrdersId}, #{productId}, #{quantity})
+    </insert>
+
+    <select id="selectOneByShippingOrderId" parameterType="int" resultType="com.ssg.meowwms.domain.retrieval.ShippingOrdersDetailVO">
+        SELECT * FROM Shipping_Orders_Detail WHERE shipping_orders_id = #{shippingOrdersId}
+    </select>
+
+    <update id="updateShippingOrderDetailById" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersDetailVO">
+        UPDATE Shipping_Orders_Detail
+        SET shipping_orders_id = #{shippingOrdersId}, product_id = #{productId}, product_name = #{productName}, quantity = #{quantity}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteShippingOrderDetailById" parameterType="int">
+        DELETE FROM Shipping_Orders_Detail WHERE id = #{id}
+    </delete>
+</mapper>
