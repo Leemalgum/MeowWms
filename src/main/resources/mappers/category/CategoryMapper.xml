@@ -3,5 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssg.meowwms.mapper.category.CategoryMapper">
-
+    <!--  카테고리 전체 조회  -->
+    <select id="selectAll" resultType="com.ssg.meowwms.domain.category.CategoryVO">
+        select *
+        from Category
+    </select>
 </mapper>
