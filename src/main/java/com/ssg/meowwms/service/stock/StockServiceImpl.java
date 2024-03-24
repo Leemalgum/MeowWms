@@ -1,4 +1,4 @@
-package com.ssg.meowwms.service;
+package com.ssg.meowwms.service.stock;
 
 import com.ssg.meowwms.domain.stock.ProductStatusVO;
 import com.ssg.meowwms.domain.stock.StockVO;
