@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.category;
 
 import com.ssg.meowwms.domain.category.CategoryVO;
 import com.ssg.meowwms.dto.category.MainCategoryDTO;
+import com.ssg.meowwms.dto.category.MiddleCategoryDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -25,4 +26,11 @@ public interface CategoryMapper {
      * @return
      */
     List<MainCategoryDTO> selectMainCategories();
+
+    /**
+     * 카테고리 테이블에서 middle_category를 중복 없이 가져옵니다.
+     *
+     * @return
+     */
+    List<MiddleCategoryDTO> selectMiddleCategories(String mainCategory);
 }
