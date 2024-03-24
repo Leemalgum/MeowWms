@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class CategoryVO {
 
     /**
      * 분류 아이디 입니다.
