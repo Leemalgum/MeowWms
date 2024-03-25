@@ -42,6 +42,6 @@ public class WarehouseServiceImpl implements WarehouseService{
 
     @Override
     public List<WarehouseDetailDTO> getWarehouseDetail(int warehouseId) {
-        return warehouseMapper.getWarehouseDetail(warehouseId);
+        return warehouseMapper.selectWarehouseDetail(warehouseId);
     }
 }

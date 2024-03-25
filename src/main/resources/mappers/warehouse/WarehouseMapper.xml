@@ -42,7 +42,7 @@
         </where>
     </select>
 
-    <select id="getWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
+    <select id="selectWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
         select w.name,
                c.main_category,
                c.middle_category,

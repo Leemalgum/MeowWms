@@ -56,10 +56,10 @@ class WarehouseMapperTest {
 
     @Test
     @DisplayName("창고 상세")
-    void getWarehouseDetail() {
+    void selectWarehouseDetail() {
         int warehouseId = 1;
 
-        List<WarehouseDetailDTO> warehouseDetailList = warehouseMapper.getWarehouseDetail(warehouseId);
+        List<WarehouseDetailDTO> warehouseDetailList = warehouseMapper.selectWarehouseDetail(warehouseId);
 
         log.info(warehouseDetailList);
     }
