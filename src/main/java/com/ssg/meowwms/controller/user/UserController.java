@@ -1,19 +1,13 @@
 package com.ssg.meowwms.controller.user;
 
 import com.ssg.meowwms.dto.user.UserDTO;
+import com.ssg.meowwms.security.SecurityUtils;
 import com.ssg.meowwms.security.UserSecurityService;
 import com.ssg.meowwms.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/views/user")
@@ -22,7 +16,6 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-    private final UserSecurityService userSecurityService;
 
     /**
      * 로그인 화면
@@ -80,12 +73,7 @@ public class UserController {
     @GetMapping("/getUserData")
     @ResponseBody
     public UserDTO getUserData() {
-//        SecurityUtils.getCurrentUserDetails().getUsername();
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String uid = userDetails.getUsername();
-        UserDTO userDTO = userService.getOne(uid).orElse(null);
+        UserDTO userDTO = userService.getOne(SecurityUtils.getCurrentUserDetails().getUsername()).orElse(null);
         // 가져온 사용자 정보를 JSON 형식으로 응답합니다.
         log.info(userDTO);
         return userDTO;
@@ -111,4 +99,13 @@ public class UserController {
     public void getList() {
 
     }
+
+    @PostMapping("/change-email")
+    @ResponseBody
+    public void changeEmail(@RequestParam("newEmail")String newEmail){
+        UserDTO userDTO = userService.getOne(SecurityUtils.getCurrentUserDetails().getUsername()).orElse(null);
+        userDTO.setEmail(newEmail);
+        userService.modify(userDTO);
+    }
+
 }

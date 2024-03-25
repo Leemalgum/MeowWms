@@ -55,7 +55,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <label for="upw">비밀번호</label>
-                                                        <input type="text" class="form-control " id="upw">
+                                                        <input type="password" class="form-control " id="upw">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -67,7 +67,7 @@
                                                                     <input type="text" class="form-control " id="email">
                                                                 </div>
                                                                 <div class="col-3">
-                                                                    <a class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal" data-target="#emailModal">
+                                                                    <a id="emailEdit" class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal" data-target="#emailModal">
                                                                         변경
                                                                     </a>
                                                                 </div>
@@ -120,6 +120,43 @@
             $(document).ready(function() {
                 console.log("test");
                 loadUserData();
+                // 이메일 변경 모달이 열릴 때
+                $('#emailEdit').on('click', function() {
+                    // 현재 이메일 값을 가져옵니다. 이 값은 서버에서 가져오거나, 화면에 표시되어 있는 값일 수 있습니다.
+                    var currentEmail = $('#email').val(); // 이메일 입력 필드의 값으로 가정합니다.
+
+                    // 모달 내의 현재 이메일 입력 필드에 값을 설정합니다.
+                    $('#currentEmail').val(currentEmail);
+                });
+                // 이메일 변경 모달에서 '변경' 버튼을 클릭했을 때
+                $('#changeEmailBtn').on('click', function() {
+                    // 새 이메일 값을 가져옵니다.
+                    var newEmail = $('#newEmail').val(); // 변경할 이메일 입력 필드의 값
+
+                    // Ajax를 사용하여 서버에 변경할 이메일 값을 전송합니다.
+                    $.ajax({
+                        type: "POST", // POST 메서드를 사용하여 데이터를 전송합니다.
+                        url: "/change-email", // 변경할 이메일을 처리하는 엔드포인트 URL입니다.
+                        data: {
+                            newEmail: newEmail // 변경할 이메일 값을 전송합니다.
+                        },
+                        success: function(response) {
+                            // 요청이 성공하면 서버에서의 처리 결과를 받아옵니다.
+                            console.log(response);
+                            // 이메일 변경에 성공하면 사용자에게 알림을 표시할 수 있습니다.
+                            alert("이메일이 성공적으로 변경되었습니다.");
+                            // 변경 성공 시 페이지 새로고침
+                            window.location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            // 요청이 실패할 경우 에러 처리를 합니다.
+                            console.error("Error changing email:", error);
+                            // 사용자에게 오류 메시지를 표시할 수 있습니다.
+                            alert("이메일 변경에 실패했습니다. 다시 시도해주세요.");
+                        }
+                    });
+                });
+
             });
 
             function loadUserData() {
@@ -170,7 +207,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                        <a class="btn btn-primary" href="login.html">확인</a>
+                        <a id="changeEmailBtn" class="btn btn-primary" href="login.html">확인</a>
                     </div>
                 </div>
             </div>
@@ -191,11 +228,11 @@
                         <div class="form-group">
                             <div>
                                 <label for="name">현재 이메일</label>
-                                <input type="text" class="form-control" id="name">
+                                <input type="text" class="form-control" id="currentEmail" readonly>
                             </div>
                             <div>
                                 <label for="password">변경할 이메일</label>
-                                <input type="text" class="form-control " id="password">
+                                <input type="text" class="form-control " id="newEmail">
                             </div>
                         </div>
                     </div>
