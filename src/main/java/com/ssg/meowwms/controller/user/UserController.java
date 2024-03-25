@@ -1,11 +1,19 @@
 package com.ssg.meowwms.controller.user;
 
 import com.ssg.meowwms.dto.user.UserDTO;
+import com.ssg.meowwms.security.UserSecurityService;
 import com.ssg.meowwms.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/views/user")
@@ -14,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final UserSecurityService userSecurityService;
 
     /**
      * 로그인 화면
@@ -30,8 +39,13 @@ public class UserController {
      */
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) {
-        System.out.println(username +" " + password);
+        System.out.println(username + " " + password);
         return "redirect:/views/user/index";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        return "redirect:/views/user/login";
     }
 
     @GetMapping("/index")
@@ -61,11 +75,25 @@ public class UserController {
     }
 
     /**
-     * 내 정보 보기
+     * 로그인한 회원의 정보를 가져오는 JSON으로 제공하는 API
      */
-    @GetMapping("/myInfo")
-    public void getOne() {
+    @GetMapping("/getUserData")
+    @ResponseBody
+    public UserDTO getUserData() {
+//        SecurityUtils.getCurrentUserDetails().getUsername();
 
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String uid = userDetails.getUsername();
+        UserDTO userDTO = userService.getOne(uid).orElse(null);
+        // 가져온 사용자 정보를 JSON 형식으로 응답합니다.
+        log.info(userDTO);
+        return userDTO;
+    }
+
+    @GetMapping("/myInfo")
+    public String getOne() {
+        return "views/user/myInfo";
     }
 
     /**
