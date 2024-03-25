@@ -114,16 +114,7 @@ public class WarehouseController {
      * @return 중복 여부
      */
     private boolean isWarehouseNameDuplicate(String warehouseName) {
-        boolean isDuplicate = false;
-
-        try {
-            int warehouseId = warehouseService.getWarehouseIdByName(warehouseName);
-            isDuplicate = warehouseId != 0;
-        } catch (Exception e) {
-            log.error("창고 조회 중 오류 발생: {}", e.getMessage());
-        }
-
-        return isDuplicate;
+        return warehouseService.getWarehouseIdByName(warehouseName).orElse(0) != 0;
     }
 
     @PostMapping("/register")
