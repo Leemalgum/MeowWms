@@ -75,37 +75,29 @@
                                         </div>
                                         <!-- 대분류 -->
                                         <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 대분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
+                                            <select id="mainType" class="form-control">
+                                                <option value="" selected disabled hidden>--- 대분류 ---</option>
+                                                <th:block th:each="category : ${mainCategories}">
+                                                    <option th:text="${category}"></option>
+                                                </th:block>
                                             </select>
                                         </div>
 
                                         <!-- 중분류 -->
                                         <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
+                                            <select id="middleType" class="form-control" disabled>
                                                 <option value="" selected disabled hidden>
                                                     --- 중분류 ---
                                                 </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
                                             </select>
                                         </div>
 
                                         <!-- 소분류 -->
                                         <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
+                                            <select id="subType" class="form-control" disabled required>
                                                 <option value="" selected disabled hidden>
                                                     --- 소분류 ---
                                                 </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
                                             </select>
                                         </div>
                                     </div>
@@ -215,6 +207,79 @@
 <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
 
 <!-- 스크립트 -->
+<script>
+    const warehouse = [];
+
+    // 대분류 선택 시 중분류 데이터 요청
+    document.getElementById("mainType").addEventListener("change", function () {
+        // 선택된 대분류 값 가져오기
+        const selectedMainCategory = this.value;
+
+        // Ajax 요청
+        $.ajax({
+            type: "GET",
+            url: "/storage/getMiddleCategories",
+            data: {
+                mainCategory: selectedMainCategory
+            },
+            success: function (response) {
+                // 성공적으로 데이터를 받았을 때 중분류 select 업데이트
+                const middleTypeSelect = document.getElementById("middleType");
+                middleTypeSelect.disabled = false;
+                middleTypeSelect.innerHTML = "<option value='' selected disabled hidden>--- 중분류 ---</option>";
+
+                // 받은 데이터로 중분류 option 업데이트
+                response.forEach(function (middleCategory) {
+                    const option = document.createElement("option");
+                    option.value = middleCategory
+                    option.textContent = middleCategory; // 중분류 이름
+                    middleTypeSelect.appendChild(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                // 에러 처리
+                console.error(error);
+                alert("중분류 데이터를 가져오는 중 오류가 발생했습니다.");
+            }
+        });
+    });
+
+    // 중분류 선택 시 소분류 활성화 및 옵션 추가
+    document.getElementById("middleType").addEventListener("change", function () {
+        // 선택된 대분류와 중분류 값 가져오기
+        const selectedMainCategory = document.getElementById("mainType").value;
+        const selectedMiddleCategory = this.value;
+
+        // Ajax 요청
+        $.ajax({
+            type: "GET",
+            url: "/storage/getSubCategories",
+            data: {
+                mainCategory: selectedMainCategory,
+                middleCategory: selectedMiddleCategory
+            },
+            success: function (response) {
+                const subTypeSelect = document.getElementById("subType");
+                subTypeSelect.disabled = false;
+                subTypeSelect.innerHTML = "<option value='' selected disabled hidden>--- 소분류 ---</option>";
+
+                // 받은 데이터로 중분류 option 업데이트
+                response.forEach(function (subCategory) {
+                    const option = document.createElement("option");
+                    option.value = subCategory
+                    option.textContent = subCategory; // 소분류 이름
+                    subTypeSelect.appendChild(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                // 에러 처리
+                console.error(error);
+                alert("소분류 데이터를 가져오는 중 오류가 발생했습니다.");
+            }
+        });
+    });
+</script>
+
 
 <!-- 카카오맵 api -->
 <script
