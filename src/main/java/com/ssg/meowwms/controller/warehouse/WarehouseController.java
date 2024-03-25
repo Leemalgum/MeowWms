@@ -2,6 +2,7 @@ package com.ssg.meowwms.controller.warehouse;
 
 import com.ssg.meowwms.dto.category.MainCategoryDTO;
 import com.ssg.meowwms.dto.category.MiddleCategoryDTO;
+import com.ssg.meowwms.dto.category.SubCategoryDTO;
 import com.ssg.meowwms.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -55,6 +56,25 @@ public class WarehouseController {
         middleCategoryDTOList.forEach(middleCategoryDTO -> middleCategories.add(middleCategoryDTO.getMiddleCategory()));
 
         return middleCategories;
+    }
+
+    /**
+     * 주어진 대분류, 중분류와 일치하는 소분류 데이터를 가져옵니다.
+     *
+     * @param mainCategory
+     * @param middleCategory
+     * @return 소분류 리스트
+     */
+    @GetMapping("/getSubCategories")
+    public @ResponseBody List<String> getSubCategories(
+            @RequestParam("mainCategory") String mainCategory,
+            @RequestParam("middleCategory") String middleCategory) {
+        List<String> subCategories = new ArrayList<>();
+
+        List<SubCategoryDTO> subCategoryDTOList = categoryService.getSubCategories(mainCategory, middleCategory);
+        subCategoryDTOList.forEach(subCategoryDTO -> subCategories.add(subCategoryDTO.getSubCategory()));
+
+        return subCategories;
     }
 
     /**
