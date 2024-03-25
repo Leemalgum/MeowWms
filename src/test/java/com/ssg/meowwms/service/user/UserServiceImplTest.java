@@ -71,4 +71,11 @@ class UserServiceImplTest {
         String upw = userService.searchPw("user2","user2");
         log.info(upw);
     }
+
+    @Test
+    void getWarehouseManager() {
+        List<UserDTO> warehouseManagerList = userService.getWarehouseManager();
+
+        log.info(warehouseManagerList);
+    }
 }
