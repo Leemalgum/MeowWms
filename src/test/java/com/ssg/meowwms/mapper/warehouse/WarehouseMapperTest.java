@@ -44,7 +44,7 @@ class WarehouseMapperTest {
 
         // 창고 이름 검색
         optionList.add(new OptionDTO("categoryId", 1));
-        
+
         // 창고 위치 검색
         optionList.add(new OptionDTO("latitude", 37.522057531502));
         optionList.add(new OptionDTO("longitude", 126.89528677963));
@@ -72,5 +72,15 @@ class WarehouseMapperTest {
         List<WarehouseDTO> warehouseList = warehouseMapper.selectWarehouseWithCategory(categoryId);
 
         log.info(warehouseList);
+    }
+
+    @Test
+    @DisplayName("주어진 이름에 해당하는 창고 아이디 반환")
+    void selectIdByName() {
+        String name = "운양동 우유 창고";
+
+        int warehouseId = warehouseMapper.selectIdByName(name);
+
+        log.info(warehouseId);
     }
 }
