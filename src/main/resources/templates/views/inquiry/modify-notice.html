@@ -12,12 +12,12 @@
         <div id="content">
             <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
             <div class="container-fluid">
-                <form th:action="@{/views/inquiry/modify-content}" th:object="${inquiry}" method="post">
+                <form th:action="@{/views/inquiry/modify-notice}" th:object="${notice}" method="post">
                     <!-- 숨겨진 postNum 필드 -->
-                    <input type="hidden" th:field="*{postNum}">
+                    <input type="hidden" th:field="*{no}">
                     <div class="form-group row">
                         <div>
-                            <label class="col-md-12 col-form-label">작성자명:</label>
+                            <label class="col-md-12 col-form-label">관리자명:</label>
                         </div>
                         <div class="col-md-4">
                             <input type="text" class="form-control" readonly th:field="*{userId}">
@@ -26,23 +26,23 @@
                             <label class="col-md-12 col-form-label">작성일:</label>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" readonly th:value="*{postDate}">
+                            <input type="text" class="form-control" readonly th:value="*{noticeDate}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>카테고리:</label>
-                        <select class="form-control" th:field="*{postType}">
+                        <select class="form-control" th:field="*{type}">
                             <option value="notice">공지사항</option>
                             <option value="inquiry">문의글</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>제목:</label>
-                        <input type="text" class="form-control" th:field="*{postTitle}">
+                        <input type="text" class="form-control" th:field="*{title}">
                     </div>
                     <div class="form-group">
                         <label>내용:</label>
-                        <textarea class="form-control" rows="5" th:field="*{postContent}"></textarea>
+                        <textarea class="form-control" rows="5" th:field="*{content}"></textarea>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <button type="submit" class="btn btn-primary">저장하기</button>
