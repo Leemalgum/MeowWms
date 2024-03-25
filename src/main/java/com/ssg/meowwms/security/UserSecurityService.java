@@ -38,7 +38,7 @@ public class UserSecurityService implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority(userRole.getValue()));
 
         // Spring Security의 User 객체를 생성하여 반환
-        return new User(meowUser.getUname(), meowUser.getUpw(), authorities);
+        return new User(meowUser.getUid(), meowUser.getUpw(), authorities);
     }
 
     private UserRole findRoleByRid(int rid) {
