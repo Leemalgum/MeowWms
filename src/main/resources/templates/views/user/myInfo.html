@@ -83,7 +83,7 @@
                                                                     <input type="text" class="form-control " id="tel" readonly>
                                                                 </div>
                                                                 <div class="col-3">
-                                                                    <a class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal" data-target="#telModal">
+                                                                    <a id="telEdit" class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal" data-target="#telModal">
                                                                         변경
                                                                     </a>
                                                                 </div>
@@ -124,7 +124,6 @@
                 $('#emailEdit').on('click', function() {
                     // 현재 이메일 값을 가져옵니다. 이 값은 서버에서 가져오거나, 화면에 표시되어 있는 값일 수 있습니다.
                     var currentEmail = $('#email').val(); // 이메일 입력 필드의 값으로 가정합니다.
-
                     // 모달 내의 현재 이메일 입력 필드에 값을 설정합니다.
                     $('#currentEmail').val(currentEmail);
                 });
@@ -132,7 +131,6 @@
                 $('#changeEmailBtn').on('click', function() {
                     // 새 이메일 값을 가져옵니다.
                     var newEmail = $('#newEmail').val(); // 변경할 이메일 입력 필드의 값
-
                     // Ajax를 사용하여 서버에 변경할 이메일 값을 전송합니다.
                     $.ajax({
                         type: "POST", // POST 메서드를 사용하여 데이터를 전송합니다.
@@ -156,12 +154,34 @@
                         }
                     });
                 });
+                $('#telEdit').on('click', function() {
+                    var currentTel = $('#tel').val();
+                    $('#currentTel').val(currentTel);
+                });
+                $('#changeTelBtn').on('click', function() {
+                    var newTel = $('#newTel').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "/views/user/change-tel",
+                        data: {
+                            newTel: newTel
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            alert("이메일이 성공적으로 변경되었습니다.");
+                            window.location.href = "/views/user/myInfo";
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error changing email:", error);
+                            alert("이메일 변경에 실패했습니다. 다시 시도해주세요.");
+                        }
+                    });
+                });
 
             });
 
             function loadUserData() {
                 // Ajax를 사용하여 사용자 정보를 가져오는 요청을 보냅니다.
-
                 $.ajax({
                     type: "GET", // GET 메서드를 사용하여 데이터를 요청합니다.
                     url: "/views/user/getUserData", // 사용자 정보를 가져오는 엔드포인트 URL입니다.
@@ -227,11 +247,11 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <div>
-                                <label for="name">현재 이메일</label>
+                                <label for="currentEmail">현재 이메일</label>
                                 <input type="text" class="form-control" id="currentEmail" readonly>
                             </div>
                             <div>
-                                <label for="password">변경할 이메일</label>
+                                <label for="newEmail">변경할 이메일</label>
                                 <input type="text" class="form-control " id="newEmail">
                             </div>
                         </div>
@@ -243,37 +263,6 @@
                 </div>
             </div>
         </div>
-        <!-- 비밀번호 변경 Modal-->
-        <div class="modal fade" id="pwModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"></h5>비밀번호 변경</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div>
-                                <label for="name">현재 비밀번호</label>
-                                <input type="text" class="form-control" id="name">
-                            </div>
-                            <div>
-                                <label for="password">변경할 비밀번호</label>
-                                <input type="text" class="form-control " id="password">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                        <a class="btn btn-primary" href="login.html">변경</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- 전화번호 변경 Modal-->
         <div class="modal fade" id="telModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -288,18 +277,18 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <div>
-                                <label for="name">현재 전화번호</label>
-                                <input type="text" class="form-control" id="tel">
+                                <label for="currentTel">현재 전화번호</label>
+                                <input type="text" class="form-control" id="currentTel" readonly>
                             </div>
                             <div>
-                                <label for="password">변경할 전화번호</label>
-                                <input type="text" class="form-control " id="tel2">
+                                <label for="newTel">변경할 전화번호</label>
+                                <input type="text" class="form-control " id="newTel">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                        <a class="btn btn-primary" href="login.html">변경</a>
+                        <a id="changeTelBtn" class="btn btn-primary" href="#">변경</a>
                     </div>
                 </div>
             </div>

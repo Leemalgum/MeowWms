@@ -100,11 +100,27 @@ public class UserController {
 
     }
 
+    /**
+     * 이메일 변경하는 API
+     * @param newEmail
+     */
     @PostMapping("/change-email")
     @ResponseBody
     public void changeEmail(@RequestParam("newEmail")String newEmail){
         UserDTO userDTO = userService.getOne(SecurityUtils.getCurrentUserDetails().getUsername()).orElse(null);
         userDTO.setEmail(newEmail);
+        userService.modify(userDTO);
+    }
+
+    /**
+     * 전화번호 변경하는 API
+     * @param newTel
+     */
+    @PostMapping("/change-tel")
+    @ResponseBody
+    public void changeTel(@RequestParam("newTel")String newTel){
+        UserDTO userDTO = userService.getOne(SecurityUtils.getCurrentUserDetails().getUsername()).orElse(null);
+        userDTO.setTel(newTel);
         userService.modify(userDTO);
     }
 
