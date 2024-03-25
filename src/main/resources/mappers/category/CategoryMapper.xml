@@ -14,7 +14,7 @@
         select distinct main_category as mainCategory
         from Category
     </select>
-    
+
     <select id="selectMiddleCategories" resultType="com.ssg.meowwms.dto.category.MiddleCategoryDTO">
         select distinct middle_category as middleCategory
         from Category
@@ -26,5 +26,14 @@
         from Category
         where main_category = #{mainCategory}
           and middle_category = #{middleCategory}
+    </select>
+
+    <!--  주어진 대분류, 중분류, 소분류와 일치하는 데이터를 조회  -->
+    <select id="selectWithCategories" resultType="com.ssg.meowwms.dto.category.CategoryDTO">
+        select *
+        from Category
+        where main_category = #{mainCategory}
+          and middle_category = #{middleCategory}
+          and sub_category = #{subCategory}
     </select>
 </mapper>
