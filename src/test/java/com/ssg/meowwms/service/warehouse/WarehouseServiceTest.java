@@ -1,4 +1,4 @@
-package com.ssg.meowwms.service;
+package com.ssg.meowwms.service.warehouse;
 
 import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
