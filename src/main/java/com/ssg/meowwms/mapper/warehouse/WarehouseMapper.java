@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 창고 테이블과의 연결 작업을 수행합니다.
@@ -61,5 +62,5 @@ public interface WarehouseMapper {
      * @param warehouseName
      * @return 창고 아이디
      */
-    int selectIdByName(String warehouseName);
+    Optional<Integer> selectIdByName(String warehouseName);
 }
