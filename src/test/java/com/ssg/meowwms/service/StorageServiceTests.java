@@ -3,6 +3,8 @@ package com.ssg.meowwms.service;
 import com.ssg.meowwms.dto.storage.ProductDTO;
 import com.ssg.meowwms.dto.storage.StockMovementDTO;
 import com.ssg.meowwms.service.storage.StorageService;
+import com.ssg.meowwms.service.storage.StorageServiceImpl;
+import com.ssg.meowwms.util.QRCodeGenerator;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -93,5 +95,40 @@ public class StorageServiceTests {
         int id = 31;
         log.info(storageService.selectStockMovementsById(id));
         storageService.selectStockMovementsById(id);
+    }
+
+    @Test
+    public void testGenerateAndSaveQRCode(){
+        storageService.generateAndSaveQRCode(31, "강아지");
+    }
+    @Test
+    public void testGetQrCode(){
+        try {
+            // QR 코드 생성
+            QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
+            ProductDTO productDTO = ProductDTO.builder()
+                    .categoryId(5)
+                    .name("americano3")
+                    .brand("coffee회사")
+                    .price(3000)
+                    .salePrice(4000)
+                    .quantity(500)
+                    .volume(20)
+                    .userId("user8").build();
+            StockMovementDTO stockMovementDTO = StockMovementDTO.builder()
+                    .productId(31) // 앞서 등록한 제품의 ID를 설정
+                    .userId("user8")
+                    .statusCode("IR")
+                    .requestDatetime(LocalDate.from(LocalDateTime.now()))
+                    .build();
+            String content = storageService.generateQrCodeContent(stockMovementDTO,productDTO);
+            byte[] qrCodeImageData = qrCodeGenerator.generateQRCodeImage(content);
+
+            // QR 코드 이미지 저장
+            String filePath = System.getProperty("user.home")+"/Downloads/qr_code3.png";//파일 이름 안바꾸면 중복저장은 안됨...
+            storageService.getQrCode(qrCodeImageData, filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
