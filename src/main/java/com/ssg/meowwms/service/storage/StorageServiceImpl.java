@@ -1,5 +1,6 @@
 package com.ssg.meowwms.service.storage;
 
+import com.ssg.meowwms.domain.stock.StockVO;
 import com.ssg.meowwms.domain.storage.ProductVO;
 import com.ssg.meowwms.domain.storage.StockMovementVO;
 import com.ssg.meowwms.dto.storage.ProductDTO;
@@ -10,13 +11,17 @@ import com.ssg.meowwms.mapper.storage.StockMovementMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +32,72 @@ public class StorageServiceImpl implements StorageService {
     private final ProductMapper productMapper;
     private final ModelMapper modelMapper;
     private final StockMovementMapper stockMovementMapper;
+    private final JdbcTemplate jdbcTemplate; // jdbcTemplate 추가
 
+
+    @Override
+    public int registerProduct(ProductDTO productDTO) {
+        ProductVO productVO = modelMapper.map(productDTO, ProductVO.class);
+        productMapper.productInsert(productVO);
+        Long lastInsertedId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
+        return lastInsertedId != null ? lastInsertedId.intValue() : -1;
+    }
+
+    @Override
+    public void registerStorage(StockMovementDTO stockMovementDTO) {
+        StockMovementVO stockMovementVO = modelMapper.map(stockMovementDTO, StockMovementVO.class);
+        stockMovementMapper.insertStock(stockMovementVO);
+    }
+
+    @Override
+    public void approveStorageRequest(int requestId) {
+        stockMovementMapper.updateStockMovementStatus(requestId, "IC");
+
+    }
+
+    @Override
+    @Transactional
+    public void cancelStorageRequest(int requestId) {
+        stockMovementMapper.updateStockMovementStatus(requestId, "ID");
+    }
+
+    @Override
+    public int modifyProduct(int requestId, ProductDTO productDTO) {
+        ProductVO productVO = modelMapper.map(productDTO, ProductVO.class);
+        productMapper.productUpdate(requestId, productVO);
+        return requestId;
+    }
+
+    @Override
+    public void modifyStorageRequest(int requestId) {
+        stockMovementMapper.updateStockMovement(requestId, LocalDate.now());
+    }
+
+    @Override
+    public List<StockMovementDTO> getStorageList() {
+        List<StockMovementVO> stockMovementVOList = stockMovementMapper.selectAllStockMovements();
+
+        return stockMovementVOList.stream()
+                .map(stockMovementVO -> modelMapper.map(stockMovementVO,StockMovementDTO.class))
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<StockMovementDTO> selectMovementByStatus(String statusCode){
+        List<StockMovementVO> stockMovementVOList = stockMovementMapper.selectMovementByStatus(statusCode);
+        return stockMovementVOList.stream()
+                .map(stockMovementVO ->  modelMapper.map(stockMovementVO, StockMovementDTO.class))
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<StockMovementDTO> selectStockMovementsById(int productId){
+        List<StockMovementVO> stockMovementVOList = stockMovementMapper.selectStockMovementsById(productId);
+        return stockMovementVOList.stream()
+                .map(stockMovementVO ->  modelMapper.map(stockMovementVO, StockMovementDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
+    //qr 해결안됨
     @Override
     public String generateQrCodeContent(StockDTO stockDTO, StockMovementDTO stockMovementDTO, ProductDTO productDTO) {
         String content = "요청 정보 \n ------------------------"
@@ -53,47 +123,6 @@ public class StorageServiceImpl implements StorageService {
             return null;
         }
     }
-
-    @Override
-    public int registerProduct(ProductDTO productDTO) {
-        ProductVO productVO = modelMapper.map(productDTO, ProductVO.class);
-        return productMapper.productInsert(productVO);
-    }
-
-    @Override
-    public void registerStorage(StockMovementDTO stockMovementDTO) {
-        StockMovementVO stockMovementVO = modelMapper.map(stockMovementDTO, StockMovementVO.class);
-        log.info("register.....");
-        stockMovementMapper.insertStock(stockMovementVO);
-    }
-
-    @Override
-    public void approveStorageRequest(int requestId) {
-        stockMovementMapper.updateStockMovementStatus(requestId,"IC");
-    }
-
-    @Override
-    public void cancelStorageRequest(int requestId) {
-        stockMovementMapper.updateStockMovementStatus(requestId,"ID");
-
-    }
-
-    @Override
-    public void modifyStorageRequest(StockMovementDTO stockMovementDTO) {
-        StockMovementVO stockMovementVO = modelMapper.map(stockMovementDTO,StockMovementVO.class);
-        stockMovementMapper.updateStockMovement(stockMovementVO);
-    }
-
-    @Override
-    public List<StockMovementDTO> getStorageList() {
-        List<StockMovementVO> stockMovementVOList = stockMovementMapper.selectAllStockMovements();
-
-        return stockMovementVOList.stream()
-                .map(stockMovementVO -> modelMapper.map(stockMovementVO,StockMovementDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    //qr 해결안됨
     @Override
     public void insertQrContent(String base64Image, StockDTO stockDTO, StockMovementDTO stockMovementDTO, ProductDTO productDTO) {
         String qrContent = generateQrCodeContent(stockDTO, stockMovementDTO, productDTO);
