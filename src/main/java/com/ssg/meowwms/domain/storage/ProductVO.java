@@ -5,7 +5,7 @@ import lombok.*;
 import javax.validation.constraints.Min;
 
 
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +20,5 @@ public class ProductVO {
     @Min(value = 0)
     private int quantity;
     private int volume;
+    private String userId;
 }
