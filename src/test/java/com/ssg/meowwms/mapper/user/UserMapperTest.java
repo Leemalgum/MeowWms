@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.user;
 
 import com.ssg.meowwms.domain.user.UserVO;
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -80,5 +81,13 @@ class UserMapperTest {
         String uid = "makeum";
         String upw = userMapper.searchPw(uname, uid);
         log.info(upw);
+    }
+
+    @Test
+    @DisplayName("창고 관리자 조회")
+    void selectWarehouseManager() {
+        List<UserVO> warehouseManagerList = userMapper.selectWarehouseManager();
+
+        log.info(warehouseManagerList);
     }
 }
