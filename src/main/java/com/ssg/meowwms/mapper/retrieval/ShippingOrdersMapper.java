@@ -44,31 +44,4 @@ public interface ShippingOrdersMapper {
      * */
     MemberVO selectShopAddressByShopName(String uid);
 
-    /**
-     * 배차 가능한 차량 리스트 가져오기 : 배차가 가능한 차량 리스트를 가져옵니다.
-     * */
-    List<DispatchVO> selectAvailableDispatch();
-
-    /**
-     * 배차 상태 업데이트 : 배차 지정을 완료했을 시 출고지시서의 상태를 배차 완료로 바꿔줍니다.
-     * */
-    void updateAllocatedStatus(ShippingOrdersStatusVO shippingOrdersStatusVO);
-
-    /**
-     * 출고지시서의 배차 상태 가져오기 : service의 approveRetrieval 메서드를 위한 mapper method로,
-     * 출고 승인 버튼을 눌렀을 때 배차가 완료된 출고 지시서인지 확인해 주는 필터링 역할을 합니다.
-     * */
-    void selectAllocatedStatusById(int id);
-
-    /**
-     * 출고 승인 업데이트 : 출고 승인을 확정했을 시 출고 지시서의 상태를 승인 완료로 바꿔줍니다.
-     * */
-    void updateApprovedStatus(ShippingOrdersStatusVO shippingOrdersStatusVO);
-
-    /**
-     * 출고 지시서 타임라인 만들기 : 출고지시서의 첫 번째 타임라인인 출고 요청 시간과 함께 출고 타임라인을 생성합니다.
-     * */
-    void updateOrderTime(RetrievalTimelineVO retrievalTimelineVO);
-
-
 }

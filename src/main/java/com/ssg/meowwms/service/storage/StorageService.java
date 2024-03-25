@@ -8,14 +8,16 @@ import java.sql.Blob;
 import java.util.List;
 
 public interface StorageService {
-    String generateQrCodeContent(StockDTO stockDTO, StockMovementDTO stockMovementDTO, ProductDTO productDTO);
-    Blob convertBase64ToBlob(String base64Image);
-    int registerProduct(ProductDTO productDTO);
+     int registerProduct(ProductDTO productDTO);
     void registerStorage(StockMovementDTO stockMovementDTO);
     void approveStorageRequest(int requestId);
     void cancelStorageRequest(int requestId);
-    void modifyStorageRequest(StockMovementDTO stockMovementDTO);
+    int modifyProduct(int requestId, ProductDTO productDTO);
+    void modifyStorageRequest(int requestId);
     List<StockMovementDTO> getStorageList();
-    void insertQrContent(String base64Image, StockDTO stockDTO, StockMovementDTO stockMovementDTO, ProductDTO productDTO);
-    void getQrCode();
+    List<StockMovementDTO> selectMovementByStatus(String statusCode);
+    List<StockMovementDTO> selectStockMovementsById(int productId);
+    String generateQrCodeContent(StockMovementDTO stockMovementDTO, ProductDTO productDTO);
+    void generateAndSaveQRCode(int productId, String qrCodeContent);
+    void getQrCode(byte[] imageData, String filePath);
 }

@@ -12,7 +12,7 @@
 
     <update id="updateShippingOrderDetailById" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersDetailVO">
         UPDATE Shipping_Orders_Detail
-        SET shipping_orders_id = #{shippingOrdersId}, product_id = #{productId}, product_name = #{productName}, quantity = #{quantity}
+        SET shipping_orders_id = #{shippingOrdersId}, product_id = #{productId}, quantity = #{quantity}
         WHERE id = #{id}
     </update>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>문의글 및 공지사항 조회</title>
@@ -20,7 +20,12 @@
                     <button type="button" id="showNoticesButton" class="btn btn-info">공지사항</button>
                     <button type="button" class="btn btn-warning" id="myPostsButton">내 글 보기</button>
                 </div>
-                <a href="modify-content" class="btn btn-success">글쓰기</a>
+                <div th:if="${#authorization.expr('hasRole(''ADMIN'')')}">
+                    <a href="modify-notice" class="btn btn-success">공지사항 작성</a>
+                </div>
+                <div th:if="${!#authorization.expr('hasRole(''ADMIN'')')}">
+                    <a href="modify-content" class="btn btn-success">문의글 작성</a>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -162,7 +167,7 @@
                 {
                     "data": "title",
                     "render": function(data, type, row) {
-                        return `<a href="/views/inquiry/read-content/${row.no}">${data}</a>`;
+                        return `<a href="/views/inquiry/read-notice/${row.no}">${data}</a>`;
                     }
                 },
                 { "data": "userId" },

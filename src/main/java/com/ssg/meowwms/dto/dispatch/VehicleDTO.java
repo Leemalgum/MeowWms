@@ -11,5 +11,6 @@ public class VehicleDTO {
     private String num;
     private String type;
     private String dname;
-    private int dphone;
+    private String dphone;
+    private int status;
 }

@@ -34,10 +34,10 @@ public class ShippingOrdersMapperTests {
     @Test
     void insertShippingOrderTest() {
         ShippingOrdersVO shippingOrdersVO = ShippingOrdersVO.builder()
-                .uid("user5")
-                .postcode("02395")
-                .streetNameAddress("서울시 강동구 신현로")
-                .detailAddress("송일빌딩 B105호")
+                .uid("user6")
+                .postcode("09205")
+                .streetNameAddress("서울시 성동구 숭인로")
+                .detailAddress("용인빌딩 B105호")
                 .expectedDate(LocalDate.of(2024, 04, 05))
                 .build();
         shippingOrdersMapper.insertShippingOrder(shippingOrdersVO);
