@@ -4,7 +4,7 @@
 
     <insert id="insertRequestTime" parameterType="com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO">
         INSERT INTO Retrieval_Timeline (id, request_time)
-        VALUES (#{id}, #{requestTime})
+        VALUES (#{id}, #{requestTime, jdbcType=TIMESTAMP})
     </insert>
 
     <update id="updateOrderTime" parameterType="com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO">

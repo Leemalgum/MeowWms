@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.dispatch.DispatchMapper">
+
+    <insert id="insertDispatch" parameterType="com.ssg.meowwms.domain.dispatch.DispatchVO">
+        INSERT INTO Dispatch (vehicle_num, warehouse_id, request_date, dispatch_date)
+        VALUES (#{vehicleNum}, #{warehouseId}, #{requestDate}, #{dispatchDate})
+    </insert>
+
+    <select id="selectOneById" resultType="com.ssg.meowwms.domain.dispatch.DispatchVO">
+        SELECT *
+        FROM Dispatch
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="com.ssg.meowwms.domain.dispatch.DispatchVO">
+        SELECT *
+        FROM Dispatch
+    </select>
+
+    <update id="updateDispatch" parameterType="com.ssg.meowwms.domain.dispatch.DispatchVO">
+        UPDATE Dispatch
+        SET vehicle_num = #{vehicleNum},
+            warehouse_id = #{warehouseId},
+            request_date = #{requestDate},
+            warehouse_id = #{warehouseId},
+            dispatch_date = #{dispatchDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteDispatch">
+        DELETE FROM Dispatch
+        WHERE id = #{id}
+    </delete>
+
+    <select id="search" parameterType="java.util.List" resultType="com.ssg.meowwms.domain.dispatch.DispatchVO">
+        SELECT *
+        FROM Dispatch
+        <where>
+            <if test="options != null">
+                <foreach collection="options" item="option" separator=" ">
+                    <choose>
+                        <when test="option.type == 'id'">
+                            id = #{option.value}
+                        </when>
+                        <when test="option.type == 'vehicleNum'">
+                            vehicle_num = #{option.value}
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>
