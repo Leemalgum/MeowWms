@@ -1,6 +1,7 @@
 package com.ssg.meowwms.mapper.user;
 
 import com.ssg.meowwms.domain.user.UserVO;
+import com.ssg.meowwms.mapper.user.UserMapper;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
