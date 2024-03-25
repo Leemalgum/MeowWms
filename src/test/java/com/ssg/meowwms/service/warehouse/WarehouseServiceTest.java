@@ -62,4 +62,14 @@ public class WarehouseServiceTest {
 
         log.info(warehouseDetailList);
     }
+
+    @Test
+    @DisplayName("주어진 카테고리 아이디에 해당하는 창고 목록 조회 테스트")
+    void getWarehouseWithCategory() {
+        int categoryId = 5;
+
+        List<WarehouseDTO> warehouseList = warehouseService.getWarehouseWithCategory(categoryId);
+
+        log.info(warehouseList);
+    }
 }
