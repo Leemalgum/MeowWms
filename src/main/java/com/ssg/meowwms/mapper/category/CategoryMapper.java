@@ -1,6 +1,7 @@
 package com.ssg.meowwms.mapper.category;
 
 import com.ssg.meowwms.domain.category.CategoryVO;
+import com.ssg.meowwms.dto.category.CategoryDTO;
 import com.ssg.meowwms.dto.category.MainCategoryDTO;
 import com.ssg.meowwms.dto.category.MiddleCategoryDTO;
 import com.ssg.meowwms.dto.category.SubCategoryDTO;
@@ -44,4 +45,14 @@ public interface CategoryMapper {
      * @return
      */
     List<SubCategoryDTO> selectSubCategories(String mainCategory, String middleCategory);
+
+    /**
+     * 주어진 대분류, 중분류, 소분류와 일치하는 데이터를 가져옵니다.
+     *
+     * @param mainCategory
+     * @param middleCategory
+     * @param subCategory
+     * @return
+     */
+    CategoryDTO selectWithCategories(String mainCategory, String middleCategory, String subCategory);
 }
