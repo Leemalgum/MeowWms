@@ -72,4 +72,14 @@ public class WarehouseServiceTest {
 
         log.info(warehouseList);
     }
+
+    @Test
+    @DisplayName("주어진 이름에 해당하는 창고 아이디 조회 테스트")
+    void getWarehouseIdByName() {
+        String name = "운양동 우유 창고";
+
+        int warehouseId = warehouseService.getWarehouseIdByName(name);
+
+        log.info(warehouseId);
+    }
 }
