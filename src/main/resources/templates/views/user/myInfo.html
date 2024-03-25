@@ -41,7 +41,7 @@
                                                 <div class="form-group row">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <label for="uname">이름</label>
-                                                        <input type="text" class="form-control" id="uname">
+                                                        <input type="text" class="form-control" id="uname" value="uname">
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <label for="birth">생년월일</label>
@@ -54,19 +54,8 @@
                                                         <input type="text" class="form-control " id="uid">
                                                     </div>
                                                     <div class="col-sm-6">
-                                                            <label for="upw">비밀번호</label>
-                                                            <div class="container">
-                                                                <div class="row">
-                                                                    <div class="col-9">
-                                                                        <input type="text" class="form-control " id="upw">
-                                                                    </div>
-                                                                    <div class="col-3">
-                                                                        <a class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal" data-target="#pwModal">
-                                                                            변경
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                        <label for="upw">비밀번호</label>
+                                                        <input type="text" class="form-control " id="upw">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -127,6 +116,39 @@
 
                 </div>
                 <!-- End of Main Content -->
+        <script>
+            $(document).ready(function() {
+                console.log("test");
+                loadUserData();
+            });
+
+            function loadUserData() {
+                // Ajax를 사용하여 사용자 정보를 가져오는 요청을 보냅니다.
+
+                $.ajax({
+                    type: "GET", // GET 메서드를 사용하여 데이터를 요청합니다.
+                    url: "/views/user/getUserData", // 사용자 정보를 가져오는 엔드포인트 URL입니다.
+                    success: function(response) {
+                        console.log(response);
+                        // 요청이 성공하면 사용자 정보를 받아옵니다.
+                        // 받아온 정보를 각 입력 필드에 채워넣습니다.
+                        $('#uname').val(response.uname);
+                        $('#birth').val(response.birth);
+                        $('#uid').val(response.uid);
+                        $('#upw').val(response.upw);
+                        $('#email').val(response.email);
+                        $('#tel').val(response.tel);
+                    },
+                    error: function(xhr, status, error) {
+                        // 요청이 실패할 경우 에러 처리를 합니다.
+                        console.error("Error loading user data:", error);
+                        // 사용자에게 오류 메시지를 표시할 수 있습니다.
+                        // 예를 들어, 사용자에게 데이터 로드에 실패했다는 경고를 표시할 수 있습니다.
+                        alert("Failed to load user data. Please try again later.");
+                    }
+                });
+            }
+        </script>
         <!-- 본인 확인 Modal-->
         <div class="modal fade" id="identityVerificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
