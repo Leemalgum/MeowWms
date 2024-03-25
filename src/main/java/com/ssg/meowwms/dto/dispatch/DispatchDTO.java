@@ -11,9 +11,8 @@ import java.time.LocalDateTime;
 @ToString
 public class DispatchDTO {
     private int id;
-    private String vehicle_num;
-    private String warehouse_id;
-    private int vehicle_status;
-    private LocalDateTime request_date;
-    private LocalDateTime dispatch_date;
+    private String vehicleNum;
+    private int warehouseId;
+    private LocalDateTime requestDate;
+    private LocalDateTime dispatchDate;
 }
