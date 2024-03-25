@@ -54,4 +54,12 @@ public interface WarehouseMapper {
      * @return
      */
     List<WarehouseDTO> selectWarehouseWithCategory(int categoryId);
+
+    /**
+     * 창고 이름을 전달 받아 해당하는 창고의 아이디를 반환
+     *
+     * @param warehouseName
+     * @return 창고 아이디
+     */
+    int selectIdByName(String warehouseName);
 }
