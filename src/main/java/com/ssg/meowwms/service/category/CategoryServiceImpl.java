@@ -44,4 +44,9 @@ public class CategoryServiceImpl implements CategoryService{
     public List<SubCategoryDTO> getSubCategories(String mainCategory, String middleCategory) {
         return categoryMapper.selectSubCategories(mainCategory, middleCategory);
     }
+
+    @Override
+    public CategoryDTO getWithCategories(String mainCategory, String middleCategory, String subCategory) {
+        return categoryMapper.selectWithCategories(mainCategory, middleCategory, subCategory);
+    }
 }
