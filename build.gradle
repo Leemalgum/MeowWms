@@ -19,6 +19,8 @@ configurations {
 
 repositories {
 	mavenCentral()
+	google()
+
 }
 
 dependencies {
@@ -46,6 +48,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	testCompileOnly 'org.projectlombok:lombok:1.18.24'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+	implementation group: 'com.google.zxing', name: 'javase', version: '3.5.0'
+	implementation group: 'com.google.zxing', name: 'core', version: '3.5.0'
+
+
 }
 
 tasks.named('bootBuildImage') {
