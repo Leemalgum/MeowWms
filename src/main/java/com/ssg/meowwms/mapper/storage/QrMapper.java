@@ -1,9 +1,12 @@
 package com.ssg.meowwms.mapper.storage;
 
-import com.ssg.meowwms.domain.storage.QrcodeVO;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDate;
+
+@Mapper
 public interface QrMapper {
-    void insertQrCode(QrcodeVO qrcodeVO);
-    void saveQrCodeImage(@Param("productId") int productId, @Param("filePath") String filePath);
+    void saveQrCodeImage(@Param("productId") int productId, @Param("qrCodeImage") byte[] qrCodeImage, @Param("creationDate") LocalDate creationDate);
 }
