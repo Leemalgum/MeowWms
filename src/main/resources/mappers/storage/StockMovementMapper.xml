@@ -4,7 +4,7 @@
 
     <!-- insertStock -->
     <insert id="insertStock" parameterType="com.ssg.meowwms.domain.storage.StockMovementVO">
-        INSERT INTO Stock_Movement (product_id, user_id, status_code, request_datetime, approved_datetime)
+        INSERT INTO Stock_Movement (product_id, user_id, status_code, request_datetime, approved_datetime, warehouse_id)
         VALUES (#{productId}, #{userId}, #{statusCode}, #{requestDatetime}, #{approvedDatetime}, #{warehouseId})
     </insert>
 
