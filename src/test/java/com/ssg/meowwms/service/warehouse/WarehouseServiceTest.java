@@ -62,4 +62,24 @@ public class WarehouseServiceTest {
 
         log.info(warehouseDetailList);
     }
+
+    @Test
+    @DisplayName("주어진 카테고리 아이디에 해당하는 창고 목록 조회 테스트")
+    void getWarehouseWithCategory() {
+        int categoryId = 5;
+
+        List<WarehouseDTO> warehouseList = warehouseService.getWarehouseWithCategory(categoryId);
+
+        log.info(warehouseList);
+    }
+
+    @Test
+    @DisplayName("주어진 이름에 해당하는 창고 아이디 조회 테스트")
+    void getWarehouseIdByName() {
+        String name = "운양동 우유 창고";
+
+        int warehouseId = warehouseService.getWarehouseIdByName(name);
+
+        log.info(warehouseId);
+    }
 }

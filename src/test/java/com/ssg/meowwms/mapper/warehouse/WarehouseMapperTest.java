@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.warehouse;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
+import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +44,7 @@ class WarehouseMapperTest {
 
         // 창고 이름 검색
         optionList.add(new OptionDTO("categoryId", 1));
-        
+
         // 창고 위치 검색
         optionList.add(new OptionDTO("latitude", 37.522057531502));
         optionList.add(new OptionDTO("longitude", 126.89528677963));
@@ -55,11 +56,31 @@ class WarehouseMapperTest {
 
     @Test
     @DisplayName("창고 상세")
-    void getWarehouseDetail() {
+    void selectWarehouseDetail() {
         int warehouseId = 1;
 
-        List<WarehouseDetailDTO> warehouseDetailList = warehouseMapper.getWarehouseDetail(warehouseId);
+        List<WarehouseDetailDTO> warehouseDetailList = warehouseMapper.selectWarehouseDetail(warehouseId);
 
         log.info(warehouseDetailList);
+    }
+
+    @Test
+    @DisplayName("주어진 카테고리 아이디에 해당하는 창고 목록 반환")
+    void selectWarehouseWithCategory() {
+        int categoryId = 5;
+
+        List<WarehouseDTO> warehouseList = warehouseMapper.selectWarehouseWithCategory(categoryId);
+
+        log.info(warehouseList);
+    }
+
+    @Test
+    @DisplayName("주어진 이름에 해당하는 창고 아이디 반환")
+    void selectIdByName() {
+        String name = "운양동 우유 창고";
+
+        int warehouseId = warehouseMapper.selectIdByName(name);
+
+        log.info(warehouseId);
     }
 }
