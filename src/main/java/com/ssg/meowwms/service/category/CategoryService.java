@@ -12,4 +12,5 @@ public interface CategoryService {
     List<MainCategoryDTO> getMainCategories();
     List<MiddleCategoryDTO> getMiddleCategories(String mainCategory);
     List<SubCategoryDTO> getSubCategories(String mainCategory, String middleCategory);
+    CategoryDTO getWithCategories(String mainCategory, String middleCategory, String subCategory);
 }
