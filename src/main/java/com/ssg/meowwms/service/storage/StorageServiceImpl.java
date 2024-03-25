@@ -1,5 +1,6 @@
 package com.ssg.meowwms.service.storage;
 
+import com.google.zxing.WriterException;
 import com.ssg.meowwms.domain.stock.StockVO;
 import com.ssg.meowwms.domain.storage.ProductVO;
 import com.ssg.meowwms.domain.storage.StockMovementVO;
@@ -7,7 +8,9 @@ import com.ssg.meowwms.dto.storage.ProductDTO;
 import com.ssg.meowwms.dto.storage.StockMovementDTO;
 import com.ssg.meowwms.dto.stock.StockDTO;
 import com.ssg.meowwms.mapper.storage.ProductMapper;
+import com.ssg.meowwms.mapper.storage.QrMapper;
 import com.ssg.meowwms.mapper.storage.StockMovementMapper;
+import com.ssg.meowwms.util.QRCodeGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -15,13 +18,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.rowset.serial.SerialBlob;
-import java.sql.Blob;
-import java.sql.SQLException;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +34,8 @@ public class StorageServiceImpl implements StorageService {
     private final ModelMapper modelMapper;
     private final StockMovementMapper stockMovementMapper;
     private final JdbcTemplate jdbcTemplate; // jdbcTemplate 추가
+    private final QRCodeGenerator qrCodeGenerator;
+    private final QrMapper qrMapper;
 
 
     @Override
@@ -96,14 +99,12 @@ public class StorageServiceImpl implements StorageService {
                 .collect(Collectors.toList());
     }
 
-
-    //qr 해결안됨
     @Override
-    public String generateQrCodeContent(StockDTO stockDTO, StockMovementDTO stockMovementDTO, ProductDTO productDTO) {
+    public String generateQrCodeContent(StockMovementDTO stockMovementDTO, ProductDTO productDTO) {
         String content = "요청 정보 \n ------------------------"
                 + "\n사용자 아이디: " + stockMovementDTO.getUserId()
-                + "\n창고 아이디: " + stockDTO.getWarehouseId()
-                + "\n제품 아이디: " + stockDTO.getProductId()
+                + "\n창고 아이디: " //+ stockMovementDTO.getWarehouseId()
+                + "\n제품 아이디: " + stockMovementDTO.getProductId()
                 + "\n요청 날짜: " + stockMovementDTO.getRequestDatetime()
                 + "\n승인 날짜: " + stockMovementDTO.getApprovedDatetime()
                 + "\n상품 정보 \n ------------------------"
@@ -114,24 +115,22 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public Blob convertBase64ToBlob(String base64Image) {
+    public void generateAndSaveQRCode(int productId, String qrCodeContent) {
         try {
-            byte[] byteArray = Base64.getDecoder().decode(base64Image);
-            return new SerialBlob(byteArray);
-        } catch (SQLException e) {
+            byte[] qrCodeImage = qrCodeGenerator.generateQRCodeImage(qrCodeContent);
+            qrMapper.saveQrCodeImage(productId, qrCodeImage, LocalDate.now());
+        } catch (WriterException | IOException e) {
             e.printStackTrace();
-            return null;
         }
     }
+
     @Override
-    public void insertQrContent(String base64Image, StockDTO stockDTO, StockMovementDTO stockMovementDTO, ProductDTO productDTO) {
-        String qrContent = generateQrCodeContent(stockDTO, stockMovementDTO, productDTO);
-        //saveQrCodeToDatabase(base64Image, qrContent)
-
-    }
-    @Override
-    public void getQrCode() {
-
-
+    public void getQrCode(byte[] imageData, String filePath)  {
+        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+            fos.write(imageData);
+            log.info("이미지가 성공적으로 저장되었습니다.");
+        } catch (IOException e) {
+            log.info("이미지를 저장하는 동안 오류가 발생했습니다: " + e.getMessage());
+        }
     }
 }
