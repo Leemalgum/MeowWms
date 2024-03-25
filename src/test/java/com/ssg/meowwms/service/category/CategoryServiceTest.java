@@ -57,4 +57,16 @@ public class CategoryServiceTest {
 
         log.info(subCategories);
     }
+
+    @Test
+    @DisplayName("주어진 대분류, 중분류, 소분류와 일치하는 데이터를 조회")
+    void getWithCategories() {
+        String mainCategory = "상온";
+        String middleCategory = "식품";
+        String subCategory = "과자";
+
+        CategoryDTO categoryDTO = categoryService.getWithCategories(mainCategory, middleCategory, subCategory);
+
+        log.info(categoryDTO);
+    }
 }
