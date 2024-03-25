@@ -3,7 +3,9 @@ package com.ssg.meowwms.controller.warehouse;
 import com.ssg.meowwms.dto.category.MainCategoryDTO;
 import com.ssg.meowwms.dto.category.MiddleCategoryDTO;
 import com.ssg.meowwms.dto.category.SubCategoryDTO;
+import com.ssg.meowwms.dto.user.UserDTO;
 import com.ssg.meowwms.service.category.CategoryService;
+import com.ssg.meowwms.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WarehouseController {
     private final CategoryService categoryService;
+    private final UserService userService;
 
     /**
      * 창고 등록 페이지를 불러옵니다.
@@ -38,6 +41,10 @@ public class WarehouseController {
         mainCategoryDTOList.forEach(mainCategoryDTO -> mainCategories.add(mainCategoryDTO.getMainCategory()));
 
         model.addAttribute("mainCategories", mainCategories);
+
+        List<UserDTO> warehouseManagerList = userService.getWarehouseManager();
+
+        model.addAttribute("warehouseManagerList", warehouseManagerList);
 
         return "views/warehouse/register";
     }
