@@ -111,13 +111,12 @@
                                         </div>
                                         <div class="col-md-8">
                                             <select id="warehouseManager" class="form-control" required>
-                                                <option value="" selected disabled hidden>
-                                                    --- 창고 관리자를 선택하세요. ---
+                                                <option value="" selected disabled hidden>--- 창고 관리자를 선택하세요. ---</option>
+                                                <option th:each="warehouseManager : ${warehouseManagerList}" th:value="${warehouseManager.getUid()}">
+                                                    아이디: <span th:text="${warehouseManager.getUid()}"></span> | 이름: <span th:text="${warehouseManager.getUname()}"></span>
                                                 </option>
-                                                <th:block th:each="warehouseManager : ${warehouseManagerList}">
-                                                    <option th:text="'아이디 : ' + ${warehouseManager.getUid()} + ' | 이름 : ' + ${warehouseManager.getUname()}"></option>
-                                                </th:block>
                                             </select>
+
                                         </div>
                                     </div>
                                     <br/>
@@ -125,14 +124,14 @@
                                     <!-- 창고 크기 입력 -->
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label for="location-input"
+                                            <label for="volume"
                                             >창고 크기(cell)</label
                                             >
                                         </div>
                                         <div class="col-md-8">
                                             <input
                                                     type="number"
-                                                    id="location-input"
+                                                    id="volume"
                                                     class="form-control"
                                                     required
                                             />
@@ -158,7 +157,7 @@
                                         </div>
                                         <div class="col-md-2">
                                             <button
-                                                    id="retrieval-register-button"
+                                                    id="checkLocation"
                                                     class="btn btn-success"
                                                     type="button"
                                                     onclick="handleSearch()"
@@ -217,6 +216,11 @@
 ></script>
 
 <script>
+    let isCheckLocation = false;
+
+    let latitude = null;
+    let longitude = null;
+
     var mapContainer = document.getElementById("map"), // 지도를 표시할 div
         mapOption = {
             center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -257,6 +261,10 @@
         geocoder.addressSearch(address, function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                latitude = result[0].y;
+                longitude = result[0].x;
+
                 var marker = new kakao.maps.Marker({
                     map: map,
                     position: coords,
@@ -269,8 +277,11 @@
                 });
                 infowindow.open(map, marker);
                 map.setCenter(coords);
+
+                isCheckLocation = true;
             } else {
                 alert("지도 검색에 실패했습니다: " + status);
+                document.getElementById("address").value = '';
             }
         });
     }
@@ -354,6 +365,8 @@
         });
     });
 
+    let isCheckWarehouseName = false;
+
     // 창고 이름 중복 확인
     function checkDuplicateWarehouseName() {
         var warehouseName = document.getElementById("warehouseName").value;
@@ -371,6 +384,7 @@
                     alert("중복된 창고 이름입니다.");
                     document.getElementById("warehouseName").value = '';
                 } else {
+                    isCheckWarehouseName = true;
                     alert("사용 가능한 창고 이름입니다.");
                 }
             },
@@ -380,6 +394,61 @@
             }
         });
     }
+
+    // 창고 등록
+    document.getElementById("retrieval-register-button").addEventListener("click", function () {
+        // 사용자가 입력한 데이터 수집
+        const warehouseName = document.getElementById("warehouseName").value;
+        const mainType = document.getElementById("mainType").value;
+        const middleType = document.getElementById("middleType").value;
+        const subType = document.getElementById("subType").value;
+        const warehouseManagerId = document.getElementById("warehouseManager").value;
+        const volume = document.getElementById("volume").value;
+        const address = document.getElementById("address").value;
+
+        // 필수 입력 필드가 비어 있는지 확인
+        if (warehouseName === "" || mainType === "" || middleType === "" || subType === "" || warehouseManager === "" || volume === "" || address === "") {
+            // 하나라도 비어 있으면 등록 버튼 비활성화
+            alert("모든 필수 입력 필드를 입력하세요.");
+            return; // 함수 종료
+        }
+
+        if (!isCheckWarehouseName) {
+            alert("창고 이름을 중복 확인하세요!")
+            return;
+        }
+
+        if (!isCheckLocation) {
+            alert("창고 위치를 확인하세요!")
+            return;
+        }
+
+        // AJAX 요청
+        $.ajax({
+            type: "POST",
+            url: "/warehouse/register",
+            data: {
+                warehouseName: warehouseName,
+                mainType: mainType,
+                middleType: middleType,
+                subType: subType,
+                warehouseManagerId: warehouseManagerId,
+                latitude: latitude,
+                longitude: longitude,
+                volume: volume
+            },
+            success: function (response) {
+                console.log(response);
+                alert("창고 등록이 완료되었습니다.");
+                // 등록이 성공하면 필요한 추가 작업을 수행할 수 있습니다.
+                window.location.href = "/warehouse/list";
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                alert("창고 등록 중 오류가 발생했습니다.");
+            }
+        });
+    });
 </script>
 
 <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
