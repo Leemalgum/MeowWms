@@ -4,22 +4,22 @@ import com.ssg.meowwms.dto.category.MainCategoryDTO;
 import com.ssg.meowwms.dto.category.MiddleCategoryDTO;
 import com.ssg.meowwms.dto.category.SubCategoryDTO;
 import com.ssg.meowwms.dto.user.UserDTO;
+import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.service.category.CategoryService;
 import com.ssg.meowwms.service.user.UserService;
 import com.ssg.meowwms.service.warehouse.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * 창고 관리
@@ -126,7 +126,41 @@ public class WarehouseController {
         return isDuplicate;
     }
 
+    @PostMapping("/register")
+    @ResponseBody
+    public ResponseEntity<String> registerWarehouse(
+            @RequestParam("warehouseName") String warehouseName,
+            @RequestParam("mainType") String mainCategory,
+            @RequestParam("middleType") String middleCategory,
+            @RequestParam("subType") String subCategory,
+            @RequestParam("warehouseManagerId") String warehouseManagerId,
+            @RequestParam("latitude") double latitude,
+            @RequestParam("longitude") double longitude,
+            @RequestParam("volume") int volume
+    ) {
+        log.info("창고 등록 컨트롤러...!!!");
 
+        try {
+
+            int categoryId = categoryService.getWithCategories(mainCategory, middleCategory, subCategory).getId();
+
+            WarehouseDTO warehouseDTO = WarehouseDTO.builder()
+                    .categoryId(categoryId)
+                    .name(warehouseName)
+                    .latitude(latitude)
+                    .longitude(longitude)
+                    .volume(volume)
+                    .managerId(warehouseManagerId)
+                    .build();
+
+            warehouseService.register(warehouseDTO);
+
+            return ResponseEntity.ok().body("{\"success\": true}");
+        } catch (DataAccessException e) {
+            log.error("창고 등록 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"success\": false}");
+        }
+    }
 
     /**
      * 창고 목록 페이지를 불러옵니다.
