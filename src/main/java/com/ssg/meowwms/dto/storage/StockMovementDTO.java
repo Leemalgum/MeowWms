@@ -17,4 +17,5 @@ public class StockMovementDTO {
     private String statusCode;
     private LocalDate requestDatetime;
     private Date approvedDatetime;
+    private int warehouseId;
 }
