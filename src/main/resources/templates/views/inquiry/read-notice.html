@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Page Title</title>
+    <title>공지사항 상세보기</title>
     <!-- Header 프래그먼트 포함 -->
     <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
 </head>
@@ -25,34 +25,34 @@
                 <!-- 여기에 페이지별 내용을 넣습니다 -->
                 <div class="row">
                     <div class="col-md-4">
-                        <small class="text-muted">작성자명: <span class="text-primary" th:text="${inquiry.userId}"></span></small>
+                        <small class="text-muted">관리자명: <span class="text-primary" th:text="${notice.userId}"></span></small>
                     </div>
                     <div class="col-md-4 text-right">
-                        <small class="text-muted">작성일: <span class="text-primary" th:text="${inquiry.postDate}"></span></small>
+                        <small class="text-muted">작성일: <span class="text-primary" th:text="${notice.noticeDate}"></span></small>
                     </div>
                 </div>
 
                 <div class="row align-items-center my-3">
                     <div class="form-group">
-                        <span id="postType" th:text="${inquiry.postType}" class="form-control"></span>
+                        <span id="postType" th:text="${notice.type}" class="form-control"></span>
                     </div>
                     <div class="col">
                         <div class="card mb-3">
-                            <div class="card-header" th:text="${inquiry.postTitle}">게시글 제목</div>
+                            <div class="card-header" th:text="${notice.title}">게시글 제목</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-body" style="min-height: 150px;" th:text="${inquiry.postContent}">
+                    <div class="card-body" style="min-height: 150px;" th:text="${notice.content}">
                         <!-- 게시글 내용 -->
                     </div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                     <a href="/views/inquiry/inquiry" class="btn btn-outline-primary">목록으로</a>
                     <div>
-                        <a th:href="@{/views/inquiry/modify-content/{postNum}(postNum=${inquiry.postNum})}" class="btn btn-primary">수정하기</a>
-                        <a th:href="@{/views/inquiry/delete/{postNum}(postNum=${inquiry.postNum})}" class="btn btn-danger">삭제하기</a>
+                        <a th:href="@{/views/inquiry/modify-notice/{no}(no=${notice.no})}" class="btn btn-primary">수정하기</a>
+                        <a th:href="@{/views/inquiry/delete/{no}(no=${notice.no})}" class="btn btn-danger">삭제하기</a>
                     </div>
                 </div>
             </div>
