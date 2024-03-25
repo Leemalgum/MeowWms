@@ -62,7 +62,7 @@
         where w.id = #{warehouseId}
     </select>
 
-    <select id="getWarehouseWithCategory" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDTO">
+    <select id="selectWarehouseWithCategory" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDTO">
         select *
         from Warehouse
         where category_id = #{categoryId}

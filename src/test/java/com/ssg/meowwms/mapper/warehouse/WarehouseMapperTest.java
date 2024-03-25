@@ -66,10 +66,10 @@ class WarehouseMapperTest {
 
     @Test
     @DisplayName("주어진 카테고리 아이디에 해당하는 창고 목록 반환")
-    void getWarehouseWithCategory() {
+    void selectWarehouseWithCategory() {
         int categoryId = 5;
 
-        List<WarehouseDTO> warehouseList = warehouseMapper.getWarehouseWithCategory(categoryId);
+        List<WarehouseDTO> warehouseList = warehouseMapper.selectWarehouseWithCategory(categoryId);
 
         log.info(warehouseList);
     }

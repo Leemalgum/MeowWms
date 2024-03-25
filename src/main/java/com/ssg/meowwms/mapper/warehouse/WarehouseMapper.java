@@ -53,5 +53,5 @@ public interface WarehouseMapper {
      * @param categoryId
      * @return
      */
-    List<WarehouseDTO> getWarehouseWithCategory(int categoryId);
+    List<WarehouseDTO> selectWarehouseWithCategory(int categoryId);
 }
