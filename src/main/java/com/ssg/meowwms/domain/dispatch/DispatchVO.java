@@ -16,17 +16,14 @@ public class DispatchVO {
     private int id;
 
     @NotNull
-    private String vehicle_num;
-
-    @NotNull
-    private String warehouse_id;
-
-    @NotNull
-    private int vehicle_status;
-
-    @NotNull
-    private LocalDateTime request_date;
+    private String vehicleNum;
 
     @Nullable
-    private LocalDateTime dispatch_date;
+    private int warehouseId;
+
+    @NotNull
+    private LocalDateTime requestDate;
+
+    @Nullable
+    private LocalDateTime dispatchDate;
 }
