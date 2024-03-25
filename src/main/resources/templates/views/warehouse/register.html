@@ -75,7 +75,7 @@
                                         </div>
                                         <!-- 대분류 -->
                                         <div class="col-md-3">
-                                            <select id="mainType" class="form-control">
+                                            <select id="mainType" class="form-control" required>
                                                 <option value="" selected disabled hidden>--- 대분류 ---</option>
                                                 <th:block th:each="category : ${mainCategories}">
                                                     <option th:text="${category}"></option>
@@ -85,7 +85,7 @@
 
                                         <!-- 중분류 -->
                                         <div class="col-md-3">
-                                            <select id="middleType" class="form-control" disabled>
+                                            <select id="middleType" class="form-control" disabled required>
                                                 <option value="" selected disabled hidden>
                                                     --- 중분류 ---
                                                 </option>
@@ -125,7 +125,7 @@
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label for="location-input"
-                                            >창고 크기(m<sup>3</sup>)</label
+                                            >창고 크기(cell)</label
                                             >
                                         </div>
                                         <div class="col-md-8">
@@ -133,6 +133,7 @@
                                                     type="number"
                                                     id="location-input"
                                                     class="form-control"
+                                                    required
                                             />
                                         </div>
 
@@ -151,6 +152,7 @@
                                                     id="address"
                                                     class="form-control"
                                                     placeholder="창고 주소를 입력하세요."
+                                                    required
                                             />
                                         </div>
                                         <div class="col-md-2">
