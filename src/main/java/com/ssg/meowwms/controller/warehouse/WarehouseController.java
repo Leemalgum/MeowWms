@@ -6,7 +6,9 @@ import com.ssg.meowwms.dto.category.SubCategoryDTO;
 import com.ssg.meowwms.dto.user.UserDTO;
 import com.ssg.meowwms.service.category.CategoryService;
 import com.ssg.meowwms.service.user.UserService;
+import com.ssg.meowwms.service.warehouse.WarehouseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 창고 관리
@@ -23,9 +27,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/warehouse")
 @RequiredArgsConstructor
+@Log4j2
 public class WarehouseController {
     private final CategoryService categoryService;
     private final UserService userService;
+    private final WarehouseService warehouseService;
 
     /**
      * 창고 등록 페이지를 불러옵니다.
@@ -83,6 +89,44 @@ public class WarehouseController {
 
         return subCategories;
     }
+
+    /**
+     * 창고 이름 중복 확인을 처리합니다.
+     *
+     * @param warehouseName 창고 이름
+     * @return 중복 여부
+     */
+    @GetMapping("/checkDuplicate")
+    public @ResponseBody Map<String, Boolean> checkDuplicateWarehouseName(
+            @RequestParam("warehouseName") String warehouseName) {
+        boolean isDuplicate = isWarehouseNameDuplicate(warehouseName);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("duplicate", isDuplicate);
+
+        return response;
+    }
+
+    /**
+     * 창고 이름이 중복되는지 확인합니다.
+     *
+     * @param warehouseName 창고 이름
+     * @return 중복 여부
+     */
+    private boolean isWarehouseNameDuplicate(String warehouseName) {
+        boolean isDuplicate = false;
+
+        try {
+            int warehouseId = warehouseService.getWarehouseIdByName(warehouseName);
+            isDuplicate = warehouseId != 0;
+        } catch (Exception e) {
+            log.error("창고 조회 중 오류 발생: {}", e.getMessage());
+        }
+
+        return isDuplicate;
+    }
+
+
 
     /**
      * 창고 목록 페이지를 불러옵니다.
