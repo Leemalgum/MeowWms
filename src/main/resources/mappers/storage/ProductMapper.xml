@@ -8,9 +8,16 @@
         VALUES (#{categoryId}, #{name}, #{brand}, #{price}, #{salePrice}, #{quantity}, #{volume})
     </insert>
 
-    <update id="productUpdate" parameterType="com.ssg.meowwms.domain.storage.ProductVO">
+    <update id="productUpdate" parameterType="map">
         UPDATE Product
-        SET category_id=#{categoryId}, name=#{name}, brand=#{brand}, price=#{price}, sale_price=#{salePrice}, quantity=#{quantity}
-        WHERE id=#{id}
+        SET
+            category_id=#{product.categoryId},
+            name=#{product.name},
+            brand=#{product.brand},
+            price=#{product.price},
+            sale_price=#{product.salePrice},
+            quantity=#{product.quantity},
+            volume=#{product.volume}
+        WHERE id=#{requestId}
     </update>
 </mapper>
