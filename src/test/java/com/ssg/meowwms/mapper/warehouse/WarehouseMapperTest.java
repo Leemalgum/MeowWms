@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.warehouse;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
+import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
@@ -61,5 +62,15 @@ class WarehouseMapperTest {
         List<WarehouseDetailDTO> warehouseDetailList = warehouseMapper.getWarehouseDetail(warehouseId);
 
         log.info(warehouseDetailList);
+    }
+
+    @Test
+    @DisplayName("주어진 카테고리 아이디에 해당하는 창고 목록 반환")
+    void getWarehouseWithCategory() {
+        int categoryId = 5;
+
+        List<WarehouseDTO> warehouseList = warehouseMapper.getWarehouseWithCategory(categoryId);
+
+        log.info(warehouseList);
     }
 }
