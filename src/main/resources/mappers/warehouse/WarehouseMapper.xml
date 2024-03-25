@@ -68,9 +68,9 @@
         where category_id = #{categoryId}
     </select>
 
-    <select id="selectIdByName">
-        select id
-        from Warehouse
-        where name = #{warehouseName}
+    <select id="selectIdByName" resultType="java.lang.Integer">
+        SELECT COALESCE(id, 0) AS id
+        FROM Warehouse
+        WHERE name = #{warehouseName}
     </select>
 </mapper>
