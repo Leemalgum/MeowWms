@@ -124,4 +124,15 @@ public class UserController {
         userService.modify(userDTO);
     }
 
+    @PostMapping("/withdraw")
+    @ResponseBody
+    public void withdrawUser() {
+        // 현재 사용자의 정보를 가져와서 탈퇴 처리를 진행합니다.
+        UserDTO userDTO = userService.getOne(SecurityUtils.getCurrentUserDetails().getUsername()).orElse(null);
+            // 회원 상태를 Inactive로 변경합니다.
+            userDTO.setSid(2);
+            userService.modify(userDTO);
+    }
+
+
 }

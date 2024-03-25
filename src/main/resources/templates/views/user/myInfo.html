@@ -177,9 +177,25 @@
                         }
                     });
                 });
-
+                $('#withdrawBtn').on('click', function() {
+                    $.ajax({
+                        type: "POST",
+                        url: "/views/user/withdraw",
+                        success: function(response) {
+                            // 탈퇴가 성공적으로 이루어졌을 때의 처리를 진행합니다.
+                            console.log(response);
+                            alert("회원 탈퇴가 성공적으로 이루어졌습니다.");
+                            // 탈퇴 후 로그인 페이지로 이동합니다.
+                            window.location.href = "/views/user/login";
+                        },
+                        error: function(xhr, status, error) {
+                            // 탈퇴 처리가 실패했을 때의 처리를 진행합니다.
+                            console.error("Error withdrawing:", error);
+                            alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
+                        }
+                    });
+                });
             });
-
             function loadUserData() {
                 // Ajax를 사용하여 사용자 정보를 가져오는 요청을 보냅니다.
                 $.ajax({
@@ -280,7 +296,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
-                        <a class="btn btn-primary" href="login.html">네</a>
+                        <a id="withdrawBtn" class="btn btn-primary" href="#">네</a>
                     </div>
                 </div>
             </div>
