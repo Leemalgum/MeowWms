@@ -17,5 +17,7 @@ public class VehicleVO {
     @NotNull
     private String dname;
     @NotNull
-    private int dphone;
+    private String dphone;
+    @NotNull
+    private int status;
 }

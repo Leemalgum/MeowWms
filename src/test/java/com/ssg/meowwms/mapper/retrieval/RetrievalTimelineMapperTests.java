@@ -19,8 +19,8 @@ public class RetrievalTimelineMapperTests {
     @Test
     void insertRetrievalTimelineTest() {
         RetrievalTimelineVO retrievalTimelineVO = RetrievalTimelineVO.builder()
-                .id(2)
-                .requestTime(LocalDateTime.of(2024, 3, 25, 15, 26, 38))
+                .id(5)
+                .requestTime(LocalDateTime.now())
                 .build();
         retrievalTimelineMapper.insertRequestTime(retrievalTimelineVO);
     }

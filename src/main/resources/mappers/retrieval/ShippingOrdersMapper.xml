@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssg.meowwms.mapper.retrieval.ShippingOrdersMapper">
 
-    <insert id="insertShippingOrder">
+    <insert id="insertShippingOrder" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO Shipping_Orders(uid, postcode, street_name_address, street_number_address, detail_address, expected_date)
         VALUES (#{uid}, #{postcode}, #{streetNameAddress}, #{streetNumberAddress}, #{detailAddress}, #{expectedDate})
     </insert>
@@ -39,20 +39,20 @@
                         <when test="option.type == 'uid'">
                             AND so.uid LIKE #{option.value}
                         </when>
-                        <when test="option.type == 'product_id'">
+                        <when test="option.type == 'productId'">
                             AND sod.product_id = #{option.value}
                         </when>
-                        <when test="option.type == 'product_name'">
+                        <when test="option.type == 'productName'">
                             AND p.name LIKE CONCAT('%', #{option.value}, '%')
                         </when>
                         <otherwise>
-                            <if test="option.type == 'expected_date'">
+                            <if test="option.type == 'expectedDate'">
                                 AND so.expected_date = #{option.value}
                             </if>
-                            <if test="option.type == 'approved_status'">
+                            <if test="option.type == 'approvedStatus'">
                                 AND sos.approved_status = #{option.value}
                             </if>
-                            <if test="option.type == 'allocated_status'">
+                            <if test="option.type == 'allocatedStatus'">
                                 AND sos.allocated_status = #{option.value}
                             </if>
                         </otherwise>

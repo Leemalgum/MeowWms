@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.dispatch.VehicleMapper">
+    <insert id="insertVehicle" parameterType="com.ssg.meowwms.domain.dispatch.VehicleVO">
+        INSERT INTO Vehicle (num, type, dname, dphone, status)
+        VALUES (#{num}, #{type}, #{dname}, #{dphone}, 0)
+    </insert>
+
+    <select id="selectOneByNum" resultType="com.ssg.meowwms.domain.dispatch.VehicleVO">
+        SELECT num, type, dname, dphone, status
+        FROM Vehicle
+        WHERE num = #{num}
+    </select>
+
+    <update id="updateVehicle">
+        UPDATE Vehicle
+        SET status = #{status}
+        WHERE num = #{num}
+    </update>
+
+    <delete id="deleteVehicle">
+        DELETE
+        FROM Vehicle
+        WHERE num = #{num}
+    </delete>
+
+    <select id="selectByOptions" parameterType="java.util.List" resultType="com.ssg.meowwms.domain.dispatch.VehicleVO">
+        SELECT *
+        FROM Vehicle v
+        <where>
+            <if test="options != null">
+                <foreach collection="options" item="option" separator=" ">
+                    <choose>
+                        <when test="option.type == 'num'">
+                            AND v.num = #{option.value}
+                        </when>
+                        <when test="option.type == 'type'">
+                            AND v.type = #{option.value}
+                        </when>
+                        <when test="option.type == 'dname'">
+                            AND v.dname = #{option.value}
+                        </when>
+                        <when test="option.type == 'dphone'">
+                            AND v.dphone = #{option.value}
+                        </when>
+                        <when test="option.type == 'status'">
+                            AND v.status = #{option.value}
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>
+
