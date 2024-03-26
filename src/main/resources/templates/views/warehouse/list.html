@@ -211,17 +211,6 @@
         // LatLngBounds 객체에 좌표를 추가합니다
         bounds.extend(coords);
 
-        // 동적으로 생성된 행을 추가합니다
-        var tableBody = document.getElementById("warehouseTableBody");
-        var newRow = tableBody.insertRow();
-        newRow.innerHTML = `
-        <td>${index + 1}</td>
-        <td><a href="#" class="warehouse-name">${position.title}</a></td>
-        <td>일반</td>
-        <td>위치 주소</td>
-        <td><a href="#" class="detail-link" data-toggle="modal" data-target="#warehouseDetailModal">상세 보기</a></td>
-      `;
-
         // 주소로 좌표를 검색하여 위치 주소를 가져옵니다
         var geocoder = new kakao.maps.services.Geocoder();
         geocoder.coord2Address(
@@ -230,42 +219,13 @@
             function (result, status) {
                 if (status === kakao.maps.services.Status.OK) {
                     var address = result[0].address.address_name; // 위치 주소
-                    // 해당 행에 위치 주소를 업데이트합니다
-                    newRow.cells[3].textContent = address;
+                    // 테이블을 생성하는 로직을 제외하였으므로, 해당 주소를 활용하는 부분은 생략합니다
                 }
             }
         );
 
         // 창고 이름을 클릭했을 때 해당 마커가 중심이 되도록 설정
-        newRow
-            .querySelector(".warehouse-name")
-            .addEventListener("click", function (e) {
-                e.preventDefault();
-                map.setCenter(coords);
-                // 인포윈도우를 열고, 다른 마커의 인포윈도우는 닫습니다
-                infowindow.open(map, marker);
-                positions.forEach(function (pos) {
-                    if (pos.title !== position.title) {
-                        pos.infowindow.close();
-                    }
-                });
-            });
-
         // 상세 보기 링크를 클릭했을 때 모달에 창고 정보 추가
-        newRow
-            .querySelector(".detail-link")
-            .addEventListener("click", function () {
-                var warehouseName = position.title;
-                var warehouseCategory = "일반"; // 창고 분류
-                var warehouseAddress = newRow.cells[3].textContent; // 위치 주소
-                document.getElementById("warehouseDetailModalTitle").textContent =
-                    warehouseName;
-                document.getElementById("warehouseCategory-input").value =
-                    warehouseCategory;
-                document.getElementById("warehouseAddress-input").value =
-                    warehouseAddress;
-            });
-
         // 마커에 인포윈도우 속성으로 추가
         position.infowindow = infowindow;
     });
