@@ -388,31 +388,37 @@
 
         if (productName.trim() === "") {
             alert("상품 이름은 공백이 될 수 없습니다!");
+            document.getElementById("productName").value = "";
             return; // 함수 종료
         }
 
         if (productBrand.trim() === "") {
             alert("상품 브랜드는 공백이 될 수 없습니다!");
+            document.getElementById("productBrand").value = "";
             return; // 함수 종료
         }
 
         if (productPrice <= 0) {
             alert("상품 원가는 0보다 작을 수 없습니다!");
+            document.getElementById("productPrice").value = "";
             return; // 함수 종료
         }
 
         if (productSalePrice <= 0) {
             alert("상품 판매가는 0보다 작을 수 없습니다!");
+            document.getElementById("productSalePrice").value = "";
             return; // 함수 종료
         }
 
         if (productQuantity <= 0) {
             alert("상품 수량은 0보다 작을 수 없습니다!");
+            document.getElementById("productQuantity").value = "";
             return; // 함수 종료
         }
 
         if (productVolume <= 0) {
             alert("상품 용량은 0보다 작을 수 없습니다!");
+            document.getElementById("productVolume").value = "";
             return; // 함수 종료
         }
 
