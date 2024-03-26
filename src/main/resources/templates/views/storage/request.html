@@ -344,8 +344,7 @@
                         const newWarehouse = {
                             id: warehouseData.id,
                             name: warehouseData.name,
-                            latitude: warehouseData.latitude,
-                            longitude: warehouseData.longitude
+                            warehouseAddress: warehouseData.address
                         };
 
                         // warehouse 배열에 추가
@@ -484,31 +483,6 @@
         alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.");
     }
 
-    // 주소로 좌표를 검색합니다
-    function searchAddress(address) {
-        var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체를 생성합니다
-
-        geocoder.addressSearch(address, function (result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                var marker = new kakao.maps.Marker({
-                    map: map,
-                    position: coords,
-                });
-                var infowindow = new kakao.maps.InfoWindow({
-                    content:
-                        '<div style="width:150px;text-align:center;padding:6px 0;">' +
-                        document.getElementById("productName").value +
-                        "</div>",
-                });
-                infowindow.open(map, marker);
-                map.setCenter(coords);
-            } else {
-                alert("지도 검색에 실패했습니다: " + status);
-            }
-        });
-    }
-
     var prevMarker = null; // 이전 마커를 저장할 변수
 
     // 창고 목록 select 태그에서 변경이 감지될 때의 이벤트 처리
@@ -525,57 +499,44 @@
 
         if (selectedWarehouse) {
             // 선택된 창고의 위치 정보 가져오기
-            const latitude = selectedWarehouse.latitude;
-            const longitude = selectedWarehouse.longitude;
+            const address = selectedWarehouse.warehouseAddress
             const warehouseName = selectedWarehouse.name;
 
             // 주소 가져오기
-            var geocoder = new kakao.maps.services.Geocoder();
-            var coords = new kakao.maps.LatLng(latitude, longitude);
-            geocoder.coord2Address(
-                coords.getLng(),
-                coords.getLat(),
-                function (result, status) {
-                    if (status === kakao.maps.services.Status.OK) {
-                        var address = result[0].address.address_name; // 위치 주소
+            var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체를 생성합니다
 
-                        // 인포윈도우 내용 업데이트
-                        const infowindowContent = `
-                            <div style="width:200px; text-align:center; padding:6px 0;">
-                                <div>${warehouseName}</div>
-                                <div><small>${address}</small></div> <!-- 수정: 지번 주소 표시 -->
-                            </div>`;
-                        const infowindow = new kakao.maps.InfoWindow({
-                            content: infowindowContent,
-                        });
+            geocoder.addressSearch(address, function (result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords,
+                    });
 
-                        // 인포윈도우 표시
-                        infowindow.open(map, marker);
-                    } else {
-                        alert("지도 검색에 실패했습니다: " + status);
-                    }
+                    // 주소를 더 자세히 가져오기 위해 좌표로 다시 주소 변환 요청
+                    geocoder.coord2Address(coords.getLng(), coords.getLat(), function (result, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+
+                            // 인포윈도우에 표시할 내용
+                            var content =
+                                '<div style="width:250px;text-align:center;padding:6px 0;">' +
+                                warehouseName +
+                                '<br><small>' + address + '</small>' +
+                                "</div>";
+
+                            var infowindow = new kakao.maps.InfoWindow({
+                                content: content,
+                            });
+                            infowindow.open(map, marker);
+                            map.setCenter(coords);
+                        } else {
+                            alert("지도 검색에 실패했습니다: " + status);
+                        }
+                    });
+                } else {
+                    alert("지도 검색에 실패했습니다: " + status);
                 }
-            );
-
-            // 새로운 마커 생성
-            const markerPosition = new kakao.maps.LatLng(latitude, longitude);
-            const marker = new kakao.maps.Marker({
-                position: markerPosition,
             });
-
-            // 지도 중심 이동
-            map.setCenter(markerPosition);
-
-            // 이전에 추가된 마커가 있으면 제거
-            if (prevMarker) {
-                prevMarker.setMap(null);
-            }
-
-            // 새로운 마커로 갱신
-            marker.setMap(map);
-
-            // prevMarker 업데이트
-            prevMarker = marker;
         }
     });
 </script>
