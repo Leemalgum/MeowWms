@@ -140,7 +140,7 @@ public class WarehouseController {
             WarehouseDTO warehouseDTO = WarehouseDTO.builder()
                     .category(mainCategory + " " + middleCategory + " " + subCategory)
                     .name(warehouseName)
-                    .location(location)
+                    .address(location)
                     .volume(volume)
                     .managerId(warehouseManagerId)
                     .build();
