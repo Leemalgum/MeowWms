@@ -5,6 +5,7 @@
     <title>Page Title</title>
     <!-- Header 프래그먼트 포함 -->
     <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <!-- 페이지 래퍼 -->
@@ -19,7 +20,6 @@
             <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
             <!-- Begin Page Content -->
             <div class="container-fluid">
-
                 <!-- Page Heading -->
                 <h1 class="h3 mb-2 text-gray-800">회원 조회</h1>
                 <!-- DataTales Example -->
@@ -29,7 +29,6 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>인덱스</th>
                                     <th>회원 아이디</th>
                                     <th>권한</th>
                                     <th>가입상태</th>
@@ -41,200 +40,275 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <th>1</th>
-                                    <th><a href="#" data-toggle="modal" data-target="#myModal">userID</th>
-                                    <th>Permission</th>
-                                    <th>Active</th>
-                                    <th>user</th>
-                                    <th>pw</th>
-                                    <th>010-1234-5678</th>
-                                    <th>user@gmail.com</th>
-                                    <th>2000-10-10</th>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
+                <!-- 검색 조건 입력 폼 -->
+                <!--                <div class="row mb-4">-->
+                <!--                    <div class="col">-->
+                <!--                        <div class="input-group">-->
+                <!--                            <div class="input-group-prepend">-->
+                <!--                                <select class="custom-select" id="searchType">-->
+                <!--                                    <option selected>검색 타입 선택</option>-->
+                <!--                                    <option value="writer">전체</option>-->
+                <!--                                </select>-->
+                <!--                            </div>-->
+                <!--                            <input type="text" class="form-control" id="searchKeyword" placeholder="검색어를 입력하세요...">-->
+                <!--                            <div class="input-group-append">-->
+                <!--                                <button class="btn btn-outline-primary" type="button" id="button-search">검색</button>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--            </div>-->
+                <!-- /.container-fluid -->
             </div>
-            <!-- /.container-fluid -->
-
+            <!-- End of Main Content -->
+            <!-- 푸터 -->
+            <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
         </div>
-        <!-- End of Main Content -->
+        <!-- End of Content Wrapper -->
 
-        <!-- 푸터 -->
-        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
     </div>
-    <!-- End of Content Wrapper -->
+    <!-- End of Page Wrapper -->
+    <!-- 스크롤 탑 버튼 -->
+    <th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+    <!-- 로그아웃 모달 -->
+    <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+    <!-- 스크립트 -->
+    <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+    <!-- 회원 정보 수정 Modal-->
 
-</div>
-<!-- End of Page Wrapper -->
-<!-- 스크롤 탑 버튼 -->
-<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
-<!-- 로그아웃 모달 -->
-<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
-<!-- 스크립트 -->
-<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
-
-<!-- 회원 정보 수정 Modal-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div>
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">회원 정보</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+    <div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="memberInfo">회원 정보</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-lg-12">
+                                    <div class="p-5">
+                                        <form class="user">
+                                            <div class="form-group row">
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <label for="role">권한</label>
+                                                    <input type="text" class="form-control" id="role">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="status">가입상태</label>
+                                                    <input type="text" class="form-control" id="status">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <label for="uname">이름</label>
+                                                    <input type="text" class="form-control" id="uname" readonly>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="birth">생년월일</label>
+                                                    <input type="text" class="form-control" id="birth" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <label for="uid">아이디</label>
+                                                    <input type="text" class="form-control" id="uid" readonly>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="upw">비밀번호</label>
+                                                    <input type="text" class="form-control" id="upw">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <label for="email">이메일</label>
+                                                    <input type="text" class="form-control" id="email">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="tel">전화번호</label>
+                                                    <input type="text" class="form-control" id="tel">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+<!--                        <a id="editComplete" class="btn btn-primary btn-user btn-block" href="#" >-->
+<!--                            완료-->
+<!--                        </a>-->
+                        <button class="btn btn-primary btn-user btn-block editCompleteBtn" type="button">
+                            완료
                         </button>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-12">
-                            <div class="p-5">
-                                <form class="user">
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <label for="id">권한</label>
-                                            <input type="text" class="form-control" id="id">
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label for="shopName">가입상태</label>
-                                            <input type="text" class="form-control " id="shopName">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <label for="id">이름</label>
-                                            <input type="text" class="form-control" id="id">
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label for="shopName">생년월일</label>
-                                            <input type="text" class="form-control " id="shopName">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <label for="id">아이디</label>
-                                            <input type="text" class="form-control" id="id">
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label for="shopName">비밀번호</label>
-                                            <input type="text" class="form-control " id="shopName">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <label for="id">이메일</label>
-                                            <input type="text" class="form-control" id="id">
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label for="shopName">전화번호</label>
-                                            <input type="text" class="form-control " id="shopName">
-                                        </div>
-                                    </div>
-                            </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">회원 사업장 정보</h5>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-12">
-                            <div class="p-5">
-                                <form class="user">
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <label for="id">쇼핑몰 이름</label>
-                                            <input type="text" class="form-control" id="id">
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label for="shopName">사업자 번호</label>
-                                            <input type="text" class="form-control " id="shopName">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <label for="id">쇼핑몰 주소</label>
-                                            <input type="text" class="form-control" id="id">
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label for="shopName">분류</label>
-                                            <input type="text" class="form-control " id="shopName">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <label for="id">온라인 사업자 번호</label>
-                                            <input type="text" class="form-control" id="id">
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label for="shopName">팩스번호</label>
-                                            <input type="text" class="form-control " id="shopName">
-                                        </div>
-                                    </div>
-                            </div>
-                            </form>
-                        </div>
+                        <a id="forcedWithdrawal" class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal"
+                           data-target="#forcedWithdrawalModal">
+                            강제탈퇴
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <a class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal" data-target="#completeModal">
-                    완료
-                </a>
-                <a class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal"
-                   data-target="#forcedWithdrawalModal">
-                    강제탈퇴
-                </a>
-            </div>
         </div>
 
     </div>
-</div>
-</div>
-
-<!-- 강제탈퇴 Modal-->
-<div class="modal fade" id="forcedWithdrawalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>정말 탈퇴 시키겠습니까?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
-                <a class="btn btn-primary" href="login.html">네</a>
+    <!-- 강제탈퇴 Modal-->
+    <div class="modal fade" id="forcedWithdrawalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>정말 탈퇴 시키겠습니까?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                    <a id="forcedWithdrawalCheck" class="btn btn-primary" href="#">네</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <script>
+        $(document).ready(function () {
+            loadData(); // 초기 페이지 로딩 시 전체 회원 데이터 로드
 
-<!-- 완료 Modal-->
-<div class="modal fade" id="completeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>정말 변경 하시겠습니까?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
-                <a class="btn btn-primary" href="login.html">네</a>
-            </div>
-        </div>
-    </div>
-</div>
+            // 테이블의 각 행을 클릭할 때 모달을 띄우는 이벤트 처리
+            $('#dataTable tbody').on('click', 'tr', function () {
+                var rowData = $(this).find('td').map(function () {
+                    return $(this).text();
+                }).get();
+
+                // 클릭된 행의 데이터를 모달에 표시
+                $('#uid').val(rowData[0]);
+                $('#role').val(rowData[1]);
+                $('#status').val(rowData[2]);
+                $('#uname').val(rowData[3]);
+                $('#upw').val(rowData[4]);
+                $('#tel').val(rowData[5]);
+                $('#email').val(rowData[6]);
+                $('#birth').val(rowData[7]);
+
+                // 모달 표시
+                $('#myModal').modal('show');
+            });
+        });
+
+        // 데이터를 가져와서 표시하는 함수
+        function loadData() {
+            $.ajax({
+                type: "GET",
+                url: "/views/user/data",
+                success: function (response) {
+                    // 성공적으로 데이터를 받아왔을 때 처리
+                    displayData(response);
+                },
+                error: function (xhr, status, error) {
+                    // 데이터를 받아오지 못했을 때 처리
+                    console.error("Error fetching data:", error);
+                    alert("Failed to fetch data. Please try again later.");
+                }
+            });
+        }
+
+        // 받아온 데이터를 표시하는 함수
+        function displayData(data) {
+            // 데이터를 표시할 방법에 따라 HTML을 동적으로 생성하거나 수정
+            // 예: 테이블에 데이터 추가
+            var tableBody = $("#dataTable tbody");
+            tableBody.empty(); // 기존 데이터 제거
+
+            data.forEach(function (user) {
+                var row = "<tr>" +
+                    "<td>" + user.uid + "</td>" +
+                    "<td>" + user.rid + "</td>" +
+                    "<td>" + user.sid + "</td>" +
+                    "<td>" + user.uname + "</td>" +
+                    "<td>" + "초기화" + "</td>" +
+                    "<td>" + user.tel + "</td>" +
+                    "<td>" + user.email + "</td>" +
+                    "<td>" + user.birth + "</td>" +
+                    "</tr>";
+                tableBody.append(row);
+            });
+        }
+
+        // 각 input 요소의 변경 이벤트 처리
+        $('#role, #status, #email, #tel').on('input', function() {
+            // 변경된 input 값을 컨트롤러로 보내기 위해 '완료' 버튼 활성화
+            $('.editCompleteBtn').prop('disabled', false);
+        });
+
+        $('.editCompleteBtn').click(function () {
+            console.log("clickEvent")
+            // 모달의 데이터를 객체로 생성
+            var userData = {
+                uid: $('#uid').val(),
+                rid: $('#role').val(),
+                sid: $('#status').val(),
+                tel: $('#tel').val(),
+                email: $('#email').val(),
+            };
+
+            // AJAX를 사용하여 컨트롤러에 데이터 전송
+            $.ajax({
+                type: "POST", // 전송 방식
+                url: "/views/user/save", // 컨트롤러 URL
+                contentType: "application/json", // 전송하는 데이터 타입
+                data: JSON.stringify(userData), // JSON 형식으로 데이터 변환
+                success: function (response) {
+                    // 성공적으로 데이터를 전송하고 응답을 받았을 때 처리
+                    console.log("Data successfully sent:", response);
+                    // 모달 닫기
+                    $('#myModal').modal('hide');
+                    // 페이지 이동
+                    window.location.href = "/views/user/memberList"; // 다른 페이지로 이동
+                },
+                error: function (xhr, status, error) {
+                    // 데이터를 전송하는 중에 오류가 발생했을 때 처리
+                    console.error("Error sending data:", error);
+                    alert("Failed to send data. Please try again later.");
+                    // TODO: 실패 처리 로직 추가
+                }
+            });
+        });
+
+
+        // 강제 탈퇴 확인 버튼 클릭 이벤트 처리
+        $('#forcedWithdrawalCheck').click(function () {
+            var userId = $('#uid').val(); // 선택된 회원의 ID 값 가져오기
+
+            // 선택된 회원의 ID 값을 컨트롤러로 전송
+            $.ajax({
+                type: "POST", // 전송 방식
+                url: "/views/user/forcedWithdrawal", // 컨트롤러 URL
+                data: {userId: userId}, // 전송할 데이터
+                success: function (response) {
+                    // 성공적으로 데이터를 전송하고 응답을 받았을 때 처리
+                    console.log("Forced withdrawal success:", response);
+                    // 모달 닫기
+                    $('#forcedWithdrawalModal').modal('hide');
+                    // 페이지 이동
+                    window.location.href = "/views/user/memberList"; // 다른 페이지로 이동
+                },
+                error: function (xhr, status, error) {
+                    // 데이터를 전송하는 중에 오류가 발생했을 때 처리
+                    console.error("Error sending data:", error);
+                    alert("Failed to send data. Please try again later.");
+                }
+            });
+        });
+
+    </script>
 </body>
 </html>
