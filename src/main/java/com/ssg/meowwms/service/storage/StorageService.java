@@ -1,5 +1,6 @@
 package com.ssg.meowwms.service.storage;
 
+import com.ssg.meowwms.dto.storage.MergeDTO;
 import com.ssg.meowwms.dto.storage.ProductDTO;
 import com.ssg.meowwms.dto.storage.StockMovementDTO;
 import com.ssg.meowwms.dto.stock.StockDTO;
@@ -14,9 +15,12 @@ public interface StorageService {
     void cancelStorageRequest(int requestId);
     int modifyProduct(int requestId, ProductDTO productDTO);
     void modifyStorageRequest(int requestId);
+
+    List<ProductDTO> getProductList();
     List<StockMovementDTO> getStorageList();
     List<StockMovementDTO> selectMovementByStatus(String statusCode);
     List<StockMovementDTO> selectStockMovementsById(int productId);
+    List<MergeDTO> mergeLists();
     String generateQrCodeContent(StockMovementDTO stockMovementDTO, ProductDTO productDTO);
     void generateAndSaveQRCode(int productId, String qrCodeContent);
     void getQrCode(byte[] imageData, String filePath);
