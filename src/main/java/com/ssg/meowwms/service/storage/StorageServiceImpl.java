@@ -4,6 +4,7 @@ import com.google.zxing.WriterException;
 import com.ssg.meowwms.domain.stock.StockVO;
 import com.ssg.meowwms.domain.storage.ProductVO;
 import com.ssg.meowwms.domain.storage.StockMovementVO;
+import com.ssg.meowwms.dto.storage.MergeDTO;
 import com.ssg.meowwms.dto.storage.ProductDTO;
 import com.ssg.meowwms.dto.storage.StockMovementDTO;
 import com.ssg.meowwms.dto.stock.StockDTO;
@@ -22,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,6 +80,14 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
+    public List<ProductDTO> getProductList() {
+        List<ProductVO> productVOList = productMapper.selectAllProducts();
+
+        return productVOList.stream()
+                .map(productVO -> modelMapper.map(productVO,ProductDTO.class))
+                .collect(Collectors.toList());
+    }
+    @Override
     public List<StockMovementDTO> getStorageList() {
         List<StockMovementVO> stockMovementVOList = stockMovementMapper.selectAllStockMovements();
 
@@ -97,6 +108,38 @@ public class StorageServiceImpl implements StorageService {
         return stockMovementVOList.stream()
                 .map(stockMovementVO ->  modelMapper.map(stockMovementVO, StockMovementDTO.class))
                 .collect(Collectors.toList());
+    }
+
+
+    public List<MergeDTO> mergeLists() {
+        List<MergeDTO> mergedList = new ArrayList<>();
+
+        List<ProductVO> products = productMapper.selectAllProducts();
+        List<StockMovementVO> stockMovements = stockMovementMapper.selectAllStockMovements();
+
+        // Product와 StockMovement를 조합하여 하나의 DTO로 만들어 mergedList에 추가하는 로직을 구현하세요.
+        for (ProductVO product : products) {
+            for (StockMovementVO stockMovement : stockMovements) {
+                if (product.getId() == stockMovement.getProductId()) {
+                    MergeDTO dto = new MergeDTO();
+                    dto.setProductId(product.getId());
+                    dto.setMovementUserId(product.getUserId());
+                    dto.setProductName(product.getName());
+                    dto.setProductCategory(product.getCategoryId());
+                    dto.setProductPrice(product.getPrice());
+                    dto.setProductSalePrice(product.getSalePrice());
+                    dto.setProductQuantity(product.getQuantity());
+                    dto.setMovementStatusCode(stockMovement.getStatusCode());
+                    dto.setMovementRequestDate(stockMovement.getRequestDatetime());
+                    dto.setMovementApprovedDate(stockMovement.getApprovedDatetime());
+                    dto.setMovementWarehouseId(stockMovement.getWarehouseId());
+                    mergedList.add(dto);
+                    break;
+                }
+            }
+        }
+
+        return mergedList;
     }
 
     @Override
