@@ -55,5 +55,5 @@ public class WarehouseVO {
      * 창고 위치입니다. (지번 주소)
      */
     @NotNull
-    private String location;
+    private String address;
 }
