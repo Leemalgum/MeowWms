@@ -42,106 +42,28 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <!-- 창고 이름 입력 -->
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label for="productId-input">창고 이름</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input
-                                                    type="text"
-                                                    id="productId-input"
-                                                    class="form-control"
-                                                    required
-                                                    autocomplete="false"
-                                                    placeholder="창고 이름을 입력하세요."
-                                            />
-                                        </div>
-                                    </div>
-                                    <br />
-
-                                    <!-- 창고 분류 입력 -->
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label for="majorType-input">창고 분류</label>
-                                        </div>
-                                        <!-- 대분류 -->
-                                        <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 대분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 중분류 -->
-                                        <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 중분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 소분류 -->
-                                        <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 소분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
-                                            </select>
+                                    <!-- 검색 조건 입력 폼 -->
+                                    <div class="row mb-4">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <select class="custom-select" id="searchType">
+                                                        <option selected disabled hidden>-- 검색 타입 선택 --</option>
+                                                        <option value="warehouseId">창고 아이디</option>
+                                                        <option value="warehouseName">창고 이름</option>
+                                                        <option value="mainCategory">대분류</option>
+                                                        <option value="middleCategory">소분류</option>
+                                                        <option value="subCategory">소분류</option>
+                                                        <option value="warehouseLocation">창고 주소</option>
+                                                    </select>
+                                                </div>
+                                                <input type="text" class="form-control" id="searchKeyword" placeholder="검색어를 입력하세요...">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-primary" type="button" id="button-search">검색</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <br />
-
-                                    <!-- 창고 위치 입력 -->
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label for="address">창고 위치</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input
-                                                    type="search"
-                                                    id="address"
-                                                    class="form-control"
-                                                    placeholder="창고 주소를 입력하세요."
-                                            />
-                                        </div>
-                                    </div>
-                                    <br />
-
-                                    <div class="row">
-                                        <div class="col-md-2"></div>
-                                        <div style="text-align: center; margin-right: 10px">
-                                            <!-- 전체 간격을 일정하게 열 맞춤 -->
-                                            <button
-                                                    id="retrieval-register-button"
-                                                    class="btn btn-primary"
-                                            >
-                                                검색
-                                            </button>
-                                        </div>
-
-                                        <div style="text-align: center">
-                                            <!-- 전체 간격을 일정하게 열 맞춤 -->
-                                            <button
-                                                    id="retrieval-register-button"
-                                                    class="btn btn-primary"
-                                            >
-                                                다시 입력
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <br />
 
                                     <!-- 카카오맵 -->
                                     <div class="row justify-content-center">
