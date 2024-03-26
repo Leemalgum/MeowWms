@@ -386,6 +386,13 @@
     function checkDuplicateWarehouseName() {
         var warehouseName = document.getElementById("warehouseName").value;
 
+        if (warehouseName.trim() === "") {
+            alert("창고 이름은 공백이 될 수 없습니다!");
+            document.getElementById("warehouseName").value = '';
+            isCheckWarehouseName = false;
+            return;
+        }
+
         // Ajax 요청
         $.ajax({
             type: "GET",
@@ -423,10 +430,16 @@
         const address = document.getElementById("address").value;
 
         // 필수 입력 필드가 비어 있는지 확인
-        if (warehouseName.trim() === "" || mainType === "" || middleType === "" || subType === "" || warehouseManager === "" || volume <= 0 || address === "") {
+        if (warehouseName.trim() === "" || mainType === "" || middleType === "" || subType === "" || warehouseManager === "" || volume === "" || address === "") {
             // 하나라도 비어 있으면 등록 버튼 비활성화
             alert("모든 필수 입력 필드를 입력하세요.");
             return; // 함수 종료
+        }
+
+        if (volume <= 0) {
+            alert("창고 용량은 0보다 작을 수 없습니다!");
+            document.getElementById("volume").value = "";
+            return;
         }
 
         if (!isCheckWarehouseName) {
