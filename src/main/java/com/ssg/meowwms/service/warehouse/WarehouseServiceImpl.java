@@ -55,4 +55,9 @@ public class WarehouseServiceImpl implements WarehouseService{
     public Optional<Integer> getWarehouseIdByName(String warehouseName) {
         return warehouseMapper.selectIdByName(warehouseName);
     }
+
+    @Override
+    public List<Integer> getAllWarehouseId() {
+        return warehouseMapper.selectAllWarehouseId();
+    }
 }
