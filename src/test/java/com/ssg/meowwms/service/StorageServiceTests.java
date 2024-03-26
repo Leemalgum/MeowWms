@@ -1,5 +1,6 @@
 package com.ssg.meowwms.service;
 
+import com.ssg.meowwms.dto.storage.MergeDTO;
 import com.ssg.meowwms.dto.storage.ProductDTO;
 import com.ssg.meowwms.dto.storage.StockMovementDTO;
 import com.ssg.meowwms.service.storage.StorageService;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Log4j2
 @ExtendWith(SpringExtension.class)
@@ -129,6 +131,15 @@ public class StorageServiceTests {
             storageService.getQrCode(qrCodeImageData, filePath);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testMerge(){
+        log.info("list merging...");
+        List<MergeDTO> mergedList = storageService.mergeLists();
+        for (MergeDTO mergeDTO : mergedList){
+            log.info(mergeDTO);
         }
     }
 }
