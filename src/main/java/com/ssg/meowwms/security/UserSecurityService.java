@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.ssg.meowwms.dto.user.UserDTO;
 import com.ssg.meowwms.service.user.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
+@Log4j2
 public class UserSecurityService implements UserDetailsService {
 
     private final UserService userService;
@@ -25,7 +27,8 @@ public class UserSecurityService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Optional<UserDTO> userDTOOptional = this.userService.getOne(userId);
-        if (!userDTOOptional.isPresent()) {
+        log.info(userDTOOptional);
+        if (userDTOOptional.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }
         UserDTO meowUser = userDTOOptional.get();

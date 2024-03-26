@@ -2,7 +2,6 @@ package com.ssg.meowwms.controller.user;
 
 import com.ssg.meowwms.dto.user.UserDTO;
 import com.ssg.meowwms.security.SecurityUtils;
-import com.ssg.meowwms.security.UserSecurityService;
 import com.ssg.meowwms.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,6 +36,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) {
         System.out.println(username + " " + password);
+
         return "redirect:/views/user/index";
     }
 
