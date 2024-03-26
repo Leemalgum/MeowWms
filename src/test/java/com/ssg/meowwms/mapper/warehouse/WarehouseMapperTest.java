@@ -30,7 +30,7 @@ class WarehouseMapperTest {
                 .category("냉장 식품 과일")
                 .managerId("WarehouseManager")
                 .volume(20)
-                .location("서울 동작구 노량진동 49-12")
+                .address("서울 동작구 노량진동 49-12")
                 .build();
 
         warehouseMapper.insert(warehouseVO);
