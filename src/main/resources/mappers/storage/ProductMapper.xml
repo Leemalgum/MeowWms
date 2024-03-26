@@ -20,4 +20,7 @@
             volume=#{product.volume}
         WHERE id=#{requestId}
     </update>
+    <select id="selectAllProducts" resultType="com.ssg.meowwms.domain.storage.ProductVO">
+        SELECT * FROM Product
+    </select>
 </mapper>
