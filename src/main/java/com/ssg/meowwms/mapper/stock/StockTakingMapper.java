@@ -1,5 +1,6 @@
 package com.ssg.meowwms.mapper.stock;
 
+import com.ssg.meowwms.domain.stock.StockTakingDetailVO;
 import com.ssg.meowwms.domain.stock.StockTakingVO;
 import com.ssg.meowwms.domain.stock.StockVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,4 +19,6 @@ public interface StockTakingMapper {
     void deleteStocktaking(int stockTakingId);
     List<StockTakingVO> selectAllStocktaking();
     StockTakingVO selectOneStocktaking(int stockTakingId);
+
+    List<StockTakingDetailVO> selectSTDetail(int stockId);
 }

@@ -58,14 +58,12 @@ public class StockServiceTests {
         Date lastyear = dateFormat.parse("2023-03-23");
 
         log.info(stockService.getProductStatusList(
-                lastyear
-                , date
-                , "1"
-                , "냉장"
-                , "식품"
-                , "유제품"
-                , 1
-                , 1
+                null
+                , null
+                , null
+                , null
+                , null
+                , null
         ));
         stockService.getProductStatusList(
                 lastyear
@@ -74,8 +72,6 @@ public class StockServiceTests {
                 , "냉장"
                 , "식품"
                 , "유제품"
-                , 1
-                , 1
         );
     }
     @Test

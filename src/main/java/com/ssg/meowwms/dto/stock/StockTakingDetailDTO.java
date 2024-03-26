@@ -16,6 +16,8 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockTakingDetailDTO {
+
+    private int stockId;
     /**
      * 제품 아이디 : 1 이상, Auto Increment
      */

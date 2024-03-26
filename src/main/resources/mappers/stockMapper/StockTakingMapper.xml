@@ -23,11 +23,34 @@
     </select>
 
     <select id="selectAllStocktaking" resultType="com.ssg.meowwms.domain.stock.StockTakingVO"> <!-- Update resultType -->
-        SELECT * FROM Stocktaking;
+        SELECT * FROM Stocktaking st
     </select>
 
+
+    <select id="selectSTDetail" resultType="com.ssg.meowwms.domain.stock.StockTakingDetailVO"> <!-- Update resultType -->
+        SELECT s.id as stockId,
+        p.id as productId,
+        p.name as productName,
+        c.sub_category as productSubCategory,
+        s.quantity as computerizedStock,
+        st.status as status,
+        st.status_detail as statusDetail
+        FROM Stocktaking st
+        Join Stock s on s.id = st.stock_id
+        JOIN Product p on s.product_id = p.id
+        JOIN Category c on p.category_id = c.id
+        where stocktaking_id = #{stockTakingId};
+    </select>
+
+
+
+
     <select id="selectOneStocktaking" resultType="com.ssg.meowwms.domain.stock.StockTakingVO"> <!-- Update resultType -->
-        SELECT * FROM Stocktaking where stocktaking_id = #{stockTakingId};
+        SELECT *
+        FROM Stocktaking st
+        Join Stock s on s.id
+        where stocktaking_id LIKE CONCAT('%', #{stockTakingId}, '%');
+
     </select>
 
 

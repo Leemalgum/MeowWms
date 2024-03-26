@@ -35,6 +35,9 @@ public class StockTakingDTO {
      */
     private Date plannedDate;
 
+    private String warehouseName;
+    private String warehouseLocation;
+
     /**
      * 재고 실사 담당자 이름 : 45자 제한
      */

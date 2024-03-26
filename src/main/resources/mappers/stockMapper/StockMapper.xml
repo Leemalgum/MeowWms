@@ -8,60 +8,61 @@
     <select id="selectStockByMainCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
         select * from Stock s
         Join Warehouse w on w.id = s.warehouse_id
-        Join Category c on c.id = w.categoryId
+        Join Category c on c.id = w.category_id
         where c.main_category = #{mainCategory};
     </select>
 
     <select id="selectStockByMiddleCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
         select * from Stock s
         Join Warehouse w on w.id = s.warehouse_id
-        Join Category c on c.id = w.categoryId
+        Join Category c on c.id = w.category_id
         where c.middle_category = #{middleCategory};
     </select>
 
     <select id="selectStockBySubCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
         select * from Stock s
         Join Warehouse w on w.id = s.warehouse_id
-        Join Category c on c.id = w.categoryId
+        Join Category c on c.id = w.category_id
         where c.sub_category = #{subCategory};
     </select>
 
 
     <select id="selectProductStatusList" resultType="com.ssg.meowwms.domain.stock.ProductStatusVO">
         SELECT
-            sm.approved_datetime AS approvedDatetime,
-            s.id AS stockId,
-            w.id AS warehouseId,
-            w.name AS warehouseName,
-            c.sub_category AS warehouseSubCategory,
-            p.id AS productId,
-            p.name AS productName,
-            s.quantity AS stockQuantity,
-            p.price AS productPrice
+        sm.approved_datetime AS approvedDatetime,
+        s.id AS stockId,
+        w.id AS warehouseId,
+        w.name AS warehouseName,
+        c.sub_category AS warehouseSubCategory,
+        p.id AS productId,
+        p.name AS productName,
+        s.quantity AS stockQuantity,
+        p.price AS productPrice
         FROM
-            Stock s
-                JOIN Warehouse w ON w.id = s.warehouse_id
-                JOIN Category c ON c.id = w.categoryId
-                JOIN Product p ON p.id = s.product_id
-                JOIN Stock_Movement sm ON sm.product_id = p.id
+        Stock s
+        JOIN Warehouse w ON w.id = s.warehouse_id
+        JOIN Category c ON c.id = w.category_id
+        JOIN Product p ON p.id = s.product_id
+        JOIN Stock_Movement sm ON sm.product_id = p.id
         WHERE
-            (
-                s.id LIKE CONCAT('%', #{searchTerm}, '%')
-                OR w.id LIKE CONCAT('%', #{searchTerm}, '%')
-                OR w.name LIKE CONCAT('%', #{searchTerm}, '%')
-                OR c.sub_category LIKE CONCAT('%', #{searchTerm}, '%')
-                OR p.id LIKE CONCAT('%', #{searchTerm}, '%')
-                OR p.name LIKE CONCAT('%', #{searchTerm}, '%')
-                OR s.quantity LIKE CONCAT('%', #{searchTerm}, '%')
-                OR p.price LIKE CONCAT('%', #{searchTerm}, '%')
-                )
-          AND (sm.approved_datetime &gt;= #{from} AND sm.approved_datetime &lt;= #{to})
-          AND c.main_category LIKE CONCAT('%', #{mainCategory}, '%')
-          AND c.middle_category LIKE CONCAT('%', #{middleCategory}, '%')
-          AND c.sub_category LIKE CONCAT('%', #{subCategory}, '%')
-          AND p.id LIKE CONCAT('%', #{productId}, '%')
-          AND w.id LIKE CONCAT('%', #{warehouseId}, '%');
+        (
+        s.id LIKE CONCAT('%', COALESCE(#{searchTerm}, ''), '%')
+        OR w.id LIKE CONCAT('%', COALESCE(#{searchTerm}, ''), '%')
+        OR w.name LIKE CONCAT('%', COALESCE(#{searchTerm}, ''), '%')
+        OR c.sub_category LIKE CONCAT('%', COALESCE(#{searchTerm}, ''), '%')
+        OR p.id LIKE CONCAT('%', COALESCE(#{searchTerm}, ''), '%')
+        OR p.name LIKE CONCAT('%', COALESCE(#{searchTerm}, ''), '%')
+        OR s.quantity LIKE CONCAT('%', COALESCE(#{searchTerm}, ''), '%')
+        OR p.price LIKE CONCAT('%', COALESCE(#{searchTerm}, ''), '%')
+        )
+        AND (sm.approved_datetime >= #{from} OR #{from} IS NULL OR #{from} = '')
+        AND (sm.approved_datetime &lt; #{to} OR #{to} IS NULL OR #{to} = '')
+        AND (c.main_category LIKE CONCAT('%', COALESCE(#{mainCategory}, ''), '%') OR #{mainCategory} IS NULL)
+        AND (c.middle_category LIKE CONCAT('%', COALESCE(#{middleCategory}, ''), '%') OR #{middleCategory} IS NULL)
+        AND (c.sub_category LIKE CONCAT('%', COALESCE(#{subCategory}, ''), '%') OR #{subCategory} IS NULL)
     </select>
+
+
 
 
     <select id="selectWarehouseStatusList" resultType="com.ssg.meowwms.domain.stock.WarehouseStatusVO">
@@ -76,7 +77,7 @@
         FROM
             Stock s
                 JOIN Warehouse w ON w.id = s.warehouse_id
-                JOIN Category c ON c.id = w.categoryId
+                JOIN Category c ON c.id = w.category_id
                 JOIN Product p ON p.id = s.product_id
                 JOIN Stock_Movement sm ON sm.product_id = p.id
                 JOIN Shipping_Orders_Detail sod on p.id = sod.product_id

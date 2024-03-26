@@ -1,7 +1,10 @@
 package com.ssg.meowwms.service.stock;
 
 import com.ssg.meowwms.domain.stock.StockTakingVO;
+import com.ssg.meowwms.domain.stock.WarehouseStatusVO;
 import com.ssg.meowwms.dto.stock.StockTakingDTO;
+import com.ssg.meowwms.dto.stock.StockTakingDetailDTO;
+import com.ssg.meowwms.dto.stock.WarehouseStatusDTO;
 import com.ssg.meowwms.mapper.stock.StockTakingMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -62,9 +65,20 @@ public class StockTakingServiceImpl implements StockTakingService {
     public List<StockTakingDTO> selectAllStocktaking() {
         log.info("/StockTaking Service selectAllStocktaking...");
         try {
-            List<StockTakingDTO> stockTakingDTOList = stockTakingMapper.selectAllStocktaking().stream().map(
-                    stockTakingVO -> modelMapper.map(stockTakingVO, StockTakingDTO.class)
-            ).collect(Collectors.toList());
+
+            List<StockTakingDTO> stockTakingDTOList = stockTakingMapper.selectAllStocktaking()
+                    .stream()
+                    .map(stockTakingVO -> {
+                        // Map the VO to DTO
+                        StockTakingDTO stockTakingDTO = modelMapper.map(stockTakingVO, StockTakingDTO.class);
+
+                        // TODO:: 종우님께 stockId 가지고서 해당 warehouse name, location 가져오는거 만들어 달라하기
+//                        stockTakingDTO.setWarehouseName();
+//                        stockTakingDTO.setWarehouseLocation();
+
+                        return stockTakingDTO;
+                    }).collect(Collectors.toList());
+
 
             log.info(stockTakingDTOList);
 
@@ -85,5 +99,33 @@ public class StockTakingServiceImpl implements StockTakingService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<StockTakingDetailDTO> selectSTDetail(int stockTakingId) {
+        log.info("/StockTaking Service select ST Detail...");
+        try {
+
+            List<StockTakingDetailDTO> stockTakingDetailDTOS = stockTakingMapper.selectSTDetail(stockTakingId)
+                    .stream()
+                    .map(detail -> {
+                        // Map the VO to DTO
+                        StockTakingDetailDTO stockTakingDetailDTO = modelMapper.map(detail, StockTakingDetailDTO.class);
+
+                        // TODO:: 종우님께 stockId 가지고서 해당 warehouse name, location 가져오는거 만들어 달라하기
+//                        stockTakingDTO.setWarehouseName();
+//                        stockTakingDTO.setWarehouseLocation();
+
+                        return stockTakingDetailDTO;
+                    }).collect(Collectors.toList());
+
+
+            log.info(stockTakingDetailDTOS);
+
+            return stockTakingDetailDTOS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
