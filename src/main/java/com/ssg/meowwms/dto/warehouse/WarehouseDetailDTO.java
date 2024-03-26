@@ -28,7 +28,7 @@ public class WarehouseDetailDTO {
      * 창고 위치입니다. (지번 주소)
      */
     @NotNull
-    private String location;
+    private String address;
 
     /**
      * 창고 관리자 아이디입니다.
