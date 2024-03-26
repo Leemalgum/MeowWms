@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Meow Warehouse Management System</title>
+    <!-- Header 프래그먼트 포함 -->
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+</head>
+<body>
+
+<!-- 페이지 래퍼 -->
+<div id="wrapper">
+    <!-- 사이드바 -->
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <!-- 콘텐츠 래퍼 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- 메인 콘텐츠 -->
+        <div id="content">
+            <!-- 탑바 -->
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+
+            <!-- 페이지 콘텐츠 시작 -->
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">입고 현황</h1>
+                <p class="mb-4">입고관리 페이지 입니다.</p>
+                <!-- Row for date selection -->
+                <div class="row mb-4">
+                    <!-- Left column for date selection, search boxes, and dropdowns -->
+                    <div class="col-md-10">
+                        <!-- Row for date selection -->
+                        <div class="row align-items-center">
+                            <div class="col-md-auto mt-2">
+                                <label for="requestDateLabel"> 요청 날짜</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="date" id="requestDateLabel" class="form-control">
+                            </div>
+                            <div class="col-md-auto mt-2">
+                                <label for="approvedDateLabel"> 승인 날짜</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="date" id="approvedDateLabel" class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- Row for warehouse and product categories -->
+                        <div class="row align-items-center">
+                            <div class="col-md-auto mt-2">
+                                <label for="mainType"> 상품 분류</label>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="mainType" class="form-control">
+                                    <option value="" selected disabled hidden>--- 대분류 ---</option>
+                                    <th:block th:each="category : ${mainCategories}">
+                                        <option th:text="${category}"></option>
+                                    </th:block>
+                                </select>
+                            </div>
+
+                            <!-- 중분류 -->
+                            <div class="col-md-2">
+                                <select id="middleType" class="form-control" disabled>
+                                    <option value="" selected disabled hidden>
+                                        --- 중분류 ---
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- 소분류 -->
+                            <div class="col-md-2">
+                                <select id="subType" class="form-control" disabled required>
+                                    <option value="" selected disabled hidden>
+                                        --- 소분류 ---
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <select class="custom-select" id="searchType">
+                                            <option selected>검색 타입 선택</option>
+                                            <option value="adminId">관리자 아이디</option>
+                                            <option value="userId">회원 아이디</option>
+                                            <option value="name">제품명</option>
+                                            <option value="warehouseId">창고 아이디</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" class="form-control" id="searchKeyword" placeholder="검색어를 입력하세요...">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" type="button" id="button-search">검색</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <!-- Button row 1 -->
+                        <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">요청 승인</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        승인 되었습니다.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">닫기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 justify-content-center">
+                            <button type="button" class="btn btn-primary btn-block" id="requestBtn">요청
+                                승인</button>
+                        </div>
+                        <!-- Button row 2 -->
+                        <div class="modal fade" id="printBillModal" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">입고 상세 내역 조회</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="modal-body">
+                                            <h5>요청 정보</h5>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>주문 번호:</strong> <span id="orderId">(요청 아이디)</span>
+                                                    </p>
+                                                    <p><strong>요청 일자:</strong> 2024-03-20</p>
+                                                    <p><strong>승인 일자:</strong> 2024-03-21</p>
+                                                    <p><strong>주문자:</strong> <span id="userId-">(회원 아이디)</span></p>
+                                                </div>
+                                            </div><br>
+                                            <h5>상품 정보</h5>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>제품명:</strong> <span id="productName-">(제품명)</span></p>
+                                                    <p><strong>수량:</strong> <span id="quantity-">(수량)</span></p>
+                                                    <p><strong>분류:</strong> <span id="category-">(분류)</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" id="billDownload">고지서
+                                            다운로드</button>
+                                        <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">닫기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 justify-content-center">
+                            <button type="button" class="btn btn-primary btn-block" id="printBillBtn">고지서
+                                출력</button>
+                        </div>
+                        <!-- Button row 3 -->
+                        <div class="modal fade" id="QRModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">QRcode 출력</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="modal-body">
+                                            <h5>요청 정보</h5>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>사용자 아이디:</strong> <span id="userId">(아이디)</span></p>
+                                                    <p><strong>창고 아이디:</strong> <span id="warehouseId">(아이디)</span>
+                                                    </p>
+                                                    <p><strong>요청 날짜:</strong> <span
+                                                            id="requestDate">yyyy-MM-dd</span></p>
+                                                    <p><strong>승인 날짜:</strong> <span
+                                                            id="approvalDate">yyyy-MM-dd</span></p>
+                                                </div>
+                                            </div><br>
+                                            <h5>상품 정보</h5>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>상품명:</strong> <span id="productName">(제품명)</span></p>
+                                                    <p><strong>수량:</strong> <span id="quantity">(수량)</span></p>
+                                                    <p><strong>종류:</strong> <span id="category">(식품의류뭐어쩌고)</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <img src="(QR 이미지 경로)" alt="QR 이미지">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" id="QRDownload">QR code
+                                            다운로드</button>
+                                        <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">닫기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 justify-content-center">
+                            <button type="button" class="btn btn-primary btn-block" id="QRBtn">QR code
+                                생성</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th></th> <!-- 체크박스 -->
+                                <th>제품 아이디</th>
+                                <th>회원 아이디</th>
+                                <th>제품명</th>
+                                <th>분류</th>
+                                <th>원가</th>
+                                <th>정가</th>
+                                <th>수량</th>
+                                <th>상태</th>
+                                <th>요청 날짜</th>
+                                <th>승인 날짜</th>
+                                <th>창고 아이디</th>
+                            </tr>
+                            <tr th:each="merge : ${mergeLists}">
+                                <td><input type="checkbox"></td>
+                                <td th:text="${merge.productId}"> </td>
+                                <td th:text="${merge.movementUserId}">  </td>
+                                <td th:text="${merge.productName}"> </td>
+                                <td th:text="${merge.productCategory}"> </td>
+                                <td th:text="${merge.productPrice}"> </td>
+                                <td th:text="${merge.productSalePrice}">  </td>
+                                <td th:text="${merge.productQuantity}"> </td>
+                                <td th:text="${merge.movementStatusCode}">  </td>
+                                <td th:text="${merge.movementRequestDate}">  </td>
+                                <td th:text="${#dates.format(merge.movementApprovedDate, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${merge.movementWarehouseId}">  </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 푸터 -->
+        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+    </div>
+</div>
+
+<!-- 스크롤 탑 버튼 -->
+<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+
+<!-- 로그아웃 모달 -->
+<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+
+<!-- 스크립트 -->
+<script>
+    const warehouse = [];
+
+    // 대분류 선택 시 중분류 데이터 요청
+    document.getElementById("mainType").addEventListener("change", function () {
+        // 선택된 대분류 값 가져오기
+        const selectedMainCategory = this.value;
+
+        // Ajax 요청
+        $.ajax({
+            type: "GET",
+            url: "/storage/getMiddleCategories",
+            data: {
+                mainCategory: selectedMainCategory
+            },
+            success: function (response) {
+                // 성공적으로 데이터를 받았을 때 중분류 select 업데이트
+                const middleTypeSelect = document.getElementById("middleType");
+                middleTypeSelect.disabled = false;
+                middleTypeSelect.innerHTML = "<option value='' selected disabled hidden>--- 중분류 ---</option>";
+
+                // 받은 데이터로 중분류 option 업데이트
+                response.forEach(function (middleCategory) {
+                    const option = document.createElement("option");
+                    option.value = middleCategory
+                    option.textContent = middleCategory; // 중분류 이름
+                    middleTypeSelect.appendChild(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                // 에러 처리
+                console.error(error);
+                alert("중분류 데이터를 가져오는 중 오류가 발생했습니다.");
+            }
+        });
+    });
+
+    // 중분류 선택 시 소분류 활성화 및 옵션 추가
+    document.getElementById("middleType").addEventListener("change", function () {
+        // 선택된 대분류와 중분류 값 가져오기
+        const selectedMainCategory = document.getElementById("mainType").value;
+        const selectedMiddleCategory = this.value;
+
+        // Ajax 요청
+        $.ajax({
+            type: "GET",
+            url: "/storage/getSubCategories",
+            data: {
+                mainCategory: selectedMainCategory,
+                middleCategory: selectedMiddleCategory
+            },
+            success: function (response) {
+                const subTypeSelect = document.getElementById("subType");
+                subTypeSelect.disabled = false;
+                subTypeSelect.innerHTML = "<option value='' selected disabled hidden>--- 소분류 ---</option>";
+
+                // 받은 데이터로 중분류 option 업데이트
+                response.forEach(function (subCategory) {
+                    const option = document.createElement("option");
+                    option.value = subCategory
+                    option.textContent = subCategory; // 소분류 이름
+                    subTypeSelect.appendChild(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                // 에러 처리
+                console.error(error);
+                alert("소분류 데이터를 가져오는 중 오류가 발생했습니다.");
+            }
+        });
+    });
+
+    document.getElementById("subType").addEventListener("change", function () {
+        // 선택된 대분류와 중분류, 소분류 값 가져오기
+        const selectedMainCategory = document.getElementById("mainType").value;
+        const selectedMiddleCategory = document.getElementById("middleType").value;
+        const selectedSubCategory = this.value;
+
+        // Ajax 요청
+        $.ajax({
+            type: "GET",
+            url: "/storage/getWarehouseWithCategory",
+            data: {
+                mainCategory: selectedMainCategory,
+                middleCategory: selectedMiddleCategory,
+                subCategory: selectedSubCategory
+            },
+            success: function (response) {
+                const warehouseListSelect = document.getElementById("warehouseList");
+
+                warehouseListSelect.disabled = false;
+                warehouseListSelect.innerHTML = "<option value='' selected disabled hidden>--- 창고를 선택하세요. ---</option>";
+
+                // 받은 데이터로 중분류 option 업데이트
+                // 받은 데이터로 창고 정보 업데이트
+                response.forEach(function (warehouseData) {
+                    // 중복 체크
+                    const isWarehouseExist = warehouse.find(w => w.id === warehouseData.id);
+                    if (!isWarehouseExist) {
+                        // 창고 정보 객체 생성
+                        const newWarehouse = {
+                            id: warehouseData.id,
+                            name: warehouseData.name,
+                            latitude: warehouseData.latitude,
+                            longitude: warehouseData.longitude
+                        };
+
+                        // warehouse 배열에 추가
+                        warehouse.push(newWarehouse);
+
+                        // 창고 목록 select 업데이트
+                        const option = document.createElement("option");
+                        option.value = newWarehouse.id;
+                        option.textContent = newWarehouse.name; // 창고 이름
+                        warehouseListSelect.appendChild(option);
+                    }
+                });
+
+            },
+            error: function (xhr, status, error) {
+                // 에러 처리
+                console.error(error);
+                alert("소분류 데이터를 가져오는 중 오류가 발생했습니다.");
+            }
+        });
+    });
+
+    // 상품 등록 버튼 클릭 시 이벤트 리스너 추가
+    document.getElementById("retrieval-register-button").addEventListener("click", function () {
+        // 사용자가 입력한 데이터 수집
+        const productName = document.getElementById("productName").value;
+        const mainType = document.getElementById("mainType").value;
+        const middleType = document.getElementById("middleType").value;
+        const subType = document.getElementById("subType").value;
+        const warehouseId = document.getElementById("warehouseList").value;
+        const productBrand = document.getElementById("productBrand").value;
+        const productPrice = document.getElementById("productPrice").value;
+        const productSalePrice = document.getElementById("productSalePrice").value;
+        const productQuantity = document.getElementById("productQuantity").value;
+        const productVolume = document.getElementById("productVolume").value;
+
+        $.ajax({
+            type: "POST",
+            url: "/storage/incoming",
+            data: {
+                productName: productName,
+                mainType: mainType,
+                middleType: middleType,
+                subType: subType,
+                warehouseId : warehouseId,
+                productBrand : productBrand,
+                productPrice : productPrice,
+                productSalePrice : productSalePrice,
+                productQuantity : productQuantity,
+                productVolume : productVolume
+            },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                // 에러 처리
+                console.error(error);
+                // alert("소분류 데이터를 가져오는 중 오류가 발생했습니다.");
+            }
+        });
+    });
+
+
+    // 검색 버튼 클릭 시 이벤트 처리
+    document.getElementById("searchBtn").addEventListener("click", function () {
+        // 검색 조건 수집
+        const requestDate = document.getElementById("requestDateLabel").value;
+        const approvedDate = document.getElementById("approvedDateLabel").value;
+        const adminID = document.getElementById("adminIDLabel").value;
+        const userID = document.getElementById("userIDLabel").value;
+        const productName = document.getElementById("productNameLabel").value;
+        const category = document.getElementById("categoryLabel").value;
+
+        // AJAX 요청 보내기
+        $.ajax({
+            type: "GET",
+            url: "/storage/incoming/search",
+            data: {
+                requestDate: requestDate,
+                approvedDate: approvedDate,
+                adminID: adminID,
+                userID: userID,
+                productName: productName,
+                //category: category // 상품 분류 추가
+            },
+            success: function (response) {
+                // 받은 데이터를 이용하여 리스트 업데이트
+                updateList(response);
+            },
+            error: function (xhr, status, error) {
+                // 에러 처리
+                console.error(error);
+                alert("검색 중 오류가 발생했습니다.");
+            }
+        });
+    });
+    function filterMergeList() {
+        // 검색 조건 수집
+        var requestDate = $('#requestDateLabel').val();
+        var approvedDate = $('#approvedDateLabel').val();
+        var adminID = $('#adminIDLabel').val();
+        var userID = $('#userIDLabel').val();
+        var productName = $('#productNameLabel').val();
+        var warehouseID = $('#warehouseIdLabel').val();
+
+        // 각 행 순회
+        $('#dataTable tbody tr').each(function() {
+            var row = $(this);
+            var rowRequestDate = row.find('td:eq(9)').text(); // 요청 날짜 열
+            var rowApprovedDate = row.find('td:eq(10)').text(); // 승인 날짜 열
+            var rowAdminID = row.find('td:eq(2)').text(); // 관리자 ID 열
+            var rowUserID = row.find('td:eq(3)').text(); // 회원 ID 열
+            var rowProductName = row.find('td:eq(4)').text(); // 제품명 열
+            var rowWarehouseID = row.find('td:eq(11)').text(); // 창고 ID 열
+
+            // 조건에 맞는 행인지 확인하여 보이거나 숨김 처리
+            if (
+                (requestDate === '' || rowRequestDate === requestDate) &&
+                (approvedDate === '' || rowApprovedDate === approvedDate) &&
+                (adminID === '' || rowAdminID === adminID) &&
+                (userID === '' || rowUserID === userID) &&
+                (productName === '' || rowProductName === productName) &&
+                (warehouseID === '' || rowWarehouseID === warehouseID)
+            ) {
+                row.show(); // 보이기
+            } else {
+                row.hide(); // 숨기기
+            }
+        });
+    }
+
+
+
+
+    document.getElementById('requestBtn').addEventListener('click', function () {
+        $('#requestModal').modal('show');
+    });
+
+    document.getElementById('printBillBtn').addEventListener('click', function () {
+        $('#printBillModal').modal('show');
+    });
+    document.getElementById('billDownload').addEventListener('click', function () {
+        // 모달을 닫을 수 있는 코드 추가
+        $('#printBillModal').modal('hide');
+        // 여기에 버튼을 클릭했을 때 수행할 작업 추가
+        // 현재는 hide로 설정해둠.
+    });
+    document.getElementById('QRDownload').addEventListener('click', function () {
+        // 모달을 닫을 수 있는 코드 추가
+        $('#QRModal').modal('hide');
+        // 여기에 버튼을 클릭했을 때 수행할 작업 추가
+        // 현재는 hide로 설정해둠.
+    });
+    document.getElementById('QRBtn').addEventListener('click', function () {
+        $('#QRModal').modal('show');
+    });
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        // 초기 데이터 로드
+        loadMergeList();
+
+        // 검색 버튼 클릭 시
+        $('#searchBtn').click(function() {
+            loadMergeList(); // 검색 기능 실행
+        });
+    });
+
+    function loadMergeList() {
+        // 검색 조건 수집
+        var requestDate = $('#requestDateLabel').val();
+        var approvedDate = $('#approvedDateLabel').val();
+        var adminID = $('#adminIDLabel').val();
+        var userID = $('#userIDLabel').val();
+        var productName = $('#productNameLabel').val();
+        var warehouseID = $('#warehouseIdLabel').val();
+
+        // AJAX를 통해 서버에 검색 요청
+        $.ajax({
+            type: 'GET',
+            url: '/your-endpoint-url', // 실제 엔드포인트 URL로 변경
+            data: {
+                requestDate: requestDate,
+                approvedDate: approvedDate,
+                adminID: adminID,
+                userID: userID,
+                productName: productName,
+                warehouseID: warehouseID
+            },
+            success: function(response) {
+                // 성공적으로 응답을 받았을 때 실행되는 코드
+                // 응답 데이터를 테이블에 출력하거나 필요한 처리를 수행합니다.
+                // response를 사용하여 테이블을 갱신하거나 다른 처리를 수행합니다.
+                // 예시: 테이블 데이터를 새로 받은 데이터로 업데이트하는 등의 작업
+            },
+            error: function(xhr, status, error) {
+                // 요청 실패 시 실행되는 코드
+                console.error(error);
+                alert('검색 중 오류가 발생했습니다.');
+            }
+        });
+    }
+    /*]]>*/
+</script>
+
+
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+
+</body>
+</html>
