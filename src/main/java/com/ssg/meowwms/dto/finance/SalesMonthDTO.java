@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SalesMonthDTO {
+    private int month;
     private int salesMonth;
-    private int totalSales;
 
 }

@@ -69,4 +69,10 @@
         FROM Warehouse
         WHERE name = #{warehouseName}
     </select>
+
+    <select id="selectAllWarehouseId" resultType="java.lang.Integer">
+        select id
+        from Warehouse
+        group by id
+    </select>
 </mapper>
