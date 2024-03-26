@@ -29,7 +29,7 @@ public class WarehouseServiceTest {
                 .name("야옹창고")
                 .managerId("WarehouseManager")
                 .volume(10)
-                .location("서울 동작구 노량진동 49-12")
+                .address("서울 동작구 노량진동 49-12")
                 .build();
 
         warehouseService.register(warehouseDTO);
