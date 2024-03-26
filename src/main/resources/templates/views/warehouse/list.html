@@ -40,7 +40,7 @@
                                     <div class="input-group-prepend">
                                         <select class="custom-select" id="searchType">
                                             <option selected disabled hidden>-- 검색 타입 선택 --</option>
-                                            <option value="id">창고 ID</option>
+                                            <option value="id">ID</option>
                                             <option value="name">창고 이름</option>
                                             <option value="categoryId">창고 분류</option>
                                             <option value="address">창고 주소</option>
@@ -81,8 +81,7 @@
                                             <th>창고 ID</th>
                                             <th>창고 이름</th>
                                             <th>창고 분류</th>
-                                            <th>위도</th>
-                                            <th>경도</th>
+                                            <th>창고 주소</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -321,9 +320,8 @@
             "columns": [
                 {"data": "id"},
                 {"data": "name"},
-                {"data": "categoryId"},
-                {"data": "latitude"},
-                {"data": "longitude"},
+                {"data": "category"},
+                {"data": "address"},
                 // {
                 //     "data": "postTitle",
                 //     "render": function(data, type, row) {
