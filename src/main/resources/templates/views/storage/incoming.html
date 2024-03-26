@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Meow Warehouse Management System</title>
     <!-- Header 프래그먼트 포함 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
 </head>
 <body>
@@ -85,9 +86,9 @@
                                     <div class="input-group-prepend">
                                         <select class="custom-select" id="searchType">
                                             <option selected>검색 타입 선택</option>
-                                            <option value="adminId">관리자 아이디</option>
+                                            <option value="productId">제품 아이디</option>
                                             <option value="userId">회원 아이디</option>
-                                            <option value="name">제품명</option>
+                                            <option value="productName">제품명</option>
                                             <option value="warehouseId">창고 아이디</option>
                                         </select>
                                     </div>
@@ -247,31 +248,31 @@
                             <thead>
                             <tr>
                                 <th></th> <!-- 체크박스 -->
-                                <th>제품 아이디</th>
-                                <th>회원 아이디</th>
-                                <th>제품명</th>
-                                <th>분류</th>
-                                <th>원가</th>
-                                <th>정가</th>
-                                <th>수량</th>
-                                <th>상태</th>
-                                <th>요청 날짜</th>
-                                <th>승인 날짜</th>
-                                <th>창고 아이디</th>
+                                <th class="productId">제품 아이디</th>
+                                <th class="userId">회원 아이디</th>
+                                <th class="productName">제품명</th>
+                                <th class="category">분류</th>
+                                <th class="price">원가</th>
+                                <th class="salePrice">정가</th>
+                                <th class="quantity">수량</th>
+                                <th class="statusCode">상태</th>
+                                <th class="requestDate">요청 날짜</th>
+                                <th class="approvedDate">승인 날짜</th>
+                                <th class="warehouseId">창고 아이디</th>
                             </tr>
                             <tr th:each="merge : ${mergeLists}">
                                 <td><input type="checkbox"></td>
-                                <td th:text="${merge.productId}"> </td>
-                                <td th:text="${merge.movementUserId}">  </td>
-                                <td th:text="${merge.productName}"> </td>
-                                <td th:text="${merge.productCategory}"> </td>
-                                <td th:text="${merge.productPrice}"> </td>
-                                <td th:text="${merge.productSalePrice}">  </td>
-                                <td th:text="${merge.productQuantity}"> </td>
-                                <td th:text="${merge.movementStatusCode}">  </td>
-                                <td th:text="${merge.movementRequestDate}">  </td>
-                                <td th:text="${#dates.format(merge.movementApprovedDate, 'yyyy-MM-dd')}"></td>
-                                <td th:text="${merge.movementWarehouseId}">  </td>
+                                <td th:class="productId"th:text="${merge.productId}"> </td>
+                                <td th:class="userId" th:text="${merge.movementUserId}">  </td>
+                                <td th:class="productName" th:text="${merge.productName}"> </td>
+                                <td th:class="category" th:text="${merge.productCategory}"> </td>
+                                <td th:class="price" th:text="${merge.productPrice}"> </td>
+                                <td th:class="salePrice" th:text="${merge.productSalePrice}">  </td>
+                                <td th:class="quantity" th:text="${merge.productQuantity}"> </td>
+                                <td th:class="statusCode" th:text="${merge.movementStatusCode}">  </td>
+                                <td th:class="requestDate" th:text="${merge.movementRequestDate}">  </td>
+                                <td th:class="approvedDate" th:text="${#dates.format(merge.movementApprovedDate, 'yyyy-MM-dd')}"></td>
+                                <td th:class="warehouseId" th:text="${merge.movementWarehouseId}">  </td>
                             </tr>
                             </thead>
                             <tbody>
@@ -296,7 +297,7 @@
 <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
 
 <!-- 스크립트 -->
-<script>
+<script th:inline="javascript">
     const warehouse = [];
 
     // 대분류 선택 시 중분류 데이터 요청
@@ -332,7 +333,6 @@
             }
         });
     });
-
     // 중분류 선택 시 소분류 활성화 및 옵션 추가
     document.getElementById("middleType").addEventListener("change", function () {
         // 선택된 대분류와 중분류 값 가져오기
@@ -422,115 +422,37 @@
             }
         });
     });
-
-    // 상품 등록 버튼 클릭 시 이벤트 리스너 추가
-    document.getElementById("retrieval-register-button").addEventListener("click", function () {
-        // 사용자가 입력한 데이터 수집
-        const productName = document.getElementById("productName").value;
-        const mainType = document.getElementById("mainType").value;
-        const middleType = document.getElementById("middleType").value;
-        const subType = document.getElementById("subType").value;
-        const warehouseId = document.getElementById("warehouseList").value;
-        const productBrand = document.getElementById("productBrand").value;
-        const productPrice = document.getElementById("productPrice").value;
-        const productSalePrice = document.getElementById("productSalePrice").value;
-        const productQuantity = document.getElementById("productQuantity").value;
-        const productVolume = document.getElementById("productVolume").value;
-
-        $.ajax({
-            type: "POST",
-            url: "/storage/incoming",
-            data: {
-                productName: productName,
-                mainType: mainType,
-                middleType: middleType,
-                subType: subType,
-                warehouseId : warehouseId,
-                productBrand : productBrand,
-                productPrice : productPrice,
-                productSalePrice : productSalePrice,
-                productQuantity : productQuantity,
-                productVolume : productVolume
-            },
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (xhr, status, error) {
-                // 에러 처리
-                console.error(error);
-                // alert("소분류 데이터를 가져오는 중 오류가 발생했습니다.");
-            }
-        });
-    });
-
-
     // 검색 버튼 클릭 시 이벤트 처리
-    document.getElementById("searchBtn").addEventListener("click", function () {
-        // 검색 조건 수집
-        const requestDate = document.getElementById("requestDateLabel").value;
-        const approvedDate = document.getElementById("approvedDateLabel").value;
-        const adminID = document.getElementById("adminIDLabel").value;
-        const userID = document.getElementById("userIDLabel").value;
-        const productName = document.getElementById("productNameLabel").value;
-        const category = document.getElementById("categoryLabel").value;
+    document.getElementById('button-search').addEventListener('click', function() {
+        // 검색 조건 가져오기
+        var requestDate = document.getElementById('requestDateLabel').value;
+        var approvedDate = document.getElementById('approvedDateLabel').value;
+        var mainType = document.getElementById('mainType').value;
+        var middleType = document.getElementById('middleType').value;
+        var subType = document.getElementById('subType').value;
 
-        // AJAX 요청 보내기
-        $.ajax({
-            type: "GET",
-            url: "/storage/incoming/search",
-            data: {
-                requestDate: requestDate,
-                approvedDate: approvedDate,
-                adminID: adminID,
-                userID: userID,
-                productName: productName,
-                //category: category // 상품 분류 추가
-            },
-            success: function (response) {
-                // 받은 데이터를 이용하여 리스트 업데이트
-                updateList(response);
-            },
-            error: function (xhr, status, error) {
-                // 에러 처리
-                console.error(error);
-                alert("검색 중 오류가 발생했습니다.");
+        var results = document.querySelectorAll('#dataTable tbody tr');
+
+        results.forEach(function(row) {
+            // 행의 데이터를 기반으로 검색 조건과 일치하는지 확인
+            var rowRequestDate = row.querySelector('.requestDate').textContent;
+            var rowApprovedDate = row.querySelector('.approvedDate').textContent;
+            var rowMainType = row.querySelector('.mainType').textContent;
+            var rowMiddleType = row.querySelector('.middleType').textContent;
+            var rowSubType = row.querySelector('.subType').textContent;
+
+            // 조건에 맞는 행만 보이도록 설정
+            if ((requestDate === '' || rowRequestDate === requestDate) &&
+                (approvedDate === '' || rowApprovedDate === approvedDate) &&
+                (mainType === '' || rowMainType === mainType) &&
+                (middleType === '' || rowMiddleType === middleType) &&
+                (subType === '' || rowSubType === subType)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
             }
         });
     });
-    function filterMergeList() {
-        // 검색 조건 수집
-        var requestDate = $('#requestDateLabel').val();
-        var approvedDate = $('#approvedDateLabel').val();
-        var adminID = $('#adminIDLabel').val();
-        var userID = $('#userIDLabel').val();
-        var productName = $('#productNameLabel').val();
-        var warehouseID = $('#warehouseIdLabel').val();
-
-        // 각 행 순회
-        $('#dataTable tbody tr').each(function() {
-            var row = $(this);
-            var rowRequestDate = row.find('td:eq(9)').text(); // 요청 날짜 열
-            var rowApprovedDate = row.find('td:eq(10)').text(); // 승인 날짜 열
-            var rowAdminID = row.find('td:eq(2)').text(); // 관리자 ID 열
-            var rowUserID = row.find('td:eq(3)').text(); // 회원 ID 열
-            var rowProductName = row.find('td:eq(4)').text(); // 제품명 열
-            var rowWarehouseID = row.find('td:eq(11)').text(); // 창고 ID 열
-
-            // 조건에 맞는 행인지 확인하여 보이거나 숨김 처리
-            if (
-                (requestDate === '' || rowRequestDate === requestDate) &&
-                (approvedDate === '' || rowApprovedDate === approvedDate) &&
-                (adminID === '' || rowAdminID === adminID) &&
-                (userID === '' || rowUserID === userID) &&
-                (productName === '' || rowProductName === productName) &&
-                (warehouseID === '' || rowWarehouseID === warehouseID)
-            ) {
-                row.show(); // 보이기
-            } else {
-                row.hide(); // 숨기기
-            }
-        });
-    }
 
 
 
@@ -558,54 +480,7 @@
         $('#QRModal').modal('show');
     });
 </script>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    $(document).ready(function() {
-        // 초기 데이터 로드
-        loadMergeList();
 
-        // 검색 버튼 클릭 시
-        $('#searchBtn').click(function() {
-            loadMergeList(); // 검색 기능 실행
-        });
-    });
-
-    function loadMergeList() {
-        // 검색 조건 수집
-        var requestDate = $('#requestDateLabel').val();
-        var approvedDate = $('#approvedDateLabel').val();
-        var adminID = $('#adminIDLabel').val();
-        var userID = $('#userIDLabel').val();
-        var productName = $('#productNameLabel').val();
-        var warehouseID = $('#warehouseIdLabel').val();
-
-        // AJAX를 통해 서버에 검색 요청
-        $.ajax({
-            type: 'GET',
-            url: '/your-endpoint-url', // 실제 엔드포인트 URL로 변경
-            data: {
-                requestDate: requestDate,
-                approvedDate: approvedDate,
-                adminID: adminID,
-                userID: userID,
-                productName: productName,
-                warehouseID: warehouseID
-            },
-            success: function(response) {
-                // 성공적으로 응답을 받았을 때 실행되는 코드
-                // 응답 데이터를 테이블에 출력하거나 필요한 처리를 수행합니다.
-                // response를 사용하여 테이블을 갱신하거나 다른 처리를 수행합니다.
-                // 예시: 테이블 데이터를 새로 받은 데이터로 업데이트하는 등의 작업
-            },
-            error: function(xhr, status, error) {
-                // 요청 실패 시 실행되는 코드
-                console.error(error);
-                alert('검색 중 오류가 발생했습니다.');
-            }
-        });
-    }
-    /*]]>*/
-</script>
 
 
 <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
