@@ -1,5 +1,7 @@
 package com.ssg.meowwms.service.finance;
 
+import com.ssg.meowwms.dto.finance.ExpenseMonthDTO;
+import com.ssg.meowwms.dto.finance.SettlementMonthDTO;
 import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.finance.SalesDTO;
 import com.ssg.meowwms.dto.finance.SalesMonthDTO;
@@ -20,5 +22,11 @@ public interface SalesService {
     int sumSales(List<OptionDTO> optionList);
 
     List<SalesMonthDTO> sumSalesByYear(int warehouseId, String year);
+
+    List<String> getAllYears();
+
+    List<SettlementMonthDTO> sumSettlementByYear(int warehouseId, String year);
+
+    public List<SettlementMonthDTO> sumAllSettlementByYear(String year);
 
 }

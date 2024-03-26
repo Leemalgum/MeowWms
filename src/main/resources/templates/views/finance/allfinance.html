@@ -2,116 +2,224 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Page Title</title>
+    <title>총 정산 내역</title>
     <!-- Header 프래그먼트 포함 -->
     <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .info-card-icon {
+            font-size: 2rem; /* Adjust icon size */
+            color: #007bff; /* Bootstrap primary color */
+            margin-right: 15px;
+        }
+        .info-card-body {
+            display: flex;
+            align-items: center;
+        }
+        .info-card-text {
+            margin-bottom: 0; /* Remove margin for tighter spacing */
+        }
+        .card-custom {
+            margin-top: 20px;
+            min-height: 150px; /* Ensure consistent card height */
+        }
+        /* Custom styling for the chart area for better visual separation */
+        .chart-area {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,.1);
+            margin-bottom: 20px; /* Space between chart and summary cards */
+        }
+    </style>
 </head>
 <body>
-
-<!-- 페이지 래퍼 -->
 <div id="wrapper">
     <!-- 사이드바 -->
     <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
-
-    <!-- 콘텐츠 래퍼 -->
     <div id="content-wrapper" class="d-flex flex-column">
-        <!-- 메인 콘텐츠 -->
         <div id="content">
             <!-- 탑바 -->
             <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
-
-            <!-- 페이지 콘텐츠 시작 -->
             <div class="container-fluid">
-                <!-- Search Filters -->
+                <!-- 검색 필터 영역 -->
                 <div class="row mb-4">
+                    <!-- 년도 선택 -->
                     <div class="col-md-2">
-                        <label for="expenseYear">년도 선택</label>
-                        <select class="form-control" id="expenseYear" name="expenseYear">
-                            <option value="">전체</option>
-                            <!-- Option values should be dynamically generated -->
+                        <label for="settlementYear">년도 선택</label>
+                        <select class="form-control" id="settlementYear" name="settlementYear">
+                            <th:block th:each="year : ${years}">
+                                <option th:value="${year}" th:text="${year}"></option>
+                            </th:block>
                         </select>
                     </div>
+                    <!-- 창고 번호 선택 -->
                     <div class="col-md-2">
                         <label for="warehouseNo">창고 번호</label>
                         <select class="form-control" id="warehouseNo" name="warehouseNo">
-                            <option value="">전체</option>
-                            <!-- Option values should be dynamically generated -->
+                            <option th:value="0">전체</option>
+                            <th:block th:each="no : ${warehouseNumbers}">
+                                <option th:value="${no}" th:text="${no}"></option>
+                            </th:block>
                         </select>
                     </div>
-                </div>
-
-                <!-- Actions -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <button class="btn btn-success">조회</button>
-                        <button class="btn btn-secondary">초기화</button>
-                        <button class="btn btn-info">총 정산 내역 엑셀 다운로드</button>
+                    <!-- 버튼 그룹 -->
+                    <div class="col-md-12 mt-3">
+                        <button id="searchButton" class="btn btn-success">조회</button>
+                        <button id="resetButton" class="btn btn-secondary">초기화</button>
+                        <button class="btn btn-info">지출내역 엑셀 다운로드</button>
                     </div>
                 </div>
 
-                <!-- Chart Card -->
+                <!-- 그래프 영역 -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">월별 정산 그래프</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-area">
+                            <canvas id="settlementChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 데이터 요약 -->
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card shadow mb-4">
-                            <!-- Card Header - Dropdown -->
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">총정산 그래프</h6>
-                                <div class="dropdown no-arrow">
-                                    <!-- 여기에 드롭다운 메뉴를 추가하거나 필요한 다른 요소를 넣을 수 있습니다 -->
+                    <div class="col-md-4">
+                        <div class="card card-custom bg-light">
+                            <div class="card-body info-card-body">
+                                <i class="fas fa-receipt info-card-icon"></i>
+                                <div>
+                                    <h5 class="card-title">총 매출: <span th:text="${sumSales}">0</span>원</h5>
+                                    <p class="info-card-text">총 매출액입니다.</p>
                                 </div>
                             </div>
-                            <!-- Card Body -->
-                            <div class="card-body">
-                                <div class="chart-area">
-                                    <!-- Chart.js Canvas -->
-                                    <canvas id="myAreaChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-custom bg-light">
+                            <div class="card-body info-card-body">
+                                <i class="fas fa-money-bill-wave info-card-icon"></i>
+                                <div>
+                                    <h5 class="card-title">총 지출: <span th:text="${sumExpense}">0</span>원</h5>
+                                    <p class="info-card-text">총 지출액입니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-custom bg-light">
+                            <div class="card-body info-card-body">
+                                <i class="fas fa-chart-line info-card-icon"></i>
+                                <div>
+                                    <h5 class="card-title">당기순이익: <span th:text="${sumSettlement}">0</span>원</h5>
+                                    <p class="info-card-text">당해년도 순이익에서 지출을 차감한 값입니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-custom bg-light">
+                            <div class="card-body info-card-body">
+                                <i class="fas fa-exchange-alt info-card-icon"></i>
+                                <div>
+                                    <h5 class="card-title">당기순이익 변동률: <span th:text="${profitChangeRate}">0</span>%</h5>
+                                    <p class="info-card-text">전년 대비 당해년도 순이익의 변동 비율입니다.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Table Section -->
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <!-- Table head and body -->
-                        </table>
-                    </div>
-                </div>
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                    <tr>
-                        <th>총 지출</th>
-                        <th>총 매출</th>
-                        <th>이익</th>
-                        <th>당기 순이익</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- Table rows will be inserted here -->
-                    </tbody>
-                </table>
+                <!-- More existing content -->
             </div>
         </div>
-
-        <!-- 푸터 -->
-        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
-    </div>
-</div>
-
-<!-- 스크롤 탑 버튼 -->
+        <!-- Include FontAwesome for icons -->
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <!-- Existing scripts -->
 <th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
-
-<!-- 로그아웃 모달 -->
 <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
-
-<!-- 스크립트 -->
 <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
     $(document).ready(function() {
-        $('#dataTable').DataTable();
+        // 그래프 조회 버튼 클릭 이벤트
+        $('#searchButton').click(function() { // 여기를 수정했습니다.
+            fetchGraphData();
+        });
+        // 초기화 버튼 클릭 이벤트 바인딩
+        $('#resetButton').click(function() {
+            resetSearchFilters();
+        });
     });
+    function resetSearchFilters() {
+        $('#settlementYear').val('');
+        $('#warehouseNo').val('');
+    }
+    function fetchGraphData() {
+        var year = $('#settlementYear').val();
+        var warehouseId = $('#warehouseNo').val();
+        $.ajax({
+            url: '/finance/allfinance/graph',
+            type: 'POST',
+            data: {
+                year: year,
+                warehouseId: warehouseId
+            },
+            success: function(data) {
+                drawGraph(data);
+            },
+            error: function(error) {
+                console.error("Error fetching graph data:", error);
+            }
+        });
+    }
+    function drawGraph(data) {
+        var ctx = document.getElementById('settlementChart').getContext('2d');
+        var months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+        var settlementData = new Array(12).fill(0);
+
+        var maxsettlement = 0; // 가장 큰 지출값을 찾기 위한 변수
+        data.forEach(function(record) {
+            var monthIndex = parseInt(record.month) - 1;
+            settlementData[monthIndex] = record.settlementMonth;
+            if(record.settlementMonth > maxsettlement) maxsettlement = record.settlementMonth; // 가장 큰 지출값 업데이트
+        });
+
+        if (window.mysettlementChart) {
+            window.mysettlementChart.destroy();
+        }
+
+        window.mysettlementChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: '월별 지출',
+                    data: settlementData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: maxsettlement * 1.2 // Y축 최대값을 가장 큰 지출 값의 1.2배로 설정
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    }
+    /*]]>*/
 </script>
 </body>
 </html>
