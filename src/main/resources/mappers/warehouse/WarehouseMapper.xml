@@ -58,11 +58,11 @@
         where w.id = #{warehouseId}
     </select>
 
-<!--    <select id="selectWarehouseWithCategory" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDTO">-->
-<!--        select *-->
-<!--        from Warehouse-->
-<!--        where category_id = #{categoryId}-->
-<!--    </select>-->
+    <select id="selectWarehouseWithCategory" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDTO">
+        select *
+        from Warehouse
+        where category = #{category}
+    </select>
 
     <select id="selectIdByName" resultType="java.lang.Integer">
         SELECT COALESCE(id, 0) AS id
