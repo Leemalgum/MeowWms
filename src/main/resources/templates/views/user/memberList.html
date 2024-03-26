@@ -174,7 +174,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
-                    <a class="btn btn-primary" href="#">네</a>
+                    <a id="forcedWithdrawalCheck" class="btn btn-primary" href="#">네</a>
                 </div>
             </div>
         </div>
@@ -279,6 +279,32 @@
                     console.error("Error sending data:", error);
                     alert("Failed to send data. Please try again later.");
                     // TODO: 실패 처리 로직 추가
+                }
+            });
+        });
+
+
+        // 강제 탈퇴 확인 버튼 클릭 이벤트 처리
+        $('#forcedWithdrawalCheck').click(function () {
+            var userId = $('#uid').val(); // 선택된 회원의 ID 값 가져오기
+
+            // 선택된 회원의 ID 값을 컨트롤러로 전송
+            $.ajax({
+                type: "POST", // 전송 방식
+                url: "/views/user/forcedWithdrawal", // 컨트롤러 URL
+                data: {userId: userId}, // 전송할 데이터
+                success: function (response) {
+                    // 성공적으로 데이터를 전송하고 응답을 받았을 때 처리
+                    console.log("Forced withdrawal success:", response);
+                    // 모달 닫기
+                    $('#forcedWithdrawalModal').modal('hide');
+                    // 페이지 이동
+                    window.location.href = "/views/user/memberList"; // 다른 페이지로 이동
+                },
+                error: function (xhr, status, error) {
+                    // 데이터를 전송하는 중에 오류가 발생했을 때 처리
+                    console.error("Error sending data:", error);
+                    alert("Failed to send data. Please try again later.");
                 }
             });
         });

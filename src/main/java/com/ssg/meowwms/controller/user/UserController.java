@@ -167,5 +167,16 @@ public class UserController {
         }
     }
 
+    @PostMapping("/forcedWithdrawal")
+    @ResponseBody
+    public String forcedWithdrawal(@RequestParam("userId") String userId){
+        // 여기서 userId 값을 사용하여 해당 유저를 강제탈퇴 처리하거나 필요한 작업 수행
+        UserDTO userDTO = userService.getOne(userId).orElse(null);
+        userDTO.setSid(3);
+        userService.modify(userDTO);
+        // 처리 결과를 클라이언트에게 응답
+        return "User ID: " + userId + " forced withdrawal completed";
+    }
+
 
 }
