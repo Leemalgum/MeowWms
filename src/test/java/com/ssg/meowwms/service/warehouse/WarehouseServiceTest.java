@@ -65,9 +65,9 @@ public class WarehouseServiceTest {
     @Test
     @DisplayName("주어진 카테고리 아이디에 해당하는 창고 목록 조회 테스트")
     void getWarehouseWithCategory() {
-        int categoryId = 5;
+        String category = "냉장 | 식품 | 육류";
 
-        List<WarehouseDTO> warehouseList = warehouseService.getWarehouseWithCategory(categoryId);
+        List<WarehouseDTO> warehouseList = warehouseService.getWarehouseWithCategory(category);
 
         log.info(warehouseList);
     }
