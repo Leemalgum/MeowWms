@@ -5,8 +5,8 @@
 <mapper namespace="com.ssg.meowwms.mapper.warehouse.WarehouseMapper">
     <!--    창고 등록-->
     <select id="insert">
-        insert into Warehouse(name, category, manager_id, volume, location)
-        values (#{name}, #{category}, #{managerId}, #{volume}, #{location})
+        insert into Warehouse(name, category, manager_id, volume, address)
+        values (#{name}, #{category}, #{managerId}, #{volume}, #{address})
     </select>
 
     <!--    창고 한 개 가져오기-->
@@ -33,8 +33,8 @@
                         <when test="option.type == 'category'">
                             and category = #{option.value}
                         </when>
-                        <when test="option.type == 'location'">
-                            and location = #{option.value}
+                        <when test="option.type == 'address'">
+                            and address = #{option.value}
                         </when>
                     </choose>
                 </foreach>
@@ -45,7 +45,7 @@
     <select id="selectWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
         select w.name,
                w.category,
-               w.location,
+               w.address,
                w.manager_id,
                p.id as productId,
                p.name as productName,
