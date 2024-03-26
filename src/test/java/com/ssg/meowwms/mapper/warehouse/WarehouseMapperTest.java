@@ -63,15 +63,15 @@ class WarehouseMapperTest {
         log.info(warehouseDetailList);
     }
 
-//    @Test
-//    @DisplayName("주어진 카테고리 아이디에 해당하는 창고 목록 반환")
-//    void selectWarehouseWithCategory() {
-//        int categoryId = 5;
-//
-//        List<WarehouseDTO> warehouseList = warehouseMapper.selectWarehouseWithCategory(categoryId);
-//
-//        log.info(warehouseList);
-//    }
+    @Test
+    @DisplayName("주어진 카테고리 아이디에 해당하는 창고 목록 반환")
+    void selectWarehouseWithCategory() {
+        String category = "냉장 | 식품 | 육류";
+
+        List<WarehouseDTO> warehouseList = warehouseMapper.selectWarehouseWithCategory(category);
+
+        log.info(warehouseList);
+    }
 
     @Test
     @DisplayName("주어진 이름에 해당하는 창고 아이디 반환")
