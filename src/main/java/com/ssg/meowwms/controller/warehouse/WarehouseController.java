@@ -136,7 +136,7 @@ public class WarehouseController {
         try {
 
             WarehouseDTO warehouseDTO = WarehouseDTO.builder()
-                    .category(mainCategory + " " + middleCategory + " " + subCategory)
+                    .category(mainCategory + " | " + middleCategory + " | " + subCategory)
                     .name(warehouseName)
                     .address(warehouseAddress)
                     .volume(volume)
