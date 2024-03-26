@@ -64,4 +64,10 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenseMapper.sumExpensesByYear(warehouseId, year);
     }
 
+    @Override
+    public List<String> getAllYears() {
+        List<String> years = expenseMapper.getAllYears();
+        return years;
+    }
+
 }

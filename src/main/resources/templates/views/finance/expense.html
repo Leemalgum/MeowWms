@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance Dashboard</title>
+    <!-- Header 프래그먼트 포함 -->
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+</head>
+<body>
+
+<div id="wrapper">
+    <!-- 사이드바 -->
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <!-- 탑바 -->
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+
+            <div class="container-fluid">
+                <div class="row mb-4">
+                    <div class="col-md-2">
+                        <label for="expenseYear">년도 선택</label>
+                        <select class="form-control" id="expenseYear" name="expenseYear">
+                            <option value="">전체</option>
+                            <th:block th:each="year : ${years}">
+                                <option th:value="${year}" th:text="${year}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="expenseNo">지출 번호</label>
+                        <input type="text" class="form-control" id="expenseNo" name="expenseNo">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="startDate">지출날짜 (시작일)</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="endDate">지출날짜 (종료일)</label>
+                        <input type="date" class="form-control" id="endDate" name="endDate">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="startAmount">지출 금액 (시작)</label>
+                        <input type="number" class="form-control" id="startAmount" name="startAmount" placeholder="0">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="endAmount">지출 금액 (종료)</label>
+                        <input type="number" class="form-control" id="endAmount" name="endAmount" placeholder="0">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="expenseDetail">지출 내역</label>
+                        <input type="text" class="form-control" id="expenseDetail" name="expenseDetail">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="warehouseNo">창고 번호</label>
+                        <input type="text" class="form-control" id="warehouseNo" name="warehouseNo">
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <button id="searchButton" class="btn btn-success">조회</button>
+                        <button id="resetButton" class="btn btn-secondary">초기화</button>
+                        <button class="btn btn-info">지출내역 엑셀 다운로드</button>
+                    </div>
+                </div>
+
+                <!-- Table Section -->
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>지출 번호</th>
+                                    <th>지출 내역</th>
+                                    <th>지출 날짜</th>
+                                    <th>지출 금액</th>
+                                    <th>창고 번호</th>
+                                    <th>수정</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- Table rows will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Search Filters for Graph -->
+                <div class="row mb-4">
+                    <div class="col-md-2">
+                        <label for="expenseYearForGraph">년도 선택</label>
+                        <select class="form-control" id="expenseYearForGraph">
+                            <option value="">전체</option>
+                            <th:block th:each="year : ${years}">
+                                <option th:value="${year}" th:text="${year}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="warehouseNoForGraph">창고 번호</label>
+                        <input type="text" class="form-control" id="warehouseNoForGraph">
+                    </div>
+                    <!-- 조회 버튼 추가 -->
+                    <div class="col-md-8 text-right">
+                        <button id="filterGraph" class="btn btn-primary mt-4">그래프 조회</button>
+                    </div>
+                </div>
+
+                <!-- 그래프 영역 -->
+                <div class="chart-area">
+                    <canvas id="expenseChart"></canvas>
+                </div>
+                <!--Table Search Filter-->
+            </div>
+
+            <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+        </div>
+    </div>
+</div>
+
+    <th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+    <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+    <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        // 데이터 테이블 초기화 및 데이터 로드
+        var dataTable = $('#dataTable').DataTable({
+            'columns': [
+                {'data': 'id'},
+                {'data': 'type'},
+                {
+                    "data": "expenseDate",
+                    "render": function(data) {
+                        return moment(data).format('YYYY-MM-DD');
+                    }
+                },
+                {'data': 'cost'},
+                {'data': 'warehouseId'},
+                {'data': 'editLink'}
+            ],
+            "searching": false,
+            "paging": true,
+            "ordering": true,
+            "info": true,
+            "pageLength": 10,
+            'columnDefs': [{
+                'targets': 5,
+                'data': 'editLink',
+                'render': function(data, type, full, meta) {
+                    return '<a href="/path/to/edit/page?expenseId=' + full.expenseNo + '">Edit</a>';
+                }
+            }]
+        });
+
+        // 페이지 로드 시 테이블 데이터 로드
+        updateDataTable();
+
+        // 그래프 조회 버튼 클릭 이벤트
+        $('#filterGraph').click(function() {
+            fetchGraphData();
+        });
+        // 초기화 버튼 클릭 이벤트 바인딩
+        $('#resetButton').click(function() {
+            resetSearchFilters();
+            updateDataTable(); // 테이블을 최신 상태로 업데이트합니다.
+        });
+    });
+    // 검색 필터를 초기화하는 함수
+    function resetSearchFilters() {
+        $('#expenseYear').val('');
+        $('#expenseNo').val('');
+        $('#startDate').val('');
+        $('#endDate').val('');
+        $('#startAmount').val('');
+        $('#endAmount').val('');
+        $('#expenseDetail').val('');
+        $('#warehouseNo').val('');
+    }
+
+    function getSearchFilters() {
+        var searchFilters = [];
+        var expenseYear = $('#expenseYear').val();
+        var expenseNo = $('#expenseNo').val();
+        var startDate = $('#startDate').val();
+        var endDate = $('#endDate').val();
+        var startAmount = $('#startAmount').val();
+        var endAmount = $('#endAmount').val();
+        var expenseDetail = $('#expenseDetail').val();
+        var warehouseNo = $('#warehouseNo').val();
+
+        if(expenseYear) searchFilters.push({ type: 'year', value: expenseYear });
+        if(expenseNo) searchFilters.push({ type: 'expenseId', value: expenseNo });
+        if(startDate) searchFilters.push({ type: 'startDate', value: startDate });
+        if(endDate) searchFilters.push({ type: 'endDate', value: endDate });
+        if(startAmount) searchFilters.push({ type: 'minCost', value: startAmount });
+        if(endAmount) searchFilters.push({ type: 'maxCost', value: endAmount });
+        if(expenseDetail) searchFilters.push({ type: 'type', value: expenseDetail });
+        if(warehouseNo) searchFilters.push({ type: 'warehouseId', value: warehouseNo });
+
+        return searchFilters;
+    }
+    $(document).ready(function() {
+        $('#searchButton').click(function() {
+            updateDataTable();
+        });
+    });
+
+    function updateDataTable() {
+        var searchFilters = getSearchFilters();
+
+        $.ajax({
+            url: '/finance/expenses/data',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(searchFilters),
+            success: function(data) {
+                $('#dataTable').DataTable().clear().rows.add(data).draw();
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    }
+
+
+    function fetchGraphData() {
+        var year = $('#expenseYearForGraph').val();
+        var warehouseId = $('#warehouseNoForGraph').val();
+
+        $.ajax({
+            url: '/finance/expenses/graph',
+            type: 'POST',
+            data: {
+                year: year,
+                warehouseId: warehouseId
+            },
+            success: function(data) {
+                drawGraph(data);
+            },
+            error: function(error) {
+                console.error("Error fetching graph data:", error);
+            }
+        });
+    }
+
+
+    function drawGraph(data) {
+        var ctx = document.getElementById('expenseChart').getContext('2d');
+        var months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+        var expenseData = new Array(12).fill(0);
+
+        var maxExpense = 0; // 가장 큰 지출값을 찾기 위한 변수
+        data.forEach(function(record) {
+            var monthIndex = parseInt(record.month) - 1;
+            expenseData[monthIndex] = record.expenseMonth;
+            if(record.expenseMonth > maxExpense) maxExpense = record.expenseMonth; // 가장 큰 지출값 업데이트
+        });
+
+        if (window.myExpenseChart) {
+            window.myExpenseChart.destroy();
+        }
+
+        window.myExpenseChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: '월별 지출',
+                    data: expenseData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: maxExpense * 1.2 // Y축 최대값을 가장 큰 지출 값의 1.2배로 설정
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    }
+
+    /*]]>*/
+</script>
+
+
+
+
+
+</body>
+</html>

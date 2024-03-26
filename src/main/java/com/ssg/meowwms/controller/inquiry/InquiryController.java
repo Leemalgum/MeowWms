@@ -3,6 +3,7 @@ package com.ssg.meowwms.controller.inquiry;
 import com.ssg.meowwms.dto.inquiry.InquiryDTO;
 import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.search.OptionList;
+import com.ssg.meowwms.security.SecurityUtils;
 import com.ssg.meowwms.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/views/inquiry")
+@RequestMapping("/inquiry")
 @RequiredArgsConstructor
 public class InquiryController {
 
@@ -50,18 +51,19 @@ public class InquiryController {
     @PostMapping("/modify-content")
     public String submitForm(InquiryDTO inquiry) {
         if (inquiry.getPostNum() == 0) { // postNum이 0이면 새 글 작성
-            inquiry.setUserId("admin"); // 사용자 ID는 임시로 "admin"으로 설정
+            inquiry.setUserId(SecurityUtils.getCurrentUserDetails().getUsername());
             inquiryService.insertInquiry(inquiry);
+            return "redirect:/views/inquiry/inquiry";
         } else { // postNum이 0이 아니면 기존 글 수정
             inquiryService.updateInquiry(inquiry);
         }
-        return "redirect:/views/inquiry/inquiry"; // 글 목록 페이지로 리다이렉트
+        return "redirect:/views/inquiry/read-content/" + inquiry.getPostNum();
     }
 
     @GetMapping("/modify-content")
     public String registerForm(Model model) {
         InquiryDTO inquiryDTO = new InquiryDTO();
-        inquiryDTO.setUserId("test1");
+        inquiryDTO.setUserId(SecurityUtils.getCurrentUserDetails().getUsername());
         model.addAttribute("inquiry",inquiryDTO);
         return "views/inquiry/modify-content"; // 글 목록 페이지로 리다이렉트
     }
@@ -69,6 +71,13 @@ public class InquiryController {
     @GetMapping("/read-content/{postNum}")
     public String showDetailPage(@PathVariable Integer postNum, Model model) {
         model.addAttribute("inquiry", inquiryService.selectInquiry(postNum));
+        model.addAttribute("currentUsername", SecurityUtils.getCurrentUserDetails().getUsername());
         return "/views/inquiry/read-content";
+    }
+
+    @GetMapping("/inquiryDelete/{postNum}")
+    public String deleteNotice(@PathVariable(required = false) Integer postNum){
+        inquiryService.deleteInquiry(postNum);
+        return "redirect:/views/inquiry/inquiry";
     }
 }

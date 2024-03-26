@@ -83,4 +83,10 @@ class WarehouseMapperTest {
 
         log.info(warehouseId);
     }
+
+    @Test
+    @DisplayName("모든 창고아이디 반환")
+    public void selectAllWarehouseId(){
+        log.info(warehouseMapper.selectAllWarehouseId());
+    }
 }

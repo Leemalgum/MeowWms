@@ -4,6 +4,7 @@ import com.ssg.meowwms.domain.finance.SalesVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.finance.SalesDTO;
 import com.ssg.meowwms.dto.finance.SalesMonthDTO;
+import com.ssg.meowwms.mapper.finance.ExpenseMapper;
 import com.ssg.meowwms.mapper.finance.SalesMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,9 @@ class SalesServiceTest {
 
     @Mock
     private SalesMapper salesMapper;
+
+    @Mock
+    private ExpenseMapper expenseMapper;
 
     @Mock
     private ModelMapper modelMapper;
@@ -105,5 +109,35 @@ class SalesServiceTest {
         List<SalesMonthDTO> results = salesService.sumSalesByYear(1, "2020");
         assertFalse(results.isEmpty());
         verify(salesMapper, times(1)).sumSalesByYear(1, "2020");
+    }
+
+    @Test
+    void getAllyears() {
+        // 가상의 연도 목록 데이터 준비
+        List<String> mockYears = Arrays.asList("2024");
+
+        // expenseMapper.getAllYears() 호출 시, 가상의 연도 목록을 반환하도록 설정
+        when(salesMapper.getAllYears()).thenReturn(mockYears);
+
+        // 테스트 실행
+        List<String> resultYears = salesService.getAllYears();
+
+        // 결과 검증
+        assertFalse(resultYears.isEmpty(), "결과 목록이 비어 있지 않아야 합니다.");
+        assertEquals(1, resultYears.size(), "결과 목록의 크기가 예상과 일치해야 합니다.");
+        assertTrue(resultYears.containsAll(Arrays.asList("2024")), "예상된 연도가 모두 포함되어야 합니다.");
+
+        // expenseMapper.getAllYears() 메소드 호출 검증
+        verify(salesMapper, times(1)).getAllYears();
+    }
+
+    @Test
+    public void testSettlement(){
+        System.out.println(salesService.sumSettlementByYear(1, "2024"));
+    }
+
+    @Test
+    public void testAllSettlement(){
+        System.out.println(salesService.sumAllSettlementByYear("2024"));
     }
 }

@@ -63,4 +63,10 @@ public interface WarehouseMapper {
      * @return 창고 아이디
      */
     Optional<Integer> selectIdByName(String warehouseName);
+
+    /**
+     * 모든 창고아이디를 가져옵니다.
+     * @return 창고 아이디
+     */
+    List<Integer> selectAllWarehouseId();
 }

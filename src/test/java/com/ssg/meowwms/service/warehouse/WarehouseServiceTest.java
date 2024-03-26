@@ -82,4 +82,10 @@ public class WarehouseServiceTest {
 
         log.info(warehouseId);
     }
+
+    @Test
+    @DisplayName("모든 창고 번호 조회")
+    public void getAllWarehouseId(){
+        log.info(warehouseService.getAllWarehouseId());
+    }
 }

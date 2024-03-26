@@ -12,7 +12,7 @@
         <div id="content">
             <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
             <div class="container-fluid">
-                <form th:action="@{/views/inquiry/modify-content}" th:object="${inquiry}" method="post">
+                <form th:action="@{/inquiry/modify-content}" th:object="${inquiry}" method="post">
                     <!-- 숨겨진 postNum 필드 -->
                     <input type="hidden" th:field="*{postNum}">
                     <div class="form-group row">
@@ -32,8 +32,10 @@
                     <div class="form-group">
                         <label>카테고리:</label>
                         <select class="form-control" th:field="*{postType}">
-                            <option value="notice">공지사항</option>
-                            <option value="inquiry">문의글</option>
+                            <option value="질문">질문</option>
+                            <option value="문의">문의</option>
+                            <option value="피드백">피드백</option>
+                            <option value="제안">제안</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -46,7 +48,7 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <button type="submit" class="btn btn-primary">저장하기</button>
-                        <a href="/views/inquiry/inquiry" class="btn btn-outline-primary">목록으로</a>
+                        <a href="/inquiry/inquiry" class="btn btn-outline-primary">목록으로</a>
                     </div>
                 </form>
             </div>

@@ -116,7 +116,7 @@
 
         $('#dataTable').DataTable({
             "ajax": {
-                "url": `/views/inquiry/data?${params}`,
+                "url": `/inquiry/data?${params}`,
                 "type": "GET",
                 "dataSrc": ""
             },
@@ -126,7 +126,7 @@
                 {
                     "data": "postTitle",
                     "render": function(data, type, row) {
-                        return `<a href="/views/inquiry/read-content/${row.postNum}">${data}</a>`;
+                        return `<a href="/inquiry/read-content/${row.postNum}">${data}</a>`;
                     }
                 },
                 { "data": "userId" },
@@ -157,7 +157,7 @@
 
         $('#dataTable').DataTable({
             "ajax": {
-                "url": `/views/inquiry/noticeData?${params}`,
+                "url": `/inquiry/noticeData?${params}`,
                 "type": "GET",
                 "dataSrc": ""
             },
@@ -167,7 +167,7 @@
                 {
                     "data": "title",
                     "render": function(data, type, row) {
-                        return `<a href="/views/inquiry/read-notice/${row.no}">${data}</a>`;
+                        return `<a href="/inquiry/read-notice/${row.no}">${data}</a>`;
                     }
                 },
                 { "data": "userId" },
