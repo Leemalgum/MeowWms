@@ -3,6 +3,8 @@ package com.ssg.meowwms.controller.warehouse;
 import com.ssg.meowwms.dto.category.MainCategoryDTO;
 import com.ssg.meowwms.dto.category.MiddleCategoryDTO;
 import com.ssg.meowwms.dto.category.SubCategoryDTO;
+import com.ssg.meowwms.dto.search.OptionDTO;
+import com.ssg.meowwms.dto.search.OptionList;
 import com.ssg.meowwms.dto.user.UserDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.service.category.CategoryService;
@@ -13,13 +15,14 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 창고 관리
@@ -125,8 +128,7 @@ public class WarehouseController {
             @RequestParam("middleType") String middleCategory,
             @RequestParam("subType") String subCategory,
             @RequestParam("warehouseManagerId") String warehouseManagerId,
-            @RequestParam("latitude") double latitude,
-            @RequestParam("longitude") double longitude,
+            @RequestParam("location") String location,
             @RequestParam("volume") int volume
     ) {
         log.info("창고 등록 컨트롤러...!!!");
@@ -136,10 +138,9 @@ public class WarehouseController {
             int categoryId = categoryService.getWithCategories(mainCategory, middleCategory, subCategory).getId();
 
             WarehouseDTO warehouseDTO = WarehouseDTO.builder()
-                    .categoryId(categoryId)
+                    .category(mainCategory + " " + middleCategory + " " + subCategory)
                     .name(warehouseName)
-                    .latitude(latitude)
-                    .longitude(longitude)
+                    .location(location)
                     .volume(volume)
                     .managerId(warehouseManagerId)
                     .build();
@@ -153,11 +154,20 @@ public class WarehouseController {
         }
     }
 
-    /**
-     * 창고 목록 페이지를 불러옵니다.
-     *
-     * @return
-     */
+    @GetMapping("/data")
+    @ResponseBody
+    public List<WarehouseDTO> getWarehouseData(
+            @RequestParam(required = false) String searchType,
+            @RequestParam(required = false) String searchKeyword
+    ) {
+        OptionList optionList = new OptionList();
+        optionList.add(new OptionDTO(searchType, searchKeyword));
+
+        System.out.println(warehouseService.selectAll(optionList.getOptionList()));
+
+        return warehouseService.selectAll(optionList.getOptionList());
+    }
+
     @GetMapping("/list")
     public String getList() {
         return "views/warehouse/list";
