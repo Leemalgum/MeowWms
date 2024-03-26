@@ -12,4 +12,5 @@ public interface UserService {
     List<UserDTO> getList();
     String searchId(String uname, String email);
     String searchPw(String uname, String id);
+    List<UserDTO> getWarehouseManager();
 }

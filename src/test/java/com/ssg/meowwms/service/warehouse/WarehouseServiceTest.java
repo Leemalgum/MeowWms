@@ -28,7 +28,7 @@ public class WarehouseServiceTest {
         WarehouseDTO warehouseDTO = WarehouseDTO.builder()
                 .name("야옹창고")
                 .managerId("WarehouseManager")
-                .volume(10L)
+                .volume(10)
                 .latitude(37.517331925853)
                 .longitude(127.047377408384)
                 .build();
@@ -78,7 +78,7 @@ public class WarehouseServiceTest {
     void getWarehouseIdByName() {
         String name = "운양동 우유 창고";
 
-        int warehouseId = warehouseService.getWarehouseIdByName(name);
+        int warehouseId = warehouseService.getWarehouseIdByName(name).orElse(0);
 
         log.info(warehouseId);
     }

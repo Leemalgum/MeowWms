@@ -55,7 +55,7 @@ public class WarehouseVO {
      */
     @NotNull
     @Min(value = 10, message = "창고 용량은 최소 10 이상 입니다.")
-    private Long volume;
+    private int volume;
 
     /**
      * 창고 관리자 아이디 입니다.

@@ -29,7 +29,7 @@ class WarehouseMapperTest {
                 .name("야옹 창고")
                 .categoryId(1)
                 .managerId("WarehouseManager")
-                .volume(20L)
+                .volume(20)
                 .latitude(37.517331925853)
                 .longitude(127.047377408384)
                 .build();
@@ -79,7 +79,7 @@ class WarehouseMapperTest {
     void selectIdByName() {
         String name = "운양동 우유 창고";
 
-        int warehouseId = warehouseMapper.selectIdByName(name);
+        int warehouseId = warehouseMapper.selectIdByName(name).orElse(0);
 
         log.info(warehouseId);
     }
