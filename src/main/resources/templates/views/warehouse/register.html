@@ -423,7 +423,7 @@
         const address = document.getElementById("address").value;
 
         // 필수 입력 필드가 비어 있는지 확인
-        if (warehouseName === "" || mainType === "" || middleType === "" || subType === "" || warehouseManager === "" || volume === "" || address === "") {
+        if (warehouseName.trim() === "" || mainType === "" || middleType === "" || subType === "" || warehouseManager === "" || volume <= 0 || address === "") {
             // 하나라도 비어 있으면 등록 버튼 비활성화
             alert("모든 필수 입력 필드를 입력하세요.");
             return; // 함수 종료
