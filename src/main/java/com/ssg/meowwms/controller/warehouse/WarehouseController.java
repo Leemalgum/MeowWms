@@ -128,19 +128,17 @@ public class WarehouseController {
             @RequestParam("middleType") String middleCategory,
             @RequestParam("subType") String subCategory,
             @RequestParam("warehouseManagerId") String warehouseManagerId,
-            @RequestParam("location") String location,
+            @RequestParam("warehouseAddress") String warehouseAddress,
             @RequestParam("volume") int volume
     ) {
         log.info("창고 등록 컨트롤러...!!!");
 
         try {
 
-            int categoryId = categoryService.getWithCategories(mainCategory, middleCategory, subCategory).getId();
-
             WarehouseDTO warehouseDTO = WarehouseDTO.builder()
                     .category(mainCategory + " " + middleCategory + " " + subCategory)
                     .name(warehouseName)
-                    .address(location)
+                    .address(warehouseAddress)
                     .volume(volume)
                     .managerId(warehouseManagerId)
                     .build();
