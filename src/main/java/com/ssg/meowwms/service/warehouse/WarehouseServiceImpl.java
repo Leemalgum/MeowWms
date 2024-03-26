@@ -1,7 +1,7 @@
 package com.ssg.meowwms.service.warehouse;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
-import com.ssg.meowwms.dto.search.OptionDTO;
+import com.ssg.meowwms.dto.OptionDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.mapper.WarehouseMapper;
 import lombok.RequiredArgsConstructor;

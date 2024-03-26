@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -67,11 +66,10 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<ProductStatusDTO> getProductStatusList(Date from, Date to, String searchTerm, String mainCategory, String middleCategory, String subCategory) {
+    public List<ProductStatusDTO> getProductStatusList(Date from, Date to, String searchTerm, String mainCategory, String middleCategory, String subCategory, int productId, int warehouseId) {
         log.info("/StockService/getProductStatusList()...");
-        if (from == null) from = new Date(0);
         List<ProductStatusVO> productStatusVOList = stockMapper.selectProductStatusList(
-                from, to, searchTerm, mainCategory, middleCategory, subCategory
+                from, to, searchTerm, mainCategory, middleCategory, subCategory, productId, warehouseId
         );
 
         return productStatusVOList.stream()

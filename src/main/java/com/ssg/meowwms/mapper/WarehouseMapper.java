@@ -1,7 +1,7 @@
 package com.ssg.meowwms.mapper;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
-import com.ssg.meowwms.dto.search.OptionDTO;
+import com.ssg.meowwms.dto.OptionDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

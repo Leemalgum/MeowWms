@@ -86,7 +86,7 @@
                                         </select>
 
                                         <br>
-                                        </div> <!-- 2열 끝 -->
+                                    </div> <!-- 2열 끝 -->
                                     <div class="col-md-4"> <!-- 3열 시작 -->
                                         <label for="large-category-list">소분류</label>
                                         <select id="large-list" class="form-control">
@@ -199,38 +199,28 @@
 <script th:inline="javascript">
     $(document).ready(function() {
         $('#retrieval-register-button').click(function() {
-            var startDate = $('#product-startDate-input').val();
-            var endDate = $('#orderDate-input').val();
-            var mainCategory = $('#large-category-list').val();
-            var middleCategory = $('#middle-category-list').val();
-            var subCategory = $('#large-list').val();
-            var searchTerm = $('#search-input').val();
-
-            // Check if startDate is empty
-            if (startDate.trim() === '') {
-                startDate = null;
-            }
-
-            // Check if endDate is empty
-            if (endDate.trim() === '') {
-                endDate = null;
-            }
+            var from = $('#fromDate').val();
+            var to = $('#toDate').val();
+            var mainCategory = $('#mainCategory').val();
+            var middleCategory = $('#middleCategory').val();
+            var subCategory = $('#subCategory').val();
+            var searchTerm = $('#searchTerm').val();
 
             // AJAX request to fetch search results
             $.ajax({
-                url: 'http://localhost:8080/stock/productStatus',
+                url: '/stock/productStatus',
                 type: 'GET',
                 data: {
-                    from: startDate,
-                    to: endDate,
+                    from: from,
+                    to: to,
                     mainCategory: mainCategory,
                     middleCategory: middleCategory,
                     subCategory: subCategory,
                     searchTerm: searchTerm
                 },
+
                 success: function(response) {
                     // Handle successful response
-                    console.log(response);
                 },
                 error: function(xhr, status, error) {
                     // Handle error

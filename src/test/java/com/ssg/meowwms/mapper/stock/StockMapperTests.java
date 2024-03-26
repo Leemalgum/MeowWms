@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.Optional;
 
 
 @Log4j2
@@ -67,7 +66,8 @@ public class StockMapperTests {
                 , "냉장"
                 , "식품"
                 , "유제품"
-
+                , 1
+                , 1
         ));
 
         // 날짜 테스팅
@@ -78,6 +78,8 @@ public class StockMapperTests {
                 , "냉장"
                 , "식품"
                 , "유제품"
+                , 1
+                , 1
         ));
         log.info(stockMapper.selectProductStatusList(
                 lastyear
@@ -86,6 +88,8 @@ public class StockMapperTests {
                 , "냉장"
                 , "식품"
                 , "유제품"
+                , 1
+                , 1
         ));
 
         // 실제 테스팅
@@ -95,6 +99,8 @@ public class StockMapperTests {
                 , "냉장"
                 , "식품"
                 , "유제품"
+                , 1
+                , 1
         );
     }
 

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 
 public interface StockService {
@@ -24,7 +23,9 @@ public interface StockService {
             String searchTerm,
             String mainCategory,
             String middleCategory,
-            String subCategory
+            String subCategory,
+            int productId,
+            int warehouseId
     );
     List<WarehouseStatusDTO> getWarehouseStatusList(
             String warehouseName,

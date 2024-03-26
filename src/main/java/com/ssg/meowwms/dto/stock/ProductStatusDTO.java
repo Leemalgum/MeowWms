@@ -48,7 +48,7 @@ public class ProductStatusDTO {
     /**
      * 제품 아이디 : 1 이상, Auto Increment
      */
-    private int productId;
+    private String productId;
 
     /**
      * 제품 이름 : 45자 제한

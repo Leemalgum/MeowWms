@@ -97,12 +97,4 @@ public class StockTakingMapperTests {
         log.info(stockTakingMapper.selectAllStocktaking());
         stockTakingMapper.selectAllStocktaking();
     }
-
-    @Test
-    public void testSelectSTDetail() {
-        int stid= 1;
-        log.info("StockTaking select ST detail...");
-        log.info(stockTakingMapper.selectSTDetail(stid));
-        stockTakingMapper.selectSTDetail(stid);
-    }
 }

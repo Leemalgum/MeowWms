@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface StockMapper {
@@ -23,7 +22,9 @@ public interface StockMapper {
             String searchTerm,
             String mainCategory,
             String middleCategory,
-            String subCategory
+            String subCategory,
+            int productId,
+            int warehouseId
     );
     List<WarehouseStatusVO> selectWarehouseStatusList(
             String warehouseName,
