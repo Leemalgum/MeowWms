@@ -158,8 +158,13 @@ public class WarehouseController {
             @RequestParam(required = false) String searchType,
             @RequestParam(required = false) String searchKeyword
     ) {
+        log.info(searchType);
+        log.info(searchKeyword);
+
         OptionList optionList = new OptionList();
         optionList.add(new OptionDTO(searchType, searchKeyword));
+
+        log.info(optionList);
 
         System.out.println(warehouseService.selectAll(optionList.getOptionList()));
 
