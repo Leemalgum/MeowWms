@@ -54,12 +54,18 @@
                     </div>
                     <div class="col-md-2">
                         <label for="warehouseNo">창고 번호</label>
-                        <input type="text" class="form-control" id="warehouseNo" name="warehouseNo">
+                        <select class="form-control" id="warehouseNo" name="warehouseNo">
+                            <option value="">전체</option>
+                            <th:block th:each="no : ${warehouseNumbers}">
+                                <option th:value="${no}" th:text="${no}"></option>
+                            </th:block>
+                        </select>
                     </div>
                     <div class="col-md-12 mt-3">
                         <button id="searchButton" class="btn btn-success">조회</button>
                         <button id="resetButton" class="btn btn-secondary">초기화</button>
-                        <button class="btn btn-info">지출내역 엑셀 다운로드</button>
+                        <button class="btn btn-info" id="downloadExcel">지출내역 엑셀 다운로드</button>
+                        <button type="button" class="btn btn-primary" id="addExpenseButton">지출 정보 추가</button>
                     </div>
                 </div>
 
@@ -76,6 +82,7 @@
                                     <th>지출 금액</th>
                                     <th>창고 번호</th>
                                     <th>수정</th>
+                                    <th>삭제</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -98,8 +105,12 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label for="warehouseNoForGraph">창고 번호</label>
-                        <input type="text" class="form-control" id="warehouseNoForGraph">
+                        <label for="warehouseNo">창고 번호</label>
+                        <select class="form-control" id="warehouseNoForGraph" name="warehouseNo">
+                            <th:block th:each="no : ${warehouseNumbers}">
+                                <option th:value="${no}" th:text="${no}"></option>
+                            </th:block>
+                        </select>
                     </div>
                     <!-- 조회 버튼 추가 -->
                     <div class="col-md-8 text-right">
@@ -111,10 +122,89 @@
                 <div class="chart-area">
                     <canvas id="expenseChart"></canvas>
                 </div>
-                <!--Table Search Filter-->
             </div>
 
             <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editExpenseModal" tabindex="-1" role="dialog" aria-labelledby="editExpenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editExpenseModalLabel">지출 정보 수정</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 모달 바디: 폼 입력 필드 -->
+                <form id="editExpenseForm">
+                    <div class="form-group">
+                        <label for="expenseNoEdit">지출 번호</label>
+                        <input type="text" class="form-control" id="expenseNoEdit" name="expenseNoEdit" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDetailEdit">지출 내역</label>
+                        <input type="text" class="form-control" id="expenseDetailEdit" name="expenseDetailEdit">
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDateEdit">지출 날짜</label>
+                        <input type="date" class="form-control" id="expenseDateEdit" name="expenseDateEdit">
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseAmountEdit">지출 금액</label>
+                        <input type="number" class="form-control" id="expenseAmountEdit" name="expenseAmountEdit">
+                    </div>
+                    <div class="form-group">
+                        <label for="warehouseNoEdit">창고 번호</label>
+                        <input type="text" class="form-control" id="warehouseNoEdit" name="warehouseNoEdit">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="saveChanges">변경 사항 저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 지출 정보 등록 모달 -->
+<div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addExpenseModalLabel">지출 정보 등록</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 모달 바디: 폼 입력 필드 -->
+                <form id="addExpenseForm">
+                    <div class="form-group">
+                        <label for="expenseDetailAdd">지출 내역</label>
+                        <input type="text" class="form-control" id="expenseDetailAdd" name="expenseDetailAdd">
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDateAdd">지출 날짜</label>
+                        <input type="date" class="form-control" id="expenseDateAdd" name="expenseDateAdd">
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseAmountAdd">지출 금액</label>
+                        <input type="number" class="form-control" id="expenseAmountAdd" name="expenseAmountAdd">
+                    </div>
+                    <div class="form-group">
+                        <label for="warehouseNoAdd">창고 번호</label>
+                        <input type="text" class="form-control" id="warehouseNoAdd" name="warehouseNoAdd">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="addExpense">지출 정보 추가</button>
+            </div>
         </div>
     </div>
 </div>
@@ -122,6 +212,7 @@
     <th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
     <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
     <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     $(document).ready(function() {
@@ -138,7 +229,14 @@
                 },
                 {'data': 'cost'},
                 {'data': 'warehouseId'},
-                {'data': 'editLink'}
+                {'data': 'editLink'},
+                {
+                    'data': 'id', // 'id' 필드를 기반으로 삭제 버튼을 생성
+                    'render': function(data, type, full, meta) {
+                        return '<button type="button" class="btn btn-danger deleteExpenseBtn" data-id="' + data + '">삭제</button>';
+                    },
+                    'orderable': false // 이 열은 정렬할 수 없음
+                }
             ],
             "searching": false,
             "paging": true,
@@ -149,7 +247,7 @@
                 'targets': 5,
                 'data': 'editLink',
                 'render': function(data, type, full, meta) {
-                    return '<a href="/path/to/edit/page?expenseId=' + full.expenseNo + '">Edit</a>';
+                    return '<button type="button" class="btn btn-primary editExpenseBtn" data-id="' + full.id + '">수정</button>';
                 }
             }]
         });
@@ -165,6 +263,104 @@
         $('#resetButton').click(function() {
             resetSearchFilters();
             updateDataTable(); // 테이블을 최신 상태로 업데이트합니다.
+        });
+        $('#addExpenseButton').click(function() {
+            // '지출 정보 추가' 모달 창을 표시
+            $('#addExpenseModal').modal('show');
+        });
+
+    });
+
+    <!-- JavaScript 코드에서 edit 버튼 클릭 이벤트 핸들러 부분 수정 -->
+    $(document).on('click', '.editExpenseBtn', function() {
+        var expenseId = $(this).data('id');
+        // AJAX를 사용하여 서버로부터 해당 expenseId의 상세 정보를 가져온다
+        $.ajax({
+            url: '/finance/expense/detail/' + expenseId,
+            type: 'GET', // 수정: GET 요청으로 변경
+            success: function(data) {
+                // 데이터를 모달의 입력 필드에 채워 넣음
+                $('#expenseNoEdit').val(data.id);
+                $('#expenseDetailEdit').val(data.detail);
+                $('#expenseDateEdit').val(data.date);
+                $('#expenseAmountEdit').val(data.amount);
+                $('#warehouseNoEdit').val(data.warehouseId);
+                // 모달을 표시
+                $('#editExpenseModal').modal('show');
+            },
+            error: function(xhr, status, error) {
+                alert('지출 정보를 가져오는 데 실패하였습니다.');
+            }
+        });
+    });
+    $(document).on('click', '.deleteExpenseBtn', function() {
+        var expenseId = $(this).data('id'); // 버튼에서 데이터 ID 가져오기
+        if(confirm('정말로 삭제하시겠습니까?')) {
+            $.ajax({
+                url: '/finance/expense/delete',
+                type: 'POST', // 또는 서버 측 구현에 따라 'DELETE' 메소드를 사용할 수도 있습니다.
+                contentType: 'application/json',
+                data: JSON.stringify({ id: expenseId }), // 서버에 전송할 데이터
+                success: function(response) {
+                    alert('지출 정보가 성공적으로 삭제되었습니다.');
+                    location.reload(); // 페이지 전체를 새로고침, 간단하지만 비효율적인 방법
+                },
+                error: function(xhr, status, error) {
+                    alert('지출 정보 삭제에 실패하였습니다.');
+                }
+            });
+        }
+    });
+
+
+
+    $('#saveChanges').click(function() {
+        var expenseData = {
+            id: parseInt($('#expenseNoEdit').val()),
+            warehouseId: parseInt($('#warehouseNoEdit').val()),
+            type: $('#expenseDetailEdit').val(),
+            expenseDate: $('#expenseDateEdit').val(),
+            cost: parseInt($('#expenseAmountEdit').val())
+        };
+
+        $.ajax({
+            url: '/finance/expense/update',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(expenseData),
+            success: function(response) {
+                alert('지출 정보가 성공적으로 수정되었습니다.');
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert('지출 정보 수정에 실패하였습니다.');
+            }
+        });
+    });
+
+
+    $('#addExpense').on('click', function(event) {
+        event.preventDefault();
+        var expenseData = {
+            warehouseId: $('#warehouseNoAdd').val(),
+            type: $('#expenseDetailAdd').val(),
+            expenseDate: $('#expenseDateAdd').val(),
+            cost: $('#expenseAmountAdd').val()
+        };
+
+        $.ajax({
+            url: '/finance/expense/add',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(expenseData),
+            success: function(response) {
+                alert('지출 정보가 성공적으로 추가되었습니다.');
+                $('#addExpenseModal').modal('hide'); // 모달 숨김
+                location.reload(); // 또는 데이터 테이블을 직접 업데이트
+            },
+            error: function(xhr, status, error) {
+                alert('지출 정보 추가에 실패하였습니다.');
+            }
         });
     });
     // 검색 필터를 초기화하는 함수
@@ -292,6 +488,32 @@
             }
         });
     }
+
+    document.getElementById('downloadExcel').addEventListener('click', function() {
+        // 서버로부터 데이터를 가져오는 AJAX 요청
+        var searchFilters = getSearchFilters();
+
+        fetch('/finance/expenses/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(searchFilters) // 예시로 검색 필터를 제공합니다. 필요에 따라 수정하세요.
+        })
+            .then(response => response.json())
+            .then(data => {
+                // 데이터를 엑셀 파일로 변환
+                var worksheet = XLSX.utils.json_to_sheet(data);
+                var workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "지출 내역");
+
+                // 엑셀 파일 다운로드
+                XLSX.writeFile(workbook, "지출내역.xlsx");
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+
 
     /*]]>*/
 </script>
