@@ -56,4 +56,9 @@
         and uid = #{uid}
     </select>
 
+    <select id="selectWarehouseManager" resultType="com.ssg.meowwms.domain.user.UserVO">
+        select *
+        from User
+        where rid = 2
+    </select>
 </mapper>

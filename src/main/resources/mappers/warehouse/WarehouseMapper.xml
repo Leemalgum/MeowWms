@@ -42,7 +42,7 @@
         </where>
     </select>
 
-    <select id="getWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
+    <select id="selectWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
         select w.name,
                c.main_category,
                c.middle_category,
@@ -60,5 +60,23 @@
                  join Category c on w.category_id = c.id
                  join User u on w.manager_id = u.uid
         where w.id = #{warehouseId}
+    </select>
+
+    <select id="selectWarehouseWithCategory" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDTO">
+        select *
+        from Warehouse
+        where category_id = #{categoryId}
+    </select>
+
+    <select id="selectIdByName" resultType="java.lang.Integer">
+        SELECT COALESCE(id, 0) AS id
+        FROM Warehouse
+        WHERE name = #{warehouseName}
+    </select>
+
+    <select id="selectAllWarehouseId" resultType="java.lang.Integer">
+        select id
+        from Warehouse
+        group by id
     </select>
 </mapper>

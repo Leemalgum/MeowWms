@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.finance;
 
 import com.ssg.meowwms.domain.finance.ExpenseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,11 @@ class ExpenseMapperTest {
 
     @Autowired
     private ExpenseMapper expenseMapper;
+
+    @Test
+    public void test(){
+        System.out.println(expenseMapper.sumExpensesByYear(1, "2024"));
+    }
 
     @Test
     public void testInsertExpense() {
@@ -100,5 +106,21 @@ class ExpenseMapperTest {
                 .mapToInt(ExpenseVO::getCost)
                 .sum();
         assertThat(sum).isEqualTo(sum1);
+    }
+
+    @Test
+    public void testGetALl(){
+        System.out.println(expenseMapper.sumAllExpensesByYear("2024"));
+    }
+
+    @Test
+    public void testGetAllYear(){
+        List<String> list = expenseMapper.getAllYears();
+        Assertions.assertThat(list).isNotEmpty();
+    }
+
+    @Test
+    public void testAllExpenseByYear(){
+        System.out.println(expenseMapper.sumAllExpensesByYear("2024"));
     }
 }

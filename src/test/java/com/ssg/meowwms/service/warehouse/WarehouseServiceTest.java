@@ -28,7 +28,7 @@ public class WarehouseServiceTest {
         WarehouseDTO warehouseDTO = WarehouseDTO.builder()
                 .name("야옹창고")
                 .managerId("WarehouseManager")
-                .volume(10L)
+                .volume(10)
                 .latitude(37.517331925853)
                 .longitude(127.047377408384)
                 .build();
@@ -61,5 +61,31 @@ public class WarehouseServiceTest {
         List<WarehouseDetailDTO> warehouseDetailList = warehouseService.getWarehouseDetail(warehouseId);
 
         log.info(warehouseDetailList);
+    }
+
+    @Test
+    @DisplayName("주어진 카테고리 아이디에 해당하는 창고 목록 조회 테스트")
+    void getWarehouseWithCategory() {
+        int categoryId = 5;
+
+        List<WarehouseDTO> warehouseList = warehouseService.getWarehouseWithCategory(categoryId);
+
+        log.info(warehouseList);
+    }
+
+    @Test
+    @DisplayName("주어진 이름에 해당하는 창고 아이디 조회 테스트")
+    void getWarehouseIdByName() {
+        String name = "운양동 우유 창고";
+
+        int warehouseId = warehouseService.getWarehouseIdByName(name).orElse(0);
+
+        log.info(warehouseId);
+    }
+
+    @Test
+    @DisplayName("모든 창고 번호 조회")
+    public void getAllWarehouseId(){
+        log.info(warehouseService.getAllWarehouseId());
     }
 }

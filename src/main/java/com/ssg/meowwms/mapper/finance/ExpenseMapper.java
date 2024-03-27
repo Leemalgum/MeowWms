@@ -23,4 +23,8 @@ public interface ExpenseMapper {
     int sumExpenses(@Param("optionList")List<OptionDTO> optionList);
 
     List<ExpenseMonthDTO> sumExpensesByYear(@Param("warehouseId") int warehouseId, @Param("year") String year);
+
+    List<String> getAllYears();
+
+    List<ExpenseMonthDTO> sumAllExpensesByYear(@Param("year") String year);
 }

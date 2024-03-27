@@ -45,7 +45,7 @@ public class WarehouseDTO {
      * 단위 = 세제곱 미터
      * 최소 10 이상입니다.
      */
-    private Long volume;
+    private int volume;
 
     /**
      * 창고 관리자 아이디 입니다.

@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -42,6 +43,21 @@ public class WarehouseServiceImpl implements WarehouseService{
 
     @Override
     public List<WarehouseDetailDTO> getWarehouseDetail(int warehouseId) {
-        return warehouseMapper.getWarehouseDetail(warehouseId);
+        return warehouseMapper.selectWarehouseDetail(warehouseId);
+    }
+
+    @Override
+    public List<WarehouseDTO> getWarehouseWithCategory(int categoryId) {
+        return warehouseMapper.selectWarehouseWithCategory(categoryId);
+    }
+
+    @Override
+    public Optional<Integer> getWarehouseIdByName(String warehouseName) {
+        return warehouseMapper.selectIdByName(warehouseName);
+    }
+
+    @Override
+    public List<Integer> getAllWarehouseId() {
+        return warehouseMapper.selectAllWarehouseId();
     }
 }

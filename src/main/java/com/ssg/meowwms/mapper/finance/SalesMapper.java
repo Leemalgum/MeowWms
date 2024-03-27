@@ -23,4 +23,7 @@ public interface SalesMapper {
     int sumSales(@Param("optionList") List<OptionDTO> optionList);
 
     List<SalesMonthDTO> sumSalesByYear(@Param("warehouseId") int warehouseId, @Param("year") String year);
+
+    List<String> getAllYears();
+    List<SalesMonthDTO> sumAllSalesByYear(@Param("year") String year);
 }

@@ -44,12 +44,12 @@
                                     <!-- 창고 이름 입력 -->
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label for="productId-input">창고 이름</label>
+                                            <label for="warehouseName">창고 이름</label>
                                         </div>
                                         <div class="col-md-8">
                                             <input
                                                     type="text"
-                                                    id="productId-input"
+                                                    id="warehouseName"
                                                     class="form-control"
                                                     required
                                                     autocomplete="false"
@@ -59,8 +59,9 @@
                                         <div class="col-md-2">
                                             <!-- 전체 간격을 일정하게 열 맞춤 -->
                                             <button
-                                                    id="retrieval-register-button"
+                                                    id="checkDuplicateButton"
                                                     class="btn btn-success"
+                                                    onclick="checkDuplicateWarehouseName()"
                                             >
                                                 중복 확인
                                             </button>
@@ -71,41 +72,33 @@
                                     <!-- 창고 분류 입력 -->
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label for="majorType-input">창고 분류</label>
+                                            <label for="mainType">창고 분류</label>
                                         </div>
                                         <!-- 대분류 -->
                                         <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 대분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
+                                            <select id="mainType" class="form-control" required>
+                                                <option value="" selected disabled hidden>--- 대분류 ---</option>
+                                                <th:block th:each="category : ${mainCategories}">
+                                                    <option th:text="${category}"></option>
+                                                </th:block>
                                             </select>
                                         </div>
 
                                         <!-- 중분류 -->
                                         <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
+                                            <select id="middleType" class="form-control" disabled required>
                                                 <option value="" selected disabled hidden>
                                                     --- 중분류 ---
                                                 </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
                                             </select>
                                         </div>
 
                                         <!-- 소분류 -->
                                         <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
+                                            <select id="subType" class="form-control" disabled required>
                                                 <option value="" selected disabled hidden>
                                                     --- 소분류 ---
                                                 </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
                                             </select>
                                         </div>
                                     </div>
@@ -114,17 +107,16 @@
                                     <!-- 창고 관리자 선택 -->
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label for="productId-input">창고 관리자</label>
+                                            <label for="warehouseManager">창고 관리자</label>
                                         </div>
                                         <div class="col-md-8">
-                                            <select id="warehouse-manager" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 창고 관리자를 선택하세요. ---
+                                            <select id="warehouseManager" class="form-control" required>
+                                                <option value="" selected disabled hidden>--- 창고 관리자를 선택하세요. ---</option>
+                                                <option th:each="warehouseManager : ${warehouseManagerList}" th:value="${warehouseManager.getUid()}">
+                                                    아이디: <span th:text="${warehouseManager.getUid()}"></span> | 이름: <span th:text="${warehouseManager.getUname()}"></span>
                                                 </option>
-                                                <option value="manager1">관리자 1</option>
-                                                <option value="manager2">관리자 2</option>
-                                                <option value="manager3">관리자 3</option>
                                             </select>
+
                                         </div>
                                     </div>
                                     <br/>
@@ -132,15 +124,16 @@
                                     <!-- 창고 크기 입력 -->
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label for="location-input"
-                                            >창고 크기(m<sup>3</sup>)</label
+                                            <label for="volume"
+                                            >창고 크기(cell)</label
                                             >
                                         </div>
                                         <div class="col-md-8">
                                             <input
                                                     type="number"
-                                                    id="location-input"
+                                                    id="volume"
                                                     class="form-control"
+                                                    required
                                             />
                                         </div>
 
@@ -159,11 +152,12 @@
                                                     id="address"
                                                     class="form-control"
                                                     placeholder="창고 주소를 입력하세요."
+                                                    required
                                             />
                                         </div>
                                         <div class="col-md-2">
                                             <button
-                                                    id="retrieval-register-button"
+                                                    id="checkLocation"
                                                     class="btn btn-success"
                                                     type="button"
                                                     onclick="handleSearch()"
@@ -215,7 +209,6 @@
 <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
 
 <!-- 스크립트 -->
-
 <!-- 카카오맵 api -->
 <script
         type="text/javascript"
@@ -223,6 +216,11 @@
 ></script>
 
 <script>
+    let isCheckLocation = false;
+
+    let latitude = null;
+    let longitude = null;
+
     var mapContainer = document.getElementById("map"), // 지도를 표시할 div
         mapOption = {
             center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -263,6 +261,10 @@
         geocoder.addressSearch(address, function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                latitude = result[0].y;
+                longitude = result[0].x;
+
                 var marker = new kakao.maps.Marker({
                     map: map,
                     position: coords,
@@ -270,13 +272,16 @@
                 var infowindow = new kakao.maps.InfoWindow({
                     content:
                         '<div style="width:150px;text-align:center;padding:6px 0;">' +
-                        document.getElementById("productId-input").value +
+                        document.getElementById("warehouseName").value +
                         "</div>",
                 });
                 infowindow.open(map, marker);
                 map.setCenter(coords);
+
+                isCheckLocation = true;
             } else {
                 alert("지도 검색에 실패했습니다: " + status);
+                document.getElementById("address").value = '';
             }
         });
     }
@@ -286,6 +291,164 @@
         var address = document.getElementById("address").value; // 입력된 주소값 가져오기
         searchAddress(address); // 주소로 검색하여 마커 표시
     }
+</script>
+
+<script>
+    const warehouse = [];
+
+    // 대분류 선택 시 중분류 데이터 요청
+    document.getElementById("mainType").addEventListener("change", function () {
+        // 선택된 대분류 값 가져오기
+        const selectedMainCategory = this.value;
+
+        // Ajax 요청
+        $.ajax({
+            type: "GET",
+            url: "/warehouse/getMiddleCategories",
+            data: {
+                mainCategory: selectedMainCategory
+            },
+            success: function (response) {
+                // 성공적으로 데이터를 받았을 때 중분류 select 업데이트
+                const middleTypeSelect = document.getElementById("middleType");
+                middleTypeSelect.disabled = false;
+                middleTypeSelect.innerHTML = "<option value='' selected disabled hidden>--- 중분류 ---</option>";
+
+                // 받은 데이터로 중분류 option 업데이트
+                response.forEach(function (middleCategory) {
+                    const option = document.createElement("option");
+                    option.value = middleCategory
+                    option.textContent = middleCategory; // 중분류 이름
+                    middleTypeSelect.appendChild(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                // 에러 처리
+                console.error(error);
+                alert("중분류 데이터를 가져오는 중 오류가 발생했습니다.");
+            }
+        });
+    });
+
+    // 중분류 선택 시 소분류 활성화 및 옵션 추가
+    document.getElementById("middleType").addEventListener("change", function () {
+        // 선택된 대분류와 중분류 값 가져오기
+        const selectedMainCategory = document.getElementById("mainType").value;
+        const selectedMiddleCategory = this.value;
+
+        // Ajax 요청
+        $.ajax({
+            type: "GET",
+            url: "/warehouse/getSubCategories",
+            data: {
+                mainCategory: selectedMainCategory,
+                middleCategory: selectedMiddleCategory
+            },
+            success: function (response) {
+                const subTypeSelect = document.getElementById("subType");
+                subTypeSelect.disabled = false;
+                subTypeSelect.innerHTML = "<option value='' selected disabled hidden>--- 소분류 ---</option>";
+
+                // 받은 데이터로 중분류 option 업데이트
+                response.forEach(function (subCategory) {
+                    const option = document.createElement("option");
+                    option.value = subCategory
+                    option.textContent = subCategory; // 소분류 이름
+                    subTypeSelect.appendChild(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                // 에러 처리
+                console.error(error);
+                alert("소분류 데이터를 가져오는 중 오류가 발생했습니다.");
+            }
+        });
+    });
+
+    let isCheckWarehouseName = false;
+
+    // 창고 이름 중복 확인
+    function checkDuplicateWarehouseName() {
+        var warehouseName = document.getElementById("warehouseName").value;
+
+        // Ajax 요청
+        $.ajax({
+            type: "GET",
+            url: "/warehouse/checkDuplicate",
+            data: {
+                warehouseName: warehouseName
+            },
+            success: function (response) {
+                // 서버로부터의 응답을 처리
+                if (response.duplicate) {
+                    alert("중복된 창고 이름입니다.");
+                    document.getElementById("warehouseName").value = '';
+                } else {
+                    isCheckWarehouseName = true;
+                    alert("사용 가능한 창고 이름입니다.");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                alert("서버와의 통신 중 오류가 발생했습니다.");
+            }
+        });
+    }
+
+    // 창고 등록
+    document.getElementById("retrieval-register-button").addEventListener("click", function () {
+        // 사용자가 입력한 데이터 수집
+        const warehouseName = document.getElementById("warehouseName").value;
+        const mainType = document.getElementById("mainType").value;
+        const middleType = document.getElementById("middleType").value;
+        const subType = document.getElementById("subType").value;
+        const warehouseManagerId = document.getElementById("warehouseManager").value;
+        const volume = document.getElementById("volume").value;
+        const address = document.getElementById("address").value;
+
+        // 필수 입력 필드가 비어 있는지 확인
+        if (warehouseName === "" || mainType === "" || middleType === "" || subType === "" || warehouseManager === "" || volume === "" || address === "") {
+            // 하나라도 비어 있으면 등록 버튼 비활성화
+            alert("모든 필수 입력 필드를 입력하세요.");
+            return; // 함수 종료
+        }
+
+        if (!isCheckWarehouseName) {
+            alert("창고 이름을 중복 확인하세요!")
+            return;
+        }
+
+        if (!isCheckLocation) {
+            alert("창고 위치를 확인하세요!")
+            return;
+        }
+
+        // AJAX 요청
+        $.ajax({
+            type: "POST",
+            url: "/warehouse/register",
+            data: {
+                warehouseName: warehouseName,
+                mainType: mainType,
+                middleType: middleType,
+                subType: subType,
+                warehouseManagerId: warehouseManagerId,
+                latitude: latitude,
+                longitude: longitude,
+                volume: volume
+            },
+            success: function (response) {
+                console.log(response);
+                alert("창고 등록이 완료되었습니다.");
+                // 등록이 성공하면 필요한 추가 작업을 수행할 수 있습니다.
+                window.location.href = "/warehouse/list";
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                alert("창고 등록 중 오류가 발생했습니다.");
+            }
+        });
+    });
 </script>
 
 <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
