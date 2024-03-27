@@ -42,7 +42,7 @@
                                             <option selected disabled hidden>-- 검색 타입 선택 --</option>
                                             <option value="id">ID</option>
                                             <option value="name">창고 이름</option>
-                                            <option value="categoryId">창고 분류</option>
+                                            <option value="category">창고 분류</option>
                                             <option value="address">창고 주소</option>
                                         </select>
                                     </div>
@@ -150,7 +150,7 @@
     }
 
     var geocoder = new kakao.maps.services.Geocoder();
-    var currentDataTable = "inquiries"; // 현재 보고 있는 데이터 타입
+    var currentDataTable = "warehouseList"; // 현재 보고 있는 데이터 타입
 
     $(document).ready(function () {
         warehouseData(); // 초기 페이지 로딩 시 문의글 데이터 로드
@@ -160,10 +160,8 @@
         var searchType = $('#searchType').val();
         var searchKeyword = $('#searchKeyword').val();
         // 현재 상태에 따라 적절한 데이터 로드
-        if (currentDataTable === "inquiries") {
+        if (currentDataTable === "warehouseList") {
             warehouseData(searchType, searchKeyword);
-        } else if (currentDataTable === "notices") {
-            loadNoticesData(searchType, searchKeyword);
         }
     });
 
@@ -277,10 +275,6 @@
             infowindow.close(); // 인포윈도우를 닫음
         });
         infowindows = []; // 인포윈도우 배열 초기화
-    }
-
-    function loadNoticesData(searchType = '', searchKeyword = '') {
-        // loadNoticesData 함수 구현
     }
 </script>
 
