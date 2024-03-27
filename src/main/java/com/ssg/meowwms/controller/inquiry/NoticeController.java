@@ -44,6 +44,7 @@ public class NoticeController {
         return "views/inquiry/read-notice";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/modify-notice/{no}")
     public String showModifyNotice(@PathVariable(required = false) Integer no, Model model) {
         if (no != null) {
@@ -57,6 +58,7 @@ public class NoticeController {
         return "views/inquiry/modify-notice";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/modify-notice")
     public String submitNotice(NoticeDTO notice) {
         if (notice.getNo() == 0) { // postNum이 0이면 새 글 작성
@@ -69,6 +71,7 @@ public class NoticeController {
         return "views/inquiry/read-notice/" + notice.getNo();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/modify-notice")
     public String registerForm(Model model) {
         NoticeDTO noticeDTO = new NoticeDTO();
@@ -77,6 +80,7 @@ public class NoticeController {
         return "views/inquiry/modify-notice"; // 글 목록 페이지로 리다이렉트
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/noticeDelete/{no}")
     public String deleteNotice(@PathVariable(required = false) Integer no){
         noticeService.deleteNotice(no);
