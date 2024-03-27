@@ -101,11 +101,21 @@
                                             <div class="form-group row">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                                     <label for="role">권한</label>
-                                                    <input type="text" class="form-control" id="role">
+                                                    <select class="form-control" id="role">
+                                                        <option value="1">Admin</option>
+                                                        <option value="2">WarehouseManager</option>
+                                                        <option value="3">User</option>
+                                                        <option value="4">NonUser</option>
+                                                    </select>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <label for="status">가입상태</label>
-                                                    <input type="text" class="form-control" id="status">
+                                                    <select class="form-control" id="status">
+                                                        <option value="1">Active</option>
+                                                        <option value="2">Inactive</option>
+                                                        <option value="3">Banned</option>
+                                                        <option value="4">Request</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -132,6 +142,7 @@
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                                     <label for="email">이메일</label>
                                                     <input type="text" class="form-control" id="email">
+                                                    <div id="emailError" style="color: red; font-size: 12px;"></div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <label for="tel">전화번호</label>
@@ -180,6 +191,7 @@
         </div>
     </div>
     <script>
+
         $(document).ready(function () {
             loadData(); // 초기 페이지 로딩 시 전체 회원 데이터 로드
 
@@ -191,8 +203,8 @@
 
                 // 클릭된 행의 데이터를 모달에 표시
                 $('#uid').val(rowData[0]);
-                $('#role').val(rowData[1]);
-                $('#status').val(rowData[2]);
+                $('#role').val(getRoleId(rowData[1]));
+                $('#status').val(getStatusId(rowData[2]));
                 $('#uname').val(rowData[3]);
                 $('#upw').val(rowData[4]);
                 $('#tel').val(rowData[5]);
@@ -221,6 +233,62 @@
             });
         }
 
+        // 권한 ID에 따라 권한 텍스트를 반환하는 함수
+        function getRoleText(rid) {
+            switch (rid) {
+                case 1:
+                    return 'Admin';
+                case 2:
+                    return 'WarehouseManager';
+                case 3:
+                    return 'User';
+                case 4:
+                    return 'NonUser';
+            }
+        }
+
+        // 가입상태 ID에 따라 상태 텍스트를 반환하는 함수
+        function getStatusText(sid) {
+            switch (sid) {
+                case 1:
+                    return 'Active';
+                case 2:
+                    return 'Inactive';
+                case 3:
+                    return 'Banned';
+                case 4:
+                    return 'Request';
+                default:
+                    return '';
+            }
+        }
+
+        function getRoleId(string) {
+            switch (string) {
+                case  'Admin':
+                    return 1;
+                case 'WarehouseManager':
+                    return 2;
+                case 'User':
+                    return 3;
+                case  'NonUser':
+                    return 4;
+            }
+        }
+
+        function getStatusId(string) {
+            switch (string) {
+                case 'Active':
+                    return 1;
+                case 'Inactive':
+                    return 2;
+                case 'Banned':
+                    return 3;
+                case 'Request':
+                    return 4;
+            }
+        }
+
         // 받아온 데이터를 표시하는 함수
         function displayData(data) {
             // 데이터를 표시할 방법에 따라 HTML을 동적으로 생성하거나 수정
@@ -229,10 +297,13 @@
             tableBody.empty(); // 기존 데이터 제거
 
             data.forEach(function (user) {
+                // 권한과 가입상태에 따라 표시할 텍스트 결정
+                var roleText = getRoleText(user.rid);
+                var statusText = getStatusText(user.sid);
                 var row = "<tr>" +
                     "<td>" + user.uid + "</td>" +
-                    "<td>" + user.rid + "</td>" +
-                    "<td>" + user.sid + "</td>" +
+                    "<td>" + roleText + "</td>" +
+                    "<td>" + statusText + "</td>" +
                     "<td>" + user.uname + "</td>" +
                     "<td>" + "초기화" + "</td>" +
                     "<td>" + user.tel + "</td>" +
@@ -243,11 +314,15 @@
             });
         }
 
+
+
         // 각 input 요소의 변경 이벤트 처리
         $('#role, #status, #email, #tel').on('input', function() {
             // 변경된 input 값을 컨트롤러로 보내기 위해 '완료' 버튼 활성화
             $('.editCompleteBtn').prop('disabled', false);
         });
+
+
 
         $('.editCompleteBtn').click(function () {
             console.log("clickEvent")
@@ -259,7 +334,7 @@
                 tel: $('#tel').val(),
                 email: $('#email').val(),
             };
-
+            console.log(userData)
             // AJAX를 사용하여 컨트롤러에 데이터 전송
             $.ajax({
                 type: "POST", // 전송 방식
@@ -307,6 +382,22 @@
                     alert("Failed to send data. Please try again later.");
                 }
             });
+        });
+
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('emailError');
+
+        emailInput.addEventListener('input', function(event) {
+            const email = event.target.value;
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (!emailRegex.test(email)) {
+                emailError.textContent = '유효하지 않은 이메일입니다.';
+                emailInput.style.borderColor = 'red'; // 입력 필드 테두리 색상 변경
+            } else {
+                emailError.textContent = ''; // 유효성 검사 통과 시 에러 메시지 제거
+                emailInput.style.borderColor = 'blue'; // 입력 필드 테두리 색상 원래대로 변경
+            }
         });
 
     </script>
