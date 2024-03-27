@@ -56,4 +56,10 @@ public interface UserService {
      * @return
      */
     int totalUserCount();
+
+    /**
+     * 회원 가입 요청 수 조회
+     * @return
+     */
+    int nonUserRequest();
 }

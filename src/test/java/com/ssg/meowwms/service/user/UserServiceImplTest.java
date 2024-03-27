@@ -83,4 +83,9 @@ class UserServiceImplTest {
     void totalUserCount(){
         log.info(userService.totalUserCount());
     }
+
+    @Test
+    void nonUserRequest() {
+        log.info(userService.nonUserRequest());
+    }
 }

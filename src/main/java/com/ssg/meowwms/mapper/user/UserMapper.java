@@ -55,4 +55,5 @@ public interface UserMapper {
     List<UserVO> selectWarehouseManager();
 
     int totalUserCount();
+    int nonUserRequest();
 }

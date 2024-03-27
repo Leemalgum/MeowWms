@@ -84,4 +84,9 @@ public class UserServiceImpl implements UserService {
     public int totalUserCount() {
         return userMapper.totalUserCount();
     }
+
+    @Override
+    public int nonUserRequest() {
+        return userMapper.nonUserRequest();
+    }
 }
