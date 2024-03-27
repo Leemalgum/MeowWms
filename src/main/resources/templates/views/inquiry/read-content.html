@@ -55,6 +55,41 @@
                         <a th:href="@{/inquiry/inquiryDelete/{postNum}(postNum=${inquiry.postNum})}" class="btn btn-danger">삭제하기</a>
                     </div>
                 </div>
+                <!-- 답변 카드 조건부 렌더링 -->
+                <div th:if="${inquiry.response != null}">
+                    <div class="card my-4">
+                        <div class="card-header">답변</div>
+                        <div class="card-body" th:text="${inquiry.response}"></div>
+                    </div>
+                </div>
+
+                <!-- 관리자용 답변하기 버튼 -->
+                <div th:if="${#authorization.expr('hasRole(''ADMIN'')')}">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#answerModal">답변하기</button>
+                </div>
+
+                <!-- 답변 모달 -->
+                <div class="modal fade" id="answerModal" tabindex="-1" aria-labelledby="answerModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="answerModalLabel">답변 등록</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="answerForm">
+                                    <div class="form-group">
+                                        <label for="answerText">답변 내용</label>
+                                        <textarea class="form-control" id="answerText" rows="3"></textarea>
+                                    </div>
+                                    <button type="button" id="submitReply" class="btn btn-primary" data-postnum="${inquiry.postNum}">답변완료</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -71,6 +106,27 @@
 
 <!-- 스크립트 -->
 <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+<script th:inline="javascript">
+    var postId = [[${inquiry.postNum}]]; // Thymeleaf 표현식을 사용
+    $(document).ready(function() {
+        $('#submitReply').click(function() {
+            var replyContent = $('#answerText').val(); // 답변 내용을 올바르게 가져오는지 확인
+
+            $.ajax({
+                url: '/inquiry/inquiry/response',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: { postNum: postId, response: replyContent },
+                success: function(result) {
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert('답변 등록에 실패했습니다: ' + error);
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 </html>

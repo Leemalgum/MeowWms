@@ -9,6 +9,7 @@ import com.ssg.meowwms.service.inquiry.NoticeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -53,20 +54,19 @@ public class NoticeController {
             model.addAttribute("notice", notice);
         }
         // 수정 페이지 또는 글쓰기 페이지로 이동
-        return "/views/inquiry/modify-notice";
+        return "views/inquiry/modify-notice";
     }
 
     @PostMapping("/modify-notice")
     public String submitNotice(NoticeDTO notice) {
         if (notice.getNo() == 0) { // postNum이 0이면 새 글 작성
             notice.setUserId(SecurityUtils.getCurrentUserDetails().getUsername());
-            System.out.println(SecurityUtils.getCurrentUserDetails().getUsername());
             noticeService.insertNotice(notice);
-            return "redirect:/views/inquiry/inquiry";
+            return "views/inquiry/inquiry";
         } else { // postNum이 0이 아니면 기존 글 수정
             noticeService.updateNotice(notice);
         }
-        return "redirect:/views/inquiry/read-notice/" + notice.getNo();
+        return "views/inquiry/read-notice/" + notice.getNo();
     }
 
     @GetMapping("/modify-notice")
@@ -80,7 +80,7 @@ public class NoticeController {
     @GetMapping("/noticeDelete/{no}")
     public String deleteNotice(@PathVariable(required = false) Integer no){
         noticeService.deleteNotice(no);
-        return "redirect:/views/inquiry/inquiry";
+        return "views/inquiry/inquiry";
     }
 
 //    @GetMapping("noticeData")
