@@ -79,4 +79,9 @@ public class UserServiceImpl implements UserService {
                 .map(userVO -> modelMapper.map(userVO, UserDTO.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public int totalUserCount() {
+        return userMapper.totalUserCount();
+    }
 }

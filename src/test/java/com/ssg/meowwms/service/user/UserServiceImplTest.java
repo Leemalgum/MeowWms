@@ -78,4 +78,9 @@ class UserServiceImplTest {
 
         log.info(warehouseManagerList);
     }
+
+    @Test
+    void totalUserCount(){
+        log.info(userService.totalUserCount());
+    }
 }
