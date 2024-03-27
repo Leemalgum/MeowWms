@@ -17,8 +17,7 @@ public interface StorageService {
     List<StockMovementDTO> getStorageList();
     List<StockMovementDTO> selectMovementByStatus(String statusCode);
     List<StockMovementDTO> selectStockMovementsById(int productId);
-    String generateQrCodeContent(StockDTO stockDTO, StockMovementDTO stockMovementDTO, ProductDTO productDTO);
-    Blob convertBase64ToBlob(String base64Image);
-    void insertQrContent(String base64Image, StockDTO stockDTO, StockMovementDTO stockMovementDTO, ProductDTO productDTO);
-    void getQrCode();
+    String generateQrCodeContent(StockMovementDTO stockMovementDTO, ProductDTO productDTO);
+    void generateAndSaveQRCode(int productId, String qrCodeContent);
+    void getQrCode(byte[] imageData, String filePath);
 }

@@ -3,6 +3,7 @@ package com.ssg.meowwms.mapper.finance;
 import com.ssg.meowwms.domain.finance.SalesVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.finance.SalesMonthDTO;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
+@Log4j2
 public class SalesMapperTest {
 
     @Autowired
@@ -41,6 +43,7 @@ public class SalesMapperTest {
         List<OptionDTO> options = new ArrayList<>();
         // Populate options as needed for your test
         List<SalesVO> salesList = salesMapper.selectAll(options);
+        log.info(salesList);
         assertThat(salesList).isNotEmpty();
         // Additional assertions to verify the contents of salesList
     }
@@ -79,5 +82,20 @@ public class SalesMapperTest {
         List<SalesMonthDTO> salesSumByYear = salesMapper.sumSalesByYear(warehouseId, year);
         assertThat(salesSumByYear).isNotEmpty();
         // Additional assertions to verify the sums and months
+    }
+
+    @Test
+    public void testSumAllSalesByYear() {
+        String year = "2024";
+        List<SalesMonthDTO> salesSumByYear = salesMapper.sumAllSalesByYear(year);
+        log.info(salesSumByYear);
+        assertThat(salesSumByYear).isNotEmpty();
+        // Additional assertions to verify the sums and months
+    }
+
+    @Test
+    public void testGetAllYear(){
+        List<String> list = salesMapper.getAllYears();
+        assertThat(list).isNotEmpty();
     }
 }

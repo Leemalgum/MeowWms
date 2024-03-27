@@ -21,4 +21,11 @@ public interface UserMapper {
     String searchId(@Param("uname") String uname, @Param("email") String email);
 
     String searchPw(@Param("uname") String uname, @Param("uid") String uid);
+
+    /**
+     * User 테이블에서 창고 관리자만 조회합니다.
+     *
+     * @return 창고 관리자 목록
+     */
+    List<UserVO> selectWarehouseManager();
 }

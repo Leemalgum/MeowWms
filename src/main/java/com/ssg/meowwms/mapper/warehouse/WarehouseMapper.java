@@ -2,11 +2,13 @@ package com.ssg.meowwms.mapper.warehouse;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
+import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 창고 테이블과의 연결 작업을 수행합니다.
@@ -44,5 +46,27 @@ public interface WarehouseMapper {
      * @param warehouseId
      * @return
      */
-    List<WarehouseDetailDTO> getWarehouseDetail(int warehouseId);
+    List<WarehouseDetailDTO> selectWarehouseDetail(int warehouseId);
+
+    /**
+     * 주어진 카테고리에 해당하는 창고 목록을 반환합니다.
+     *
+     * @param category
+     * @return
+     */
+    List<WarehouseDTO> selectWarehouseWithCategory(String category);
+
+    /**
+     * 창고 이름을 전달 받아 해당하는 창고의 아이디를 반환
+     *
+     * @param warehouseName
+     * @return 창고 아이디
+     */
+    Optional<Integer> selectIdByName(String warehouseName);
+
+    /**
+     * 모든 창고아이디를 가져옵니다.
+     * @return 창고 아이디
+     */
+    List<Integer> selectAllWarehouseId();
 }

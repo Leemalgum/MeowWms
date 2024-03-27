@@ -57,12 +57,15 @@
 
 
     <select id="sumExpenses" parameterType="java.util.List" resultType="Integer">
-        SELECT SUM(cost)
+        SELECT IFNULL(SUM(cost),0)
         FROM Expense
         <where>
             <if test="optionList != null">
                 <foreach collection="optionList" item="option">
                     <choose>
+                        <when test="option.type == 'year'">
+                            AND year(expense_date) = #{option.value}
+                        </when>
                         <when test="option.type == 'expenseId'">
                             AND id = #{option.value}
                         </when>
@@ -81,6 +84,9 @@
                         <when test="option.type == 'maxCost'">
                             AND cost &lt;= #{option.value}
                         </when>
+                        <when test="option.type == 'type'">
+                            AND type LIKE CONCAT('%', #{option.value}, '%')
+                        </when>
                     </choose>
                 </foreach>
             </if>
@@ -89,8 +95,8 @@
 
     <select id="sumExpensesByYear" resultType="com.ssg.meowwms.dto.finance.ExpenseMonthDTO">
         SELECT
-            MONTH(expense_date) AS expenseMonth,
-            SUM(cost) AS totalExpense
+            MONTH(expense_date) AS month,
+            SUM(cost) AS expenseMonth
         FROM
             Expense
         WHERE
@@ -100,6 +106,24 @@
             MONTH(expense_date)
         ORDER BY
             expenseMonth;
+    </select>
+
+    <select id="getAllYears" resultType="String">
+        select year(expense_date) as year from Expense group by year order by year desc;
+    </select>
+
+    <select id="sumAllExpensesByYear" resultType="com.ssg.meowwms.dto.finance.ExpenseMonthDTO">
+        SELECT
+            MONTH(expense_date) AS month,
+            SUM(cost) AS expenseMonth
+        FROM
+            Expense
+        WHERE
+          year(expense_date) = #{year}
+        GROUP BY
+            MONTH(expense_date)
+        ORDER BY
+            month;
     </select>
 
 </mapper>

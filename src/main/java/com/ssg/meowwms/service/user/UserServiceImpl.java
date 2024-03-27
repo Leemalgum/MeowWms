@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,5 +63,12 @@ public class UserServiceImpl implements UserService {
     public String searchPw(String uname, String id) {
         String upw = userMapper.searchId(uname, id);
         return upw;
+    }
+
+    @Override
+    public List<UserDTO> getWarehouseManager() {
+        return userMapper.selectWarehouseManager().stream()
+                .map(userVO -> modelMapper.map(userVO, UserDTO.class))
+                .collect(Collectors.toList());
     }
 }

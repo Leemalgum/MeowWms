@@ -5,11 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExpenseMonthDTO {
-    private int month;
-    private int expenseMonth;
+public class SettlementMonthDTO {
+    int month;
+    int settlementMonth;
 }

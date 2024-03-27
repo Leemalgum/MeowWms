@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssg.meowwms.mapper.finance.SalesMapper">
-
-    <!-- Result Map -->
-    <resultMap id="salesResultMap" type="com.ssg.meowwms.domain.finance.SalesVO">
-        <result property="id" column="id"/>
-        <result property="amount" column="amount"/>
-        <result property="date" column="date"/>
-        <result property="warehouseId" column="warehouse_id"/>
-        <!-- Add more fields as needed -->
-    </resultMap>
-
     <!-- Insert -->
     <insert id="insertSales" parameterType="com.ssg.meowwms.domain.finance.SalesVO">
         INSERT INTO Sales (amount, sales_date, warehouse_id, type)
@@ -18,32 +8,48 @@
     </insert>
 
     <!-- Select by Id -->
-    <select id="selectSalesById" parameterType="int" resultMap="salesResultMap">
+    <select id="selectSalesById" parameterType="int" resultSets="com.ssg.meowwms.domain.finance.SalesVO">
         SELECT * FROM Sales WHERE id = #{id}
     </select>
 
     <!-- Select All with Options -->
-    <select id="selectAll" parameterType="java.util.List" resultMap="salesResultMap">
+    <select id="selectAll" parameterType="java.util.List" resultSets="com.ssg.meowwms.domain.finance.SalesVO">
         SELECT * FROM Sales
         <where>
             <if test="optionList != null">
-                <!-- Example for handling options, adjust according to actual OptionDTO fields -->
-                <foreach item="option" index="index" collection="optionList" open="" separator="AND" close="">
-                    <if test="option.type == 'date'">
-                        AND date = #{option.value}
-                    </if>
-                    <!-- Add more conditions based on OptionDTO -->
+                <foreach collection="optionList" item="option">
+                    <choose>
+                        <when test="option.type == 'salesId'">
+                            AND id = #{option.value}
+                        </when>
+                        <when test="option.type == 'warehouseId'">
+                            AND warehouse_id = #{option.value}
+                        </when>
+                        <when test="option.type == 'startDate'">
+                            AND sales_date >= #{option.value}
+                        </when>
+                        <when test="option.type == 'endDate'">
+                            AND sales_date &lt;= #{option.value}
+                        </when>
+                        <when test="option.type == 'minCost'">
+                            AND amount >= #{option.value}
+                        </when>
+                        <when test="option.type == 'maxCost'">
+                            AND amount &lt;= #{option.value}
+                        </when>
+                        <when test="option.type == 'type'">
+                            AND type LIKE CONCAT('%', #{option.value}, '%')
+                        </when>
+                    </choose>
                 </foreach>
             </if>
         </where>
     </select>
 
-    <!-- Delete -->
     <delete id="deleteSales" parameterType="int">
         DELETE FROM Sales WHERE id = #{id}
     </delete>
 
-    <!-- Update -->
     <update id="updateSales" parameterType="com.ssg.meowwms.domain.finance.SalesVO">
         UPDATE Sales
         SET amount = #{amount}, sales_date = #{salesDate}, warehouse_id = #{warehouseId}, type = #{type}
@@ -52,16 +58,42 @@
 
     <!-- Sum Sales -->
     <select id="sumSales" parameterType="java.util.List" resultType="int">
-        SELECT SUM(amount) FROM Sales
+        SELECT IFNULL(SUM(amount),0) FROM Sales
         <where>
-            <!-- Add conditions based on OptionDTO -->
+            <if test="optionList != null">
+                <foreach collection="optionList" item="option">
+                    <choose>
+                        <when test="option.type == 'year'">
+                            AND year(sales_date) = #{option.value}
+                        </when>
+                        <when test="option.type == 'salesId'">
+                            AND id = #{option.value}
+                        </when>
+                        <when test="option.type == 'warehouseId'">
+                            AND warehouse_id = #{option.value}
+                        </when>
+                        <when test="option.type == 'startDate'">
+                            AND sales_date >= #{option.value}
+                        </when>
+                        <when test="option.type == 'endDate'">
+                            AND sales_date &lt;= #{option.value}
+                        </when>
+                        <when test="option.type == 'minCost'">
+                            AND amount >= #{option.value}
+                        </when>
+                        <when test="option.type == 'maxCost'">
+                            AND amount &lt;= #{option.value}
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
         </where>
     </select>
 
     <select id="sumSalesByYear" resultType="com.ssg.meowwms.dto.finance.SalesMonthDTO">
         SELECT
-            MONTH(sales_date) AS salesMonth,
-            SUM(amount) AS totalSales
+            MONTH(sales_date) AS month,
+            SUM(amount) AS salesMonth
         FROM
             Sales
         WHERE
@@ -73,4 +105,21 @@
             salesMonth;
     </select>
 
+    <select id="getAllYears" resultType="String">
+        SELECT YEAR(sales_date) AS `year` FROM Sales GROUP BY `year` ORDER BY `year` DESC;
+    </select>
+
+    <select id="sumAllSalesByYear" resultType="com.ssg.meowwms.dto.finance.SalesMonthDTO">
+        SELECT
+            MONTH(sales_date) AS month,
+            SUM(amount) AS salesMonth
+        FROM
+            Sales
+        WHERE
+          YEAR(sales_date) = #{year}
+        GROUP BY
+            MONTH(sales_date)
+        ORDER BY
+            month;
+    </select>
 </mapper>

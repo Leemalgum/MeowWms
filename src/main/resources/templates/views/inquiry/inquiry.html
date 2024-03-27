@@ -29,7 +29,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable" width="90%" cellspacing="0">
                     <thead>
                     <tr>
                         <th>카테고리</th>
@@ -37,6 +37,7 @@
                         <th>제목</th>
                         <th>작성자</th>
                         <th>등록일</th>
+                        <th>답변 현황</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -81,16 +82,19 @@
 
     $(document).ready(function() {
         loadInquiriesData(); // 초기 페이지 로딩 시 문의글 데이터 로드
+        updateTableHead("문의글"); // 초기 테이블 헤드 설정
     });
 
     $('#showNoticesButton').click(function() {
         currentDataTable = "notices"; // 공지사항 데이터 로드로 상태 변경
         loadNoticesData(); // 검색 조건 없이 공지사항 데이터 로드
+        updateTableHead("공지사항"); // 테이블 헤드 업데이트
     });
 
     $('#viewInquiriesButton').click(function() {
         currentDataTable = "inquiries"; // 문의글 데이터 로드로 상태 변경
         loadInquiriesData(); // 검색 조건 없이 문의글 데이터 로드
+        updateTableHead("문의글"); // 테이블 헤드 업데이트
     });
 
     $('#button-search').click(function() {
@@ -116,17 +120,17 @@
 
         $('#dataTable').DataTable({
             "ajax": {
-                "url": `/views/inquiry/data?${params}`,
+                "url": `/inquiry/data?${params}`,
                 "type": "GET",
                 "dataSrc": ""
             },
             "columns": [
-                { "data": "postNum" },
                 { "data": "postType" },
+                { "data": "postNum" },
                 {
                     "data": "postTitle",
                     "render": function(data, type, row) {
-                        return `<a href="/views/inquiry/read-content/${row.postNum}">${data}</a>`;
+                        return `<a href="/inquiry/read-content/${row.postNum}">${data}</a>`;
                     }
                 },
                 { "data": "userId" },
@@ -135,13 +139,26 @@
                     "render": function(data) {
                         return moment(data).format('YYYY-MM-DD');
                     }
+                },
+                {
+                    "data": "response",
+                    "render": function(data) {
+                        if (data === null) {
+                            // 답변중(준비중) - 검은색 표시
+                            return '<span style="color: black;">답변중</span>';
+                        } else {
+                            // 답변완료 - 주황색 표시
+                            return '<span style="color: orange;">답변완료</span>';
+                        }
+                    }
                 }
+
             ],
             "searching": false,
             "paging": true,
             "ordering": true,
             "info": true,
-            "pageLength": 10
+            "pageLength": 10,
         });
     }
 
@@ -157,7 +174,7 @@
 
         $('#dataTable').DataTable({
             "ajax": {
-                "url": `/views/inquiry/noticeData?${params}`,
+                "url": `/inquiry/noticeData?${params}`,
                 "type": "GET",
                 "dataSrc": ""
             },
@@ -167,7 +184,13 @@
                 {
                     "data": "title",
                     "render": function(data, type, row) {
-                        return `<a href="/views/inquiry/read-notice/${row.no}">${data}</a>`;
+                        return `<a href="/inquiry/read-notice/${row.no}">${data}</a>`;
+                    }
+                },
+                {
+                    "data": "content",
+                    "render": function (data){
+                        return data.substr(0, 10) + "...";
                     }
                 },
                 { "data": "userId" },
@@ -184,6 +207,31 @@
             "info": true,
             "pageLength": 10
         });
+    }
+    function updateTableHead(type) {
+        var theadHTML = "";
+        if (type === "공지사항") {
+            theadHTML = `
+                <tr>
+                    <th>글번호</th>
+                    <th>카테고리</th>
+                    <th>제목</th>
+                    <th>내용</th>
+                    <th>작성자</th>
+                    <th>등록일</th>
+                </tr>`;
+        } else if (type === "문의글") {
+            theadHTML = `
+                <tr>
+                    <th>카테고리</th>
+                    <th>글번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>등록일</th>
+                    <th>답변 현황</th>
+                </tr>`;
+        }
+        $("#dataTable thead").html(theadHTML);
     }
     /*]]>*/
 </script>
