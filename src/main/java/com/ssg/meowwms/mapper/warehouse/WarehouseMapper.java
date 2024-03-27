@@ -49,12 +49,12 @@ public interface WarehouseMapper {
     List<WarehouseDetailDTO> selectWarehouseDetail(int warehouseId);
 
     /**
-     * 주어진 카테고리 아이디에 해당하는 창고 목록을 반환합니다.
+     * 주어진 카테고리에 해당하는 창고 목록을 반환합니다.
      *
-     * @param categoryId
+     * @param category
      * @return
      */
-    List<WarehouseDTO> selectWarehouseWithCategory(int categoryId);
+    List<WarehouseDTO> selectWarehouseWithCategory(String category);
 
     /**
      * 창고 이름을 전달 받아 해당하는 창고의 아이디를 반환

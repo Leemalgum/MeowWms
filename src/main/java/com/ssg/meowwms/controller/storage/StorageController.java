@@ -98,10 +98,9 @@ public class StorageController {
             @RequestParam("middleCategory") String middleCategory,
             @RequestParam("subCategory") String subCategory) {
 
-        CategoryDTO categoryDTO = categoryService.getWithCategories(mainCategory, middleCategory, subCategory);
-        int categoryId = categoryDTO.getId();
+        String category = mainCategory + " | " + middleCategory + " | " + subCategory;
 
-        return warehouseService.getWarehouseWithCategory(categoryId);
+        return warehouseService.getWarehouseWithCategory(category);
     }
 
     /**
@@ -145,14 +144,14 @@ public class StorageController {
                     .salePrice(productSalePrice)
                     .quantity(productQuantity)
                     .volume(productVolume)
-                    .userId("jongwoo")
+                    .userId("jongwoobaek")
                     .build();
 
             int productId = storageService.registerProduct(productDTO);
 
             StockMovementDTO stockMovementDTO = StockMovementDTO.builder()
                     .productId(productId)
-                    .userId("jongwoo")
+                    .userId("jongwoobaek")
                     .statusCode(StockMovementStatus.REQUESTED.getCode())
                     .requestDatetime(LocalDate.now())
                     .warehouseId(warehouseId)
