@@ -21,4 +21,8 @@ public interface StockTakingMapper {
     StockTakingVO selectOneStocktaking(int stockTakingId);
 
     List<StockTakingDetailVO> selectSTDetail(int stockId);
+
+    StockTakingDetailVO selectActualStock(int warehouseId);
+
+    int selectMaxStockTakingId();
 }

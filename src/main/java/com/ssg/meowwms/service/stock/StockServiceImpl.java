@@ -1,6 +1,7 @@
 package com.ssg.meowwms.service.stock;
 
 import com.ssg.meowwms.domain.stock.ProductStatusVO;
+import com.ssg.meowwms.domain.stock.StockTakingVO;
 import com.ssg.meowwms.domain.stock.StockVO;
 import com.ssg.meowwms.domain.stock.WarehouseStatusVO;
 import com.ssg.meowwms.dto.stock.ProductStatusDTO;
@@ -37,10 +38,10 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<StockDTO> getStockByMainCategory(String mainCategory) {
+    public List<StockDTO> getStockByMainCategory() {
         log.info("/StockService/getStockByMainCategory()...");
-        List<StockVO> stockVOList = stockMapper.selectStockByMainCategory(mainCategory);
-
+        List<StockVO> stockVOList = stockMapper.selectStockByMainCategory();
+        log.info("::" + stockVOList);
         return stockVOList.stream()
                 .map(stock ->  modelMapper.map(stock, StockDTO.class))
                 .collect(Collectors.toList());
@@ -67,12 +68,42 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<ProductStatusDTO> getProductStatusList(Date from, Date to, String searchTerm, String mainCategory, String middleCategory, String subCategory) {
+    public void insertStock(StockVO stockVO) {
+        List<StockTakingVO> allStockTakingList = stockTakingMapper.selectAllStocktaking();
+
+        // Find the maximum stockTakingId in the list
+        int maxId = allStockTakingList.stream()
+                .mapToInt(StockTakingVO::getStockTakingId)
+                .max()
+                .orElse(0);
+
+        log.info("here is stockVO to insert: " +stockVO);
+
+        stockMapper.insertStock(stockVO);
+    }
+
+    @Override
+    public int selectMaxStockId() {
+        return stockMapper.selectMaxStockId();
+    }
+
+    @Override
+    public void deleteStock(int stockId) {
+        stockMapper.deleteStock(stockId);
+    }
+
+    @Override
+    public List<ProductStatusDTO> getProductStatusList(
+//            Date from, Date to, String searchTerm
+//            ) {
+    ) {
         log.info("/StockService/getProductStatusList()...");
-        if (from == null) from = new Date(0);
-        List<ProductStatusVO> productStatusVOList = stockMapper.selectProductStatusList(
-                from, to, searchTerm, mainCategory, middleCategory, subCategory
-        );
+
+//        List<ProductStatusVO> productStatusVOList = stockMapper.selectProductStatusList(
+//                from, to, searchTerm
+//                , mainCategory, middleCategory, subCategory
+//        );
+        List<ProductStatusVO> productStatusVOList = stockMapper.selectProductStatusList();
 
         return productStatusVOList.stream()
                 .map(product ->  modelMapper.map(product, ProductStatusDTO.class))
@@ -80,14 +111,19 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<WarehouseStatusDTO> getWarehouseStatusList(String warehouseName, String mainCategory, String middleCategory, String subCategory) {
+    public List<WarehouseStatusDTO> getWarehouseStatusList(
+//            String warehouseName, String mainCategory, String middleCategory, String subCategory
+    ) {
         log.info("/StockService/getWarehouseStatusList()...");
         List<WarehouseStatusVO> warehouseStatusVOList = stockMapper.selectWarehouseStatusList(
-                warehouseName, mainCategory, middleCategory, subCategory
+//                warehouseName, mainCategory, middleCategory, subCategory
         );
 
         return warehouseStatusVOList.stream()
                 .map(warehouse ->  modelMapper.map(warehouse, WarehouseStatusDTO.class))
                 .collect(Collectors.toList());
     }
+
+
+
 }

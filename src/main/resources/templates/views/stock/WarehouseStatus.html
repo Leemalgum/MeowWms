@@ -28,88 +28,10 @@
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">창고현황 리스트</h1>
-                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                                                                                   href="https://datatables.net">official
-                            DataTables documentation</a>.</p>
+                    <p class="mb-4">창고현황 리스트는 해당 창고에 어떤 제품이 있고 입고와 출고가 몇개가 됬으며 재고가 얼마나 남았는지에 대해 한 눈에 볼 수 있는 테이블 입니다.
 
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">창고현황 조회</h6>
-                            <div>
-                                <button id="all-date-button" class="btn btn-primary">All</button>
-                                <button id="today-date-button" class="btn btn-primary">Today</button>
-                                <button id="month-date-button" class="btn btn-primary">This Month</button>
-                                <button id="year-date-button" class="btn btn-primary">This Year</button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="startDate-input">시작일</label>
-                                        <input type="date" id="startDate-input" class="form-control"/>
+                    </p>
 
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="endDate-input">종료일</label>
-                                        <input type="date" id="endDate-input" class="form-control"/><br>
-                                    </div>
-
-                                    <div class="col-md-4"> <!-- 1열 시작 -->
-
-                                        <label for="large-category-list">대분류</label>
-                                        <select id="large-category-list" class="form-control">
-                                            <option value="" selected disabled hidden>
-                                                --- 대분류 ---
-                                            </option>
-                                            <option value="large-category1">대분류 옵션 1</option>
-                                            <option value="large-category2">대분류 옵션 2</option>
-                                            <option value="large-category3">대분류 옵션 3</option>
-                                        </select>
-
-                                    </div> <!-- 1열 끝 -->
-                                    <div class="col-md-4"> <!-- 2열 시작 -->
-
-                                        <label for="middle-category-list">중분류</label>
-                                        <select id="middle-category-list" class="form-control">
-                                            <option value="" selected disabled hidden>
-                                                --- 중분류 ---
-                                            </option>
-                                            <option value="large-category1">중분류 옵션 1</option>
-                                            <option value="large-category2">중분류 옵션 2</option>
-                                            <option value="large-category3">중분류 옵션 3</option>
-                                        </select>
-
-                                    </div> <!-- 2열 끝 -->
-                                    <div class="col-md-4"> <!-- 3열 시작 -->
-
-                                        <label for="large-category-list">소분류</label>
-                                        <select id="large-list" class="form-control">
-                                            <option value="" selected disabled hidden>
-                                                --- 소분류 ---
-                                            </option>
-                                            <option value="large-category1">소분류 옵션 1</option>
-                                            <option value="large-category2">소분류 옵션 2</option>
-                                            <option value="large-category3">소분류 옵션 3</option>
-                                        </select>
-
-                                    </div> <!-- 3열 끝 -->
-                                    <div class="col-md-12">
-                                        <br>
-                                        <label for="deliveryAddress-input"></label>
-                                        <input type="text" id="deliveryAddress-input" class="form-control" placeholder="창고이름을 입력하세요."/><br>
-                                    </div>
-                                </div> <!-- 각 행의 끝 -->
-                                <div class="row">
-                                    <div class="col-md-12" style="text-align: right;"> <!-- 전체 간격을 일정하게 열 맞춤 -->
-                                        <button id="retrieval-register-button" class="btn btn-primary">검색</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -117,10 +39,9 @@
                             <h6 class="m-0 font-weight-bold text-primary">창고현황 리스트</h6>
                         </div>
                         <div class="card-body">
-                            <label for="stock-dataTable">Total 00</label>
                             <br>
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="stock-dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr style="background-color:#4e73df; color: white;">
                                         <th>창고ID</th>
@@ -128,87 +49,45 @@
                                         <th>창고분류</th>
                                         <th>제품아이디</th>
                                         <th>제품명</th>
-                                        <th>상세정보</th>
+<!--                                        <th>상세정보</th>-->
                                         <th>재고수량</th>
                                         <th>입고수량</th>
                                         <th>출고수량</th>
+                                        <th>재고상태</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
-                                    <tr>
-                                        <th>Food-01</th>
-                                        <th>서울창고</th>
-                                        <th>음식</th>
-                                        <th>kimchi-01</th>
-                                        <th>김치</th>
-                                        <th>김치는 맛있어</th>
-                                        <th>123</th>
-                                        <th>200</th>
-                                        <th>73</th>
+                                    <tbody id="dataTable tbody">
+                                    <tr th:each="warehouse : ${warehouseList}">
+                                        <td th:text="${warehouse.warehouseId}"></td>
+                                        <td th:text="${warehouse.warehouseName}"></td>
+                                        <td th:text="${warehouse.category}"></td>
+                                        <td th:text="${warehouse.productId}"></td>
+                                        <td th:text="${warehouse.productName}"></td>
+<!--                                        나중에 해당 상품으로 페이지 이동-->
+<!--                                        <td th:text="${warehouse.detail == null ? 'N/A' : warehouse.detail}"></td>-->
+                                        <td th:text="${warehouse.stockQuantity}"></td>
+                                        <td th:text="${warehouse.inboundQuantity}"></td>
+                                        <td th:text="${warehouse.outboundQuantity}"></td>
+                                        <td>
+                                            <a th:text="${warehouse.inboundQuantity - warehouse.outboundQuantity == warehouse.stockQuantity ? '정상' : '불일치'}"
+                                               th:href="@{/stockTaking/list}"></a>
+                                        </td>
                                     </tr>
-                                    </tfoot>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Food-01</th>
-                                        <th>서울창고</th>
-                                        <th>음식</th>
-                                        <th>kimchi-01</th>
-                                        <th>김치</th>
-                                        <th>김치는 맛있어</th>
-                                        <th>123</th>
-                                        <th>200</th>
-                                        <th>73</th>
-                                    </tr>
+                                    </tbody>
                                     </tfoot>
                                     <tbody>
-                                    <!-- <c:forEach items="${responseDTO.dtoList}" var="dto">
-                                    <tr>
-                                        <td><c:out value="${dto.isChecked}"/></td>
-                                        <td><c:out value="${dto.tno}"/></td>
-                                        <td>
-                                            <a href="/meowwms/retrievalRead?tno=${dto.tno}&${pageRequestDTO.link}"
-                                               class="text-decoration-none" data-tno="${dto.tno}">
-                                                <c:out value="${dto.retrievalNo}"/>
-                                            </a>
-                                        </td>
-                                        <td><c:out value="${dto.orderDate}"/></td>
-                                        <td><c:out value="${dto.userId}"/></td>
-                                        <td><c:out value="${dto.productId}"/></td>
-                                        <td><c:out value="${dto.quantity}"/></td>
-                                        <td><c:out value="${dto.isApproved}"/></td>
-                                        <td><c:out value="${dto.isAllocated}"/></td>
-                                    </tr>
-                                    </c:forEach> -->
+
                                     </tbody>
 
                                     </tbody>
                                 </table>
-
-                                <div class="pagination" style="justify-content: center;">
-                                    <a href="#" class="pagination-number">&laquo;&emsp;</a>
-                                    <a href="#" class="pagination-number" >1&emsp;</a>
-                                    <a href="#" class="pagination-number">2&emsp;</a>
-                                    <a href="#" class="pagination-number">3&emsp;</a>
-                                    <a href="#" class="pagination-number">4&emsp;</a>
-                                    <a href="#" class="pagination-number">5&emsp;</a>
-                                    <a href="#" class="pagination-number">6&emsp;</a>
-                                    <a href="#" class="pagination-number">&raquo;</a>
-                                </div>
-
-
-
-                                <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
-                                    <!-- Table content goes here -->
-                                </table>
-
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
             </div>
         </div>
-
         <!-- 푸터 -->
         <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
     </div>
@@ -222,6 +101,82 @@
 
 <!-- 스크립트 -->
 <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        // Initialize DataTable with render function for date columns
+        $('#dataTable').DataTable({
+            language: {
+                "lengthMenu": "페이지당 _MENU_ 개 항목 표시",
+                "zeroRecords": "검색 결과가 없습니다",
+                "info": "페이지 _PAGE_ / _PAGES_",
+                "infoEmpty": "사용 가능한 기록이 없습니다",
+                "infoFiltered": "(총 _MAX_ 개 기록에서 필터링됨)",
+                "search": "검색:",
+                "paginate": {
+                    "first": "처음",
+                    "last": "마지막",
+                    "next": "다음",
+                    "previous": "이전"
+                }
+            },
+        });
+
+        // AJAX request on button click
+        $('#retrieval-register-button').click(function () {
+            console.log("Button clicked!"); // Add this line for debugging
+
+            $.ajax({
+                url: '/stock/productStatus',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    // Clear existing table data
+                    $('#dataTable tbody').empty();
+
+                    // Loop through the response data and append rows to the table
+                    $.each(response, function (index, product) {
+                        var row = '<tr>' +
+                            '<td>' + product.approvedDatetime + '</td>' +
+                            '<td>' + product.stockId + '</td>' +
+                            '<td>' + product.warehouseId + '</td>' +
+                            '<td>' + product.warehouseName + '</td>' +
+                            '<td>' + product.warehouseSubCategory + '</td>' +
+                            '<td>' + product.productId + '</td>' +
+                            '<td>' + product.productName + '</td>' +
+                            '<td>' + product.stockQuantity + '</td>' +
+                            '<td>' + product.productPrice + '</td>';
+
+                        // Check if the value is '불일치'
+                        if (product.inboundQuantity - product.outboundQuantity !== product.stockQuantity) {
+                            row += '<td><button class="btn btn-primary" onclick="registerStocktaking()">Register Stocktaking</button></td>';
+                        } else {
+                            row += '<td>일치</td>';
+                        }
+
+                        row += '</tr>';
+                        $('#dataTable tbody').append(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.error(xhr.responseText);
+                    alert('Error occurred: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+
+    // Function to register stocktaking
+    function registerStocktaking() {
+        // Redirect to '/stocktaking/list'
+        window.location.href = '/stocktaking/list';
+    }
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 </body>
 </html>

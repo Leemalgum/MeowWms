@@ -1,5 +1,6 @@
 package com.ssg.meowwms.service.stock;
 
+import com.ssg.meowwms.domain.stock.StockVO;
 import com.ssg.meowwms.dto.stock.ProductStatusDTO;
 import com.ssg.meowwms.dto.stock.StockDTO;
 import com.ssg.meowwms.dto.stock.WarehouseStatusDTO;
@@ -15,22 +16,31 @@ import java.util.Optional;
 
 public interface StockService {
     List<StockDTO> stockList();
-    List<StockDTO> getStockByMainCategory(String mainCategory);
+    List<StockDTO> getStockByMainCategory();
     List<StockDTO> getStockByMiddleCategory(String middleCategory);
     List<StockDTO> getStockBySubCategory(String subCategory);
-    List<ProductStatusDTO> getProductStatusList(
-            Date from,
-            Date to,
-            String searchTerm,
-            String mainCategory,
-            String middleCategory,
-            String subCategory
-    );
+    void insertStock(StockVO StockVO);
+
+    int selectMaxStockId();
+
+    void deleteStock(int stockId);
+
+//    List<ProductStatusDTO> getProductStatusList(
+//            Date from,
+//            Date to,
+//            String searchTerm
+//            ,
+//            String mainCategory,
+//            String middleCategory,
+//            String subCategory
+//    );
+    List<ProductStatusDTO> getProductStatusList();
+
     List<WarehouseStatusDTO> getWarehouseStatusList(
-            String warehouseName,
-            String mainCategory,
-            String middleCategory,
-            String subCategory
+//            String warehouseName,
+//            String mainCategory,
+//            String middleCategory,
+//            String subCategory
     );
 
 }

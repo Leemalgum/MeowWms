@@ -3,13 +3,13 @@
 <mapper namespace="com.ssg.meowwms.mapper.stock.StockTakingMapper"> <!-- Update namespace -->
 
     <insert id="insertStocktaking" parameterType="com.ssg.meowwms.domain.stock.StockTakingVO">
-        INSERT INTO Stocktaking VALUES (#{stockTakingId}, #{stockId}, #{plannedDate}, #{inspector}, #{status}, #{statusDetail})
+        INSERT INTO Stocktaking (stocktaking_id, stock_id, planned_date, inspector, status, status_detail)
+        VALUES (#{stockTakingId}, #{stockId}, #{plannedDate}, #{inspector}, #{status}, #{statusDetail})
     </insert>
 
-    <update id="updateStocktaking"> <!-- Update resultType -->
+    <update id="updateStocktaking" parameterType="com.ssg.meowwms.domain.stock.StockTakingVO"> <!-- Update resultType -->
         UPDATE Stocktaking
-        SET stocktaking_Id = #{stockTakingId},
-        stock_id = #{stockId},
+        SET
         planned_date = #{plannedDate},
         inspector = #{inspector},
         status = #{status},
@@ -23,33 +23,40 @@
     </select>
 
     <select id="selectAllStocktaking" resultType="com.ssg.meowwms.domain.stock.StockTakingVO"> <!-- Update resultType -->
-        SELECT * FROM Stocktaking st
+        SELECT stocktaking_id, stock_id, planned_date, inspector, status, status_detail, warehouse_id
+        FROM Stocktaking st
+        JOIN Stock s on s.id = st.stock_id;
     </select>
 
+    <select id="selectMaxStockTakingId" resultType="Integer">
+        SELECT MAX(stocktaking_id) FROM Stocktaking;
+    </select>
 
     <select id="selectSTDetail" resultType="com.ssg.meowwms.domain.stock.StockTakingDetailVO"> <!-- Update resultType -->
-        SELECT s.id as stockId,
+        SELECT distinct s.id as stockId,
         p.id as productId,
         p.name as productName,
-        c.sub_category as productSubCategory,
+        w.category as category,
         s.quantity as computerizedStock,
+        (p.quantity - sod.quantity) AS actualStock,
         st.status as status,
         st.status_detail as statusDetail
+
         FROM Stocktaking st
         Join Stock s on s.id = st.stock_id
         JOIN Product p on s.product_id = p.id
-        JOIN Category c on p.category_id = c.id
+        JOIN Warehouse w on p.category_id = w.id
+        JOIN Shipping_Orders_Detail sod on p.id = sod.product_id
         where stocktaking_id = #{stockTakingId};
     </select>
-
 
 
 
     <select id="selectOneStocktaking" resultType="com.ssg.meowwms.domain.stock.StockTakingVO"> <!-- Update resultType -->
         SELECT *
         FROM Stocktaking st
-        Join Stock s on s.id
-        where stocktaking_id LIKE CONCAT('%', #{stockTakingId}, '%');
+        Join Stock s on s.id = st.stock_id
+        where stocktaking_id = #{stockTakingId};
 
     </select>
 

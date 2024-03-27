@@ -25,7 +25,6 @@ public class StockTakingServiceTests {
     @Transactional
     public void testInsertStocktaking(){
         StockTakingDTO stockTakingDTO = StockTakingDTO.builder()
-                .stockTakingId(99)
                 .stockId(1)
                 .plannedDate(new Date())
                 .inspector("김태진")
@@ -47,11 +46,10 @@ public class StockTakingServiceTests {
     public void testUpdateStocktaking(){
         StockTakingDTO stockTakingDTO = StockTakingDTO.builder()
                 .stockTakingId(1)
-                .stockId(1)
                 .plannedDate(new Date())
-                .inspector("김태진")
+                .inspector("김태진ㅇㅇ")
                 .status(Status.완료)
-                .statusDetail("")
+                .statusDetail("ㅇㅇ")
                 .build();
         try {
             stockTakingService.selectOneStocktaking(stockTakingDTO.getStockTakingId());
@@ -78,8 +76,8 @@ public class StockTakingServiceTests {
     }
     @Test
     public void testSelectOneStocktaking(){
-        log.info(stockTakingService.selectOneStocktaking(1));
-        stockTakingService.selectOneStocktaking(1);
+        log.info(stockTakingService.selectOneStocktaking(200));
+        stockTakingService.selectOneStocktaking(200);
     }
 
     @Test

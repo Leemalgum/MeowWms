@@ -28,106 +28,67 @@
                     For more information about DataTables, please visit the <a target="_blank"
                                                                                href="https://datatables.net">official
                         DataTables documentation</a>.</p>
-
-                <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                        <h6 class="m-0 font-weight-bold text-primary">재고 실사 조회</h6>
-                        <div>
-                            <button id="all-date-button" class="btn btn-primary">All</button>
-                            <button id="today-date-button" class="btn btn-primary">Today</button>
-                            <button id="month-date-button" class="btn btn-primary">This Month</button>
-                            <button id="year-date-button" class="btn btn-primary">This Year</button>
-                        </div>
+                        <h6 class="m-0 font-weight-bold text-primary">재고 실사</h6>
                     </div>
                     <div class="card-body">
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="startDate-input">시작일</label>
-                                    <input type="date" id="startDate-input" class="form-control"/>
+                                    <label for="date-input">실사일자</label>
+                                    <input type="date" id="date-input" class="form-control"/>
+                                    <br>
 
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="endDate-input">종료일</label>
-                                    <input type="date" id="endDate-input" class="form-control"/><br>
-                                </div>
-
-                                <div class="col-md-4"> <!-- 1열 시작 -->
-
-
-                                    <label for="selectBrandBtn">브랜드</label>
-                                    <button type="button" id="selectBrandBtn" class="btn btn-primary" data-toggle="modal" data-target="#brandModal" style="padding: 0.05rem 0.2rem; font-size: 0.8rem;">+</button>
-
-                                    <input type="text" id="brand-input" class="form-control" placeholder="------------------" readonly> <!-- Set readonly to prevent direct typing -->
-
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="brandModal" tabindex="-1" role="dialog" aria-labelledby="brandModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="brandModalLabel">브랜드를 선택해 주세요</h5>
-
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <select id="majorType-input" class="form-control">
-                                                        <option value="" selected disabled hidden>
-                                                            --- 대분류 ---
-                                                        </option>
-                                                        <option value="major1">대분류 옵션 1</option>
-                                                        <option value="major2">대분류 옵션 2</option>
-                                                        <option value="major3">대분류 옵션 3</option>
-                                                    </select>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
-                                                    <!-- Add a button to confirm selection -->
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                                                    <!-- Add a button to confirm selection -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div> <!-- 1열 끝 -->
-                                <div class="col-md-4"> <!-- 2열 시작 -->
-
-                                    <label for="storage-list">창고</label>
-                                    <select id="storage-list" class="form-control">
-                                        <option value="" selected disabled hidden>
-                                            --- 창고이름 ---
-                                        </option>
-                                        <option value="large-category1">야옹이창고</option>
-                                        <option value="large-category2">고냥이창고</option>
-                                        <option value="large-category3">주인님창고</option>
+                                    <label for="status-input">상태상세</label>
+                                    <select id="status-input" class="form-control">
+                                        <option value="완료">완료</option>
+                                        <option value="미완료">미완료</option>
+                                        <option value="오류">오류</option>
                                     </select>
+                                    <br>
+
+                                    <label for="warehouse-input">창고번호(창고가 있는거여야 합니다) </label>
+                                    <input type="text" id="warehouse-input" class="form-control"/>
+                                    <br>
+
+                                </div>
+
+
+                                <div class="col-md-6"> <!-- 1열 시작 -->
+
+                                    <label for="inspector-input">담당자</label>
+                                    <input type="text" id="inspector-input" class="form-control"/>
+                                    <br>
+
+                                    <label for="status-input">상태상세 디테일</label>
+                                    <input type="text" id="status-detail-input" class="form-control"/>
+                                    <br>
 
                                     <br>
-                                </div> <!-- 2열 끝 -->
-                                <div class="col-md-4"> <!-- 3열 시작 -->
-
-                                    <label for="Manager-input">담당자</label>
-                                    <input type="text" id="Manager-input" class="form-control" placeholder="담당자ID"/><br>
-
-                                </div> <!-- 3열 끝 -->
-                                <div class="col-md-12">
-                                    <label for="search-input"></label>
-                                    <input type="text" id="search-input" class="form-control" placeholder="검색을 위한 실사번호를 입력해주세요."/><br>
+                                    <div class="text-right">
+                                        <br>
+                                        <button id="stockTaking-register-button" class="btn btn-primary">등록</button>
+                                        <button id="edit-stockTaking-button" class="btn btn-primary">수정</button>
+                                        <button id="delete-stockTaking-button" class="btn btn-primary">삭제</button>
+                                    </div>
                                 </div>
+
+                                </div> <!-- 1열 끝 -->
+
+
+
                             </div> <!-- 각 행의 끝 -->
                             <div class="row">
-                                <div class="col-md-12" style="text-align: right;"> <!-- 전체 간격을 일정하게 열 맞춤 -->
-                                    <button id="retrieval-register-button" class="btn btn-primary">검색</button>
-                                </div>
+                                <div class="col-md-6" style="text-align: right;"> <!-- 전체 간격을 일정하게 열 맞춤 -->
+                                    <br>
+
+
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
@@ -135,7 +96,6 @@
                         <h6 class="m-0 font-weight-bold text-primary">재고 실사 조회</h6>
                     </div>
                     <div class="card-body">
-                        <label for="dataTable">Total 00</label>
                         <br>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -143,6 +103,7 @@
                                 <tr style="background-color:#4e73df; color: white;">
                                     <th></th>
                                     <th>실사번호</th>
+                                    <th>창고번호</th>
                                     <th>실사일자</th>
                                     <th>담당자</th>
                                     <th>상태</th>
@@ -152,16 +113,17 @@
                                 <tfoot>
 
                                 </tfoot>
-                                <tbody>
-                                <!-- Thymeleaf loop for dynamic data -->
-
+                                <tbody id="dataTable tbody1">
                                 <tr th:each="stockTaking : ${stList}" >
                                     <th>
-                                        <input type="checkbox" name="inspection-checkbox" th:id="'inspection-checkbox-' + ${stockTaking.stockTakingId}">
+                                        <input type="checkbox" name="inspection-checkbox" th:id="'inspection-checkbox-' + ${stockTaking.stockTakingId}" th:value="${stockTaking.stockTakingId}">
+
                                     </th>
                                     <td>
                                         <button type="button" class="btn btn-link toggle-detail" th:data-stock-id="${stockTaking.stockTakingId}" th:text="${stockTaking.stockTakingId}"></button>
                                     </td>
+
+                                    <td th:text="${stockTaking.warehouseId}"></td>
                                     <td th:text="${stockTaking.plannedDate}"></td>
                                     <td th:text="${stockTaking.inspector}"></td>
                                     <td th:text="${stockTaking.status}"></td>
@@ -171,16 +133,7 @@
                             </table>
 
 
-                            <div class="pagination" style="justify-content: center;">
-                                <a href="#" class="pagination-number">&laquo;&emsp;</a>
-                                <a href="#" class="pagination-number" >1&emsp;</a>
-                                <a href="#" class="pagination-number">2&emsp;</a>
-                                <a href="#" class="pagination-number">3&emsp;</a>
-                                <a href="#" class="pagination-number">4&emsp;</a>
-                                <a href="#" class="pagination-number">5&emsp;</a>
-                                <a href="#" class="pagination-number">6&emsp;</a>
-                                <a href="#" class="pagination-number">&raquo;</a>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -191,7 +144,6 @@
                         <h6 class="m-0 font-weight-bold text-primary">재고 실사 디테일</h6>
                     </div>
                     <div class="card-body">
-                        <label for="total-list-detail-output1">Total 00</label>
                         <br>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="total-list-detail-output1" width="100%" cellspacing="0">
@@ -207,7 +159,7 @@
                                     <th>상세정보</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="dataTable tbody">
                                 <!-- Thymeleaf loop for dynamic detail data -->
                                 <tr th:each="detail : ${stDetailList}">
                                     <td th:text="${detail.productId}"></td>
@@ -224,17 +176,7 @@
 
                             </table>
 
-                            <!-- Pagination -->
-                            <div class="pagination" style="justify-content: center;">
-                                <a href="#" class="pagination-number">&laquo;&emsp;</a>
-                                <a href="#" class="pagination-number" >1&emsp;</a>
-                                <a href="#" class="pagination-number">2&emsp;</a>
-                                <a href="#" class="pagination-number">3&emsp;</a>
-                                <a href="#" class="pagination-number">4&emsp;</a>
-                                <a href="#" class="pagination-number">5&emsp;</a>
-                                <a href="#" class="pagination-number">6&emsp;</a>
-                                <a href="#" class="pagination-number">&raquo;</a>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -244,7 +186,7 @@
     </div>
 
     <!-- 푸터 -->
-    <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+
 </div>
 </div>
 
@@ -260,10 +202,26 @@
 <script th:inline="javascript">
     /* <![CDATA[ */
     $(document).ready(function() {
+        $('#dataTable').DataTable({
+            language: {
+                "lengthMenu": "페이지당 _MENU_ 개 항목 표시",
+                "zeroRecords": "검색 결과가 없습니다",
+                "info": "페이지 _PAGE_ / _PAGES_",
+                "infoEmpty": "사용 가능한 기록이 없습니다",
+                "infoFiltered": "(총 _MAX_ 개 기록에서 필터링됨)",
+                "search": "검색:",
+                "paginate": {
+                    "first": "처음",
+                    "last": "마지막",
+                    "next": "다음",
+                    "previous": "이전"
+                }
+            },
+        });
         $('.toggle-detail').click(function() {
             var stockId = $(this).data('stock-id');
             $.ajax({
-                url: '/stock/stockTaking/details?stockTakingId=' + stockId,
+                url: '/stockTaking/details?stockTakingId=' + stockId,
                 type: 'GET',
                 success: function(data) {
                     var detailsTable = $('#total-list-detail-output1 tbody');
@@ -290,6 +248,134 @@
     });
     /* ]]> */
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+<script th:inline="javascript">
+    /* <![CDATA[ */
+    $(document).ready(function() {
+        $('#edit-stockTaking-button').click(function() {
+            // Retrieve the data you want to update
+            var plannedDate = $('#date-input').val();
+            var inspector = $('#inspector-input').val();
+            var status = $('#status-input').val();
+            var statusDetail = $('#status-detail-input').val();
+            var stockTakingId = $('input[name="inspection-checkbox"]:checked').val(); // Retrieve stockTakingId
+
+            // Retrieve stock and warehouse values
+            var stock = $('#stock-input').val();
+            var warehouse = $('#warehouse-input').val();
+
+            // Format the planned date to yyyy-MM-dd
+            plannedDate = moment(plannedDate).format('YYYY-MM-DD');
+
+            // Create a JSON object with the data
+            var data = {
+                plannedDate: plannedDate,
+                inspector: inspector,
+                status: status,
+                statusDetail: statusDetail,
+                stockTakingId: stockTakingId,
+                stock: stock, // Include stock value
+                warehouse: warehouse // Include warehouse value
+                // Add more fields as needed
+            };
+
+            // Send an AJAX POST request to the server
+            $.ajax({
+                url: '/stockTaking/updateStockTaking',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    alert('Stocktaking data updated successfully');
+                    window.location.reload(); // Reload the current page
+                    // You can perform additional actions upon successful update if needed
+                },
+                error: function(error) {
+                    alert('Failed to update stocktaking data: ' + error.responseText);
+                    // You can handle errors here, for example, display an error message to the user
+                }
+            });
+        });
+
+    });
+
+
+    $(document).ready(function() {
+        $('#stockTaking-register-button').click(function() {
+            // Retrieve the data you want to insert
+            var plannedDate = $('#date-input').val();
+            var inspector = $('#inspector-input').val();
+            var status = $('#status-input').val();
+            var statusDetail = $('#status-detail-input').val();
+
+            // Retrieve stock and warehouse values
+            var stockId = $('#stock-input').val();
+            var warehouseId = $('#warehouse-input').val();
+
+            // Format the planned date to yyyy-MM-dd
+            plannedDate = moment(plannedDate).format('YYYY-MM-DD');
+
+            // Create a JSON object with the data
+            var data = {
+                plannedDate: plannedDate,
+                inspector: inspector,
+                status: status,
+                statusDetail: statusDetail,
+                stockId: stockId, // Include stock value
+                warehouseId: warehouseId // Include warehouse value
+                // Add more fields as needed
+            };
+
+            // Send an AJAX POST request to the server
+            $.ajax({
+                url: '/stockTaking/insertStockTaking',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    alert('Stocktaking data inserted successfully');
+                    window.location.reload(); // Reload the current page
+                },
+                error: function(error) {
+                    alert('Failed to insert stocktaking data: ' + error.responseText);
+                    // You can handle errors here, for example, display an error message to the user
+                }
+            });
+        });
+
+    });
+
+    $(document).ready(function() {
+        $('#delete-stockTaking-button').click(function() {
+            // Retrieve the stockTakingId to delete
+            var stockTakingId = $('input[name="inspection-checkbox"]:checked').val();
+
+            if (stockTakingId) {
+                // Send an AJAX DELETE request to the server
+                $.ajax({
+                    url: '/stockTaking/delete/' + stockTakingId, // Adjusted URL to match your controller mapping
+                    type: 'DELETE',
+                    success: function(response) {
+                        alert('Stocktaking data deleted successfully');
+                        window.location.reload(); // Reload the current page
+                    },
+                    error: function(error) {
+                        alert('Failed to delete stocktaking data: ' + error.responseText);
+                        // You can handle errors here, for example, display an error message to the user
+                    }
+                });
+            } else {
+                alert('Please select a stocktaking to delete');
+            }
+        });
+    });
+
+    /* ]]> */
+</script>
+
+
 
 
 

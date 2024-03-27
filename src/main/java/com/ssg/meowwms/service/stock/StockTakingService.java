@@ -14,5 +14,6 @@ public interface StockTakingService {
     StockTakingDTO selectOneStocktaking(int stockTakingId);
     List<StockTakingDetailDTO> selectSTDetail(int stockTakingId);
 
+    int selectMaxStockTakingId();
 
 }

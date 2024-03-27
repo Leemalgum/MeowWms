@@ -31,7 +31,7 @@ public class StockTakingDetailDTO {
     /**
      * 제품 소분류 : 45자 이상
      */
-    private String productSubCategory;
+    private String category;
 
     /**
      * 전산재고 : 0 이상, +값
@@ -81,7 +81,7 @@ public class StockTakingDetailDTO {
         return "StockTakingDetailVO{" +
                 "productId=" + productId +
                 ", productName='" + productName + '\'' +
-                ", productSubCategory='" + productSubCategory + '\'' +
+                ", productSubCategory='" + category + '\'' +
                 ", computerizedStock=" + computerizedStock +
                 ", actualStock=" + actualStock +
                 ", adjustmentQuantity=" + sign + adjustmentQuantity +

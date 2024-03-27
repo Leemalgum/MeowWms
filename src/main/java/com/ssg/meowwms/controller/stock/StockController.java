@@ -1,9 +1,7 @@
 package com.ssg.meowwms.controller.stock;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ssg.meowwms.dto.stock.ProductStatusDTO;
-import com.ssg.meowwms.dto.stock.StockTakingDTO;
-import com.ssg.meowwms.dto.stock.StockTakingDetailDTO;
+import com.ssg.meowwms.dto.stock.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -31,66 +29,94 @@ public class StockController {
     private final StockService stockService;
     private final StockTakingService stockTakingService;
 
-    @GetMapping("/stockTaking")
-    public String showStockTaking(Model model) {
-        model.addAttribute("stList", stockTakingService.selectAllStocktaking());
-        return "views/stock/StockTaking";
+
+
+    @GetMapping("/getMainCategories")
+    public ResponseEntity<List<StockDTO>> getMainCategories() {
+        try {
+            List<StockDTO> mainCategories = stockService.getStockByMainCategory();
+            log.info(mainCategories);
+            return new ResponseEntity<>(mainCategories, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error occurred while fetching main categories: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @ResponseBody
-    @GetMapping("/stockTaking/details")
-    public ResponseEntity<List<StockTakingDetailDTO>> getStockTakingDetails(@RequestParam("stockTakingId") int stockTakingId) {
+    @GetMapping("/getMiddleCategories")
+    public ResponseEntity<List<StockDTO>> getMiddleCategories(@RequestParam String mainCategory) {
         try {
-            List<StockTakingDetailDTO> details = stockTakingService.selectSTDetail(stockTakingId);
-            return new ResponseEntity<>(details, HttpStatus.OK);
+            List<StockDTO> middleCategories = stockService.getStockByMiddleCategory(mainCategory);
+            log.info(middleCategories);
+            return new ResponseEntity<>(middleCategories, HttpStatus.OK);
         } catch (Exception e) {
-            // 로그 기록, 오류 처리 등
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error occurred while fetching middle categories: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getSubCategories")
+    public ResponseEntity<List<StockDTO>> getSubCategories(@RequestParam String middleCategory) {
+        try {
+            List<StockDTO> subCategories = stockService.getStockBySubCategory(middleCategory);
+            log.info(subCategories);
+            return new ResponseEntity<>(subCategories, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error occurred while fetching small categories: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 
+
     @GetMapping("/productStatus")
-    public String showProductStatus(Model model,
-                                    @RequestParam(required = false) Date from,
-                                    @RequestParam(required = false) Date to,
-                                    @RequestParam(required = false) String searchTerm,
-                                    @RequestParam(required = false) String mainCategory,
-                                    @RequestParam(required = false) String middleCategory,
-                                    @RequestParam(required = false) String subCategory) {
-        model.addAttribute("productList", stockService.getProductStatusList(
-                from, to, searchTerm, mainCategory, middleCategory, subCategory
-        ));
+    public String showProductStatus(Model model)
+//            ,
+//                                    @RequestParam(required = false) Date from,
+//                                    @RequestParam(required = false) Date to,
+//                                    @RequestParam(required = false) String searchTerm,
+//                                    @RequestParam(required = false) String mainCategory,
+//                                    @RequestParam(required = false) String middleCategory,
+//                                    @RequestParam(required = false) String subCategory)
+    {
+//        model.addAttribute("productList", stockService.getProductStatusList(
+//                from, to, searchTerm
+//                , mainCategory, middleCategory, subCategory
+//        ));
+
+        model.addAttribute("productList", stockService.getProductStatusList());
         return "views/stock/ProductStatus";
     }
 
     @GetMapping("/stock/productStatus")
     public ResponseEntity<Object> getProductStatusList(
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") String from,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") String to,
-            @RequestParam(required = false) String searchTerm,
-            @RequestParam(required = false) String mainCategory,
-            @RequestParam(required = false) String middleCategory,
-            @RequestParam(required = false) String subCategory
+//            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") String from,
+//            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") String to,
+//            @RequestParam(required = false) String searchTerm,
+//            @RequestParam(required = false) String mainCategory,
+//            @RequestParam(required = false) String middleCategory,
+//            @RequestParam(required = false) String subCategory
     ) {
         try {
             // Convert string dates to Date objects
-//            Date fromDate = null;
-//            Date toDate = null;
+            Date fromDate = null;
+            Date toDate = null;
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date fromDate = dateFormat.parse(from);
-            Date toDate = dateFormat.parse(to);
 //            if (from != null && !from.isEmpty()) {
-//                fromDate = Date.from(LocalDate.parse(from).atStartOfDay(ZoneId.systemDefault()).toInstant());
+//                fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(from);
 //            }
 //
 //            if (to != null && !to.isEmpty()) {
-//                toDate = Date.from(LocalDate.parse(to).atStartOfDay(ZoneId.systemDefault()).toInstant());
+//                toDate = new SimpleDateFormat("yyyy-MM-dd").parse(to);
 //            }
 
             // Proceed with fetching data based on the provided date range
-            List<ProductStatusDTO> productStatusList = stockService.getProductStatusList(fromDate, toDate, searchTerm, mainCategory, middleCategory, subCategory);
+//            List<ProductStatusDTO> productStatusList = stockService.getProductStatusList(
+//                    fromDate, toDate, searchTerm
+//                    , mainCategory, middleCategory, subCategory);
+//            );
+            List<ProductStatusDTO> productStatusList = stockService.getProductStatusList();
+            log.info("pp" + productStatusList);
             return new ResponseEntity<>(productStatusList, HttpStatus.OK);
         } catch (Exception e) {
             // Handle any exceptions
@@ -99,9 +125,26 @@ public class StockController {
     }
 
 
+
+
     @GetMapping("/warehouseStatus")
     public String showWarehouseStatus(Model model) {
-        model.addAttribute(stockTakingService.selectAllStocktaking());
+        model.addAttribute("warehouseList", stockService.getWarehouseStatusList());
         return "views/stock/WarehouseStatus";
+    }
+
+
+    @GetMapping("/stock/warehouseStatus")
+    public ResponseEntity<Object> getWarehouseStatusList(
+
+    ) {
+        try {
+            List<WarehouseStatusDTO> warehouseStatusList = stockService.getWarehouseStatusList();
+            log.info("pp" + warehouseStatusList);
+            return new ResponseEntity<>(warehouseStatusList, HttpStatus.OK);
+        } catch (Exception e) {
+            // Handle any exceptions
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

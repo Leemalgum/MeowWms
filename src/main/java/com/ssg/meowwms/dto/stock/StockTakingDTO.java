@@ -30,6 +30,8 @@ public class StockTakingDTO {
      */
     private int stockId;
 
+    private int warehouseId;
+
     /**
      * 실사일자 : yyyy-MM-dd 형식, 한국(서울) 시간
      */
@@ -55,5 +57,7 @@ public class StockTakingDTO {
      *      오류 : 재고 실사를 진행했으나 수량이 맞지 않음
      */
     private String statusDetail;
+
+    private int quantity;
 
 }
