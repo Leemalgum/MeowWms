@@ -113,12 +113,42 @@
 
 <script th:inline="javascript">
     var positions = [];
+    var currentPositions = [];
+    var markers = [];
+    var infowindows = []; // 인포윈도우 배열 추가
+
     var mapContainer = document.getElementById("map"); // 지도를 표시할 div
     var mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
         level: 3, // 지도의 확대 레벨
     };
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
+    if (navigator.geolocation) {
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                var lat = position.coords.latitude, // 위도
+                    lon = position.coords.longitude; // 경도
+
+                var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 생성합니다
+
+                // 지도 중심을 변경하고, 마커가 표시될 위치와 마커의 위치를 같이 이동시킵니다
+                map.setCenter(locPosition);
+                map.setLevel(3);
+
+                // 마커와 인포윈도우를 표시합니다
+                displayMarker(locPosition);
+            },
+            function (error) {
+                console.error(error);
+            }
+        );
+    } else {
+        alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.");
+    }
+
     var geocoder = new kakao.maps.services.Geocoder();
     var currentDataTable = "inquiries"; // 현재 보고 있는 데이터 타입
 
@@ -162,47 +192,6 @@
                     console.log(positions); // 데이터 로드 후에 positions 배열 확인
                     return data; // DataTable에 표시할 데이터 반환
                 },
-                "complete": function() {
-                    // warehouseData() 함수가 완료된 후에 positions.forEach() 호출
-                    var bounds = new kakao.maps.LatLngBounds();
-
-                    positions.forEach(function (position) { //추가한 코드
-                        console.log(position);
-                        // 주소로 좌표를 검색합니다
-                        geocoder.addressSearch(position.address, function(result, status) {
-
-                            // 정상적으로 검색이 완료됐으면
-                            if (status === kakao.maps.services.Status.OK) {
-
-                                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-                                // 결과값으로 받은 위치를 마커로 표시합니다
-                                var marker = new kakao.maps.Marker({
-                                    map: map,
-                                    position: coords
-                                });
-
-                                marker.setMap(map); //추가한 코드
-                                bounds.extend(coords);
-
-                                // 인포윈도우로 장소에 대한 설명을 표시합니다
-                                //변경한 코드
-                                var infowindow = new kakao.maps.InfoWindow({
-                                    content: '<div style="width:150px;text-align:center;padding:6px 0;">' + position.title + '</div>'
-                                });
-                                infowindow.open(map, marker);
-
-                                // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-                                // map.setCenter(coords);
-                                setBounds();
-                            }
-                        });
-                    });
-
-                    function setBounds() { //추가한 함수
-                        map.setBounds(bounds);
-                    }
-                }
             },
             "columns": [
                 {"data": "id"},
@@ -215,14 +204,79 @@
             "ordering": true,
             "info": true,
             "pageLength": 10,
-            "lengthChange": false
+            "lengthChange": false,
+            "initComplete": function(settings, json) {
+                updateCurrentPositionsAndMarkers(); // 초기 로드 시 현재 페이지의 마커를 업데이트
+            }
         });
 
-        table.on('page.dt', function() {
-            var pageInfo = table.page.info();
-            var currentPageNumber = pageInfo.page + 1; // DataTables는 0부터 페이지 번호를 세므로 1을 더해줍니다.
-            console.log("Current Page Number:", currentPageNumber);
+        table.on('draw', function() {
+            clearMarkers();
+            clearInfowindows(); // 이전 인포윈도우를 닫음
+            currentPositions = [];
+            updateCurrentPositionsAndMarkers(); // 테이블이 다시 그려질 때(페이지 변경 포함) 마커 업데이트
         });
+
+        function updateCurrentPositionsAndMarkers() {
+            var pageInfo = table.page.info();
+            var startIdx = pageInfo.start;
+            var endIdx = pageInfo.end;
+            currentPositions = positions.slice(startIdx, endIdx);
+            setMarkers(); // 현재 페이지에 해당하는 마커 설정
+        }
+    }
+
+    function setMarkers() {
+        clearMarkers(); // 이전에 생성된 마커 제거
+        var bounds = new kakao.maps.LatLngBounds();
+
+        currentPositions.forEach(function(position) {
+            geocoder.addressSearch(position.address, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    markers.push(marker);
+
+                    marker.setMap(map); //추가한 코드
+                    bounds.extend(coords);
+
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    //변경한 코드
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">' + position.title + '</div>'
+                    });
+
+                    infowindow.open(map, marker); // 마커와 함께 인포윈도우 표시
+
+                    infowindows.push(infowindow); // 인포윈도우 배열에 추가
+
+                    setBounds();
+                }
+            });
+        });
+
+        function setBounds() { //추가한 함수
+            map.setBounds(bounds);
+        }
+    }
+
+    function clearMarkers() {
+        markers.forEach(function(marker) {
+            marker.setMap(null); // 마커를 지도에서 제거
+        });
+        markers = []; // 마커 배열 초기화
+    }
+
+    function clearInfowindows() {
+        infowindows.forEach(function(infowindow) {
+            infowindow.close(); // 인포윈도우를 닫음
+        });
+        infowindows = []; // 인포윈도우 배열 초기화
     }
 
     function loadNoticesData(searchType = '', searchKeyword = '') {
