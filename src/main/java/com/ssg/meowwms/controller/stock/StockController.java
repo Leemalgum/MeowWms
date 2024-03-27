@@ -30,6 +30,15 @@ public class StockController {
     private final StockTakingService stockTakingService;
 
 
+    @GetMapping("/list")
+    public String showStockList(Model model) {
+        model.addAttribute("stockList", stockService.stockList());
+        return "views/stock/Stock";
+    }
+
+
+
+
 
     @GetMapping("/getMainCategories")
     public ResponseEntity<List<StockDTO>> getMainCategories() {

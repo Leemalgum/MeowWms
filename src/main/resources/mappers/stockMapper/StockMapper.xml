@@ -2,12 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssg.meowwms.mapper.stock.StockMapper"> <!-- Update namespace -->
     <select id="selectAllStock" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
-        SELECT * FROM Stock;
+        SELECT id as stockId, warehouse_id, product_id, quantity FROM Stock;
     </select>
 
     <select id="selectMaxStockId" resultType="java.lang.Integer">
         SELECT MAX(id) FROM Stock;
     </select>
+
+
 
     <select id="selectStockByMainCategory" resultType="com.ssg.meowwms.domain.stock.StockVO"> <!-- Update resultType -->
         select c.main_category from Stock s

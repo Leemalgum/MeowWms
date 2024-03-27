@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Title</title>
+    <!-- Header 프래그먼트 포함 -->
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+</head>
+<body>
+
+<!-- 페이지 래퍼 -->
+<div id="wrapper">
+    <!-- 사이드바 -->
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <!-- 콘텐츠 래퍼 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- 메인 콘텐츠 -->
+        <div id="content">
+            <!-- 탑바 -->
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+
+            <!-- 페이지 콘텐츠 시작 -->
+            <div class="container-fluid">
+                <!-- 여기에 페이지별 내용을 넣습니다 -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">재고 리스트</h1>
+                    <p class="mb-4">재고 리스트는 해당 재고가 어느 창고에 있고 어떤 상품을 가지고 있는지에 대해 한 눈에 볼 수 있는 테이블 입니다.
+
+                    </p>
+
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">재고 리스트</h6>
+                        </div>
+                        <div class="card-body">
+                            <br>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr style="background-color:#4e73df; color: white;">
+                                        <th>재고ID</th>
+                                        <th>창고ID</th>
+                                        <th>상품ID</th>
+                                        <th>수량</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tbody id="dataTable tbody">
+                                    <tr th:each="stock : ${stockList}">
+                                        <td th:text="${stock.stockId}"></td>
+                                        <td>
+                                            <a th:text="${stock.warehouseId}"
+                                               th:href="@{/stock/warehouseStatus}"></a>
+                                        </td>
+                                        <td th:text="${stock.productId}"></td>
+                                        <td th:text="${stock.quantity}"></td>
+                                    </tr>
+                                    </tbody>
+                                    </tfoot>
+                                    <tbody>
+
+                                    </tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 푸터 -->
+        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+    </div>
+</div>
+
+<!-- 스크롤 탑 버튼 -->
+<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+
+<!-- 로그아웃 모달 -->
+<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+
+<!-- 스크립트 -->
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        // Initialize DataTable with render function for date columns
+        $('#dataTable').DataTable({
+            language: {
+                "lengthMenu": "페이지당 _MENU_ 개 항목 표시",
+                "zeroRecords": "검색 결과가 없습니다",
+                "info": "페이지 _PAGE_ / _PAGES_",
+                "infoEmpty": "사용 가능한 기록이 없습니다",
+                "infoFiltered": "(총 _MAX_ 개 기록에서 필터링됨)",
+                "search": "검색:",
+                "paginate": {
+                    "first": "처음",
+                    "last": "마지막",
+                    "next": "다음",
+                    "previous": "이전"
+                }
+            },
+        });
+
+        // AJAX request on button click
+        $('#retrieval-register-button').click(function () {
+            console.log("Button clicked!"); // Add this line for debugging
+
+            $.ajax({
+                url: '/stock/productStatus',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    // Clear existing table data
+                    $('#dataTable tbody').empty();
+
+                    // Loop through the response data and append rows to the table
+                    $.each(response, function (index, product) {
+                        var row = '<tr>' +
+                            '<td>' + product.approvedDatetime + '</td>' +
+                            '<td>' + product.stockId + '</td>' +
+                            '<td>' + product.warehouseId + '</td>' +
+                            '<td>' + product.warehouseName + '</td>' +
+                            '<td>' + product.warehouseSubCategory + '</td>' +
+                            '<td>' + product.productId + '</td>' +
+                            '<td>' + product.productName + '</td>' +
+                            '<td>' + product.stockQuantity + '</td>' +
+                            '<td>' + product.productPrice + '</td>';
+
+                        // Check if the value is '불일치'
+                        if (product.inboundQuantity - product.outboundQuantity !== product.stockQuantity) {
+                            row += '<td><button class="btn btn-primary" onclick="registerStocktaking()">Register Stocktaking</button></td>';
+                        } else {
+                            row += '<td>일치</td>';
+                        }
+
+                        row += '</tr>';
+                        $('#dataTable tbody').append(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.error(xhr.responseText);
+                    alert('Error occurred: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+
+    // Function to register stocktaking
+    function registerStocktaking() {
+        // Redirect to '/stocktaking/list'
+        window.location.href = '/stocktaking/list';
+    }
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+</body>
+</html>

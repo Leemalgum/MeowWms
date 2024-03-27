@@ -32,6 +32,7 @@ public class StockServiceImpl implements StockService {
     public List<StockDTO> stockList() {
         log.info("/StockService/stockList()...");
         List<StockVO> stockVOList = stockMapper.selectAllStock();
+        log.info("StockServiceImpl... Here is stock List: " + stockVOList);
         return stockVOList.stream()
                 .map(stock ->  modelMapper.map(stock, StockDTO.class))
                 .collect(Collectors.toList());
