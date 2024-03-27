@@ -23,6 +23,14 @@ class WarehouseMapperTest {
     private WarehouseMapper warehouseMapper;
 
     @Test
+    @DisplayName("창고 1개 조회")
+    void selectOne() {
+        String name = "운양동 우유 창고";
+
+        log.info(warehouseMapper.selectOne(name));
+    }
+
+    @Test
     @DisplayName("창고 등록")
     void insert() {
         WarehouseVO warehouseVO = WarehouseVO.builder()
