@@ -161,15 +161,14 @@ public class UserController {
             userSave.setEmail(userDTO.getEmail());
             userService.modify(userSave);
             return ResponseEntity.ok("User saved successfully");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
 
     @PostMapping("/forcedWithdrawal")
     @ResponseBody
-    public String forcedWithdrawal(@RequestParam("userId") String userId){
+    public String forcedWithdrawal(@RequestParam("userId") String userId) {
         // 여기서 userId 값을 사용하여 해당 유저를 강제탈퇴 처리하거나 필요한 작업 수행
         UserDTO userDTO = userService.getOne(userId).orElse(null);
         userDTO.setSid(3);
@@ -178,5 +177,11 @@ public class UserController {
         return "User ID: " + userId + " forced withdrawal completed";
     }
 
-
+    @PostMapping("/findId")
+    @ResponseBody //JSON 형식으로 응답
+    public String findUserId(@RequestParam("name") String name,
+                             @RequestParam("email") String email) {
+        return userService.searchId(name, email);
+    }
+    
 }
