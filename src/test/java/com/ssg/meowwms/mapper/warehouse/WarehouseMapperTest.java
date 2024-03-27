@@ -27,32 +27,31 @@ class WarehouseMapperTest {
     void insert() {
         WarehouseVO warehouseVO = WarehouseVO.builder()
                 .name("야옹 창고")
-                .categoryId(1)
+                .category("냉장 식품 과일")
                 .managerId("WarehouseManager")
                 .volume(20)
-                .latitude(37.517331925853)
-                .longitude(127.047377408384)
+                .address("서울 동작구 노량진동 49-12")
                 .build();
 
         warehouseMapper.insert(warehouseVO);
     }
 
-    @Test
-    @DisplayName("창고 조회")
-    void selectAll() {
-        List<OptionDTO> optionList = new ArrayList<>();
-
-        // 창고 이름 검색
-        optionList.add(new OptionDTO("categoryId", 1));
-
-        // 창고 위치 검색
-        optionList.add(new OptionDTO("latitude", 37.522057531502));
-        optionList.add(new OptionDTO("longitude", 126.89528677963));
-
-        List<WarehouseVO> warehouseVOList = warehouseMapper.selectAll(optionList);
-
-        log.info(warehouseVOList);
-    }
+//    @Test
+//    @DisplayName("창고 조회")
+//    void selectAll() {
+//        List<OptionDTO> optionList = new ArrayList<>();
+//
+//        // 창고 이름 검색
+//        optionList.add(new OptionDTO("categoryId", 1));
+//
+//        // 창고 위치 검색
+//        optionList.add(new OptionDTO("latitude", 37.522057531502));
+//        optionList.add(new OptionDTO("longitude", 126.89528677963));
+//
+//        List<WarehouseVO> warehouseVOList = warehouseMapper.selectAll(optionList);
+//
+//        log.info(warehouseVOList);
+//    }
 
     @Test
     @DisplayName("창고 상세")
@@ -67,9 +66,9 @@ class WarehouseMapperTest {
     @Test
     @DisplayName("주어진 카테고리 아이디에 해당하는 창고 목록 반환")
     void selectWarehouseWithCategory() {
-        int categoryId = 5;
+        String category = "냉장 | 식품 | 육류";
 
-        List<WarehouseDTO> warehouseList = warehouseMapper.selectWarehouseWithCategory(categoryId);
+        List<WarehouseDTO> warehouseList = warehouseMapper.selectWarehouseWithCategory(category);
 
         log.info(warehouseList);
     }

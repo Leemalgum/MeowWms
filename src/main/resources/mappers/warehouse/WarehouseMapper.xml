@@ -5,8 +5,8 @@
 <mapper namespace="com.ssg.meowwms.mapper.warehouse.WarehouseMapper">
     <!--    창고 등록-->
     <select id="insert">
-        insert into Warehouse(name, category_id, manager_id, volume, latitude, longitude)
-        values (#{name}, #{categoryId}, #{managerId}, #{volume}, #{latitude}, #{longitude})
+        insert into Warehouse(name, category, manager_id, volume, address)
+        values (#{name}, #{category}, #{managerId}, #{volume}, #{address})
     </select>
 
     <!--    창고 한 개 가져오기-->
@@ -24,17 +24,17 @@
             <if test="optionList != null">
                 <foreach collection="optionList" item="option">
                     <choose>
+                        <when test="option.type == 'id'">
+                            and id = #{option.value}
+                        </when>
                         <when test="option.type == 'name'">
                             and name = #{option.value}
                         </when>
-                        <when test="option.type == 'category_id'">
-                            and categoryId = #{option.value}
+                        <when test="option.type == 'category'">
+                            and category = #{option.value}
                         </when>
-                        <when test="option.type == 'latitude'">
-                            and latitude = #{option.value}
-                        </when>
-                        <when test="option.type == 'longitude'">
-                            and longitude = #{option.value}
+                        <when test="option.type == 'address'">
+                            and address = #{option.value}
                         </when>
                     </choose>
                 </foreach>
@@ -44,11 +44,8 @@
 
     <select id="selectWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
         select w.name,
-               c.main_category,
-               c.middle_category,
-               c.sub_category,
-               w.latitude,
-               w.longitude,
+               w.category,
+               w.address,
                w.manager_id,
                p.id as productId,
                p.name as productName,
@@ -57,7 +54,6 @@
         from Warehouse w
                  join Stock s on w.id = s.warehouse_id
                  join Product p on s.product_id = p.id
-                 join Category c on w.category_id = c.id
                  join User u on w.manager_id = u.uid
         where w.id = #{warehouseId}
     </select>
@@ -65,7 +61,7 @@
     <select id="selectWarehouseWithCategory" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDTO">
         select *
         from Warehouse
-        where category_id = #{categoryId}
+        where category = #{category}
     </select>
 
     <select id="selectIdByName" resultType="java.lang.Integer">

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Page Title</title>
+    <title>창고 등록</title>
     <!-- Header 프래그먼트 포함 -->
     <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
 </head>
@@ -218,8 +218,7 @@
 <script>
     let isCheckLocation = false;
 
-    let latitude = null;
-    let longitude = null;
+    let warehouseAddress = null;
 
     var mapContainer = document.getElementById("map"), // 지도를 표시할 div
         mapOption = {
@@ -254,6 +253,7 @@
         alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.");
     }
 
+    // 주소로 좌표를 검색하여 마커 표시
     // 주소로 좌표를 검색합니다
     function searchAddress(address) {
         var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체를 생성합니다
@@ -261,27 +261,42 @@
         geocoder.addressSearch(address, function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-                latitude = result[0].y;
-                longitude = result[0].x;
-
                 var marker = new kakao.maps.Marker({
                     map: map,
                     position: coords,
                 });
-                var infowindow = new kakao.maps.InfoWindow({
-                    content:
-                        '<div style="width:150px;text-align:center;padding:6px 0;">' +
-                        document.getElementById("warehouseName").value +
-                        "</div>",
-                });
-                infowindow.open(map, marker);
-                map.setCenter(coords);
 
-                isCheckLocation = true;
+                // 주소를 더 자세히 가져오기 위해 좌표로 다시 주소 변환 요청
+                geocoder.coord2Address(coords.getLng(), coords.getLat(), function (result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        var address = result[0].address.address_name; // 위치 주소
+
+                        warehouseAddress = address;
+
+                        // 인포윈도우에 표시할 내용
+                        var content =
+                            '<div style="width:250px;text-align:center;padding:6px 0;">' +
+                            document.getElementById("warehouseName").value +
+                            '<br><small>' + address + '</small>' +
+                            "</div>";
+
+                        var infowindow = new kakao.maps.InfoWindow({
+                            content: content,
+                        });
+                        infowindow.open(map, marker);
+                        map.setCenter(coords);
+
+                        isCheckLocation = true;
+                    } else {
+                        alert("지도 검색에 실패했습니다: " + status);
+                        document.getElementById("address").value = '';
+                        isCheckLocation = false;
+                    }
+                });
             } else {
                 alert("지도 검색에 실패했습니다: " + status);
                 document.getElementById("address").value = '';
+                isCheckLocation = false;
             }
         });
     }
@@ -371,6 +386,13 @@
     function checkDuplicateWarehouseName() {
         var warehouseName = document.getElementById("warehouseName").value;
 
+        if (warehouseName.trim() === "") {
+            alert("창고 이름은 공백이 될 수 없습니다!");
+            document.getElementById("warehouseName").value = '';
+            isCheckWarehouseName = false;
+            return;
+        }
+
         // Ajax 요청
         $.ajax({
             type: "GET",
@@ -383,6 +405,7 @@
                 if (response.duplicate) {
                     alert("중복된 창고 이름입니다.");
                     document.getElementById("warehouseName").value = '';
+                    isCheckWarehouseName = false;
                 } else {
                     isCheckWarehouseName = true;
                     alert("사용 가능한 창고 이름입니다.");
@@ -407,10 +430,16 @@
         const address = document.getElementById("address").value;
 
         // 필수 입력 필드가 비어 있는지 확인
-        if (warehouseName === "" || mainType === "" || middleType === "" || subType === "" || warehouseManager === "" || volume === "" || address === "") {
+        if (warehouseName.trim() === "" || mainType === "" || middleType === "" || subType === "" || warehouseManager === "" || volume === "" || address === "") {
             // 하나라도 비어 있으면 등록 버튼 비활성화
             alert("모든 필수 입력 필드를 입력하세요.");
             return; // 함수 종료
+        }
+
+        if (volume <= 0) {
+            alert("창고 용량은 0보다 작을 수 없습니다!");
+            document.getElementById("volume").value = "";
+            return;
         }
 
         if (!isCheckWarehouseName) {
@@ -433,8 +462,7 @@
                 middleType: middleType,
                 subType: subType,
                 warehouseManagerId: warehouseManagerId,
-                latitude: latitude,
-                longitude: longitude,
+                warehouseAddress: warehouseAddress,
                 volume: volume
             },
             success: function (response) {

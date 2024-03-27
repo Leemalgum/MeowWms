@@ -11,7 +11,7 @@ public interface WarehouseService {
     void register(WarehouseDTO warehouseDTO);
     List<WarehouseDTO> selectAll(List<OptionDTO> optionList);
     List<WarehouseDetailDTO> getWarehouseDetail(int warehouseId);
-    List<WarehouseDTO> getWarehouseWithCategory(int categoryId);
+    List<WarehouseDTO> getWarehouseWithCategory(String category);
     Optional<Integer> getWarehouseIdByName(String warehouseName);
     List<Integer> getAllWarehouseId();
 }

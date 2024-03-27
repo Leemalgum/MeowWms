@@ -9,10 +9,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -22,7 +22,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.formLogin((formLogin) -> formLogin
-                        .failureUrl("/views/user/login/error") // 로그인 실패시 이동할 페이지
+                        .failureUrl("/views/user/login?error") // 로그인 실패시 이동할 페이지
                         .loginPage("/views/user/login") // 로그인 페이지 설정
                         .defaultSuccessUrl("/views/user/index"))// 로그인 성공시 이동할 페이지)
                 .logout((logout) -> logout
@@ -46,6 +46,7 @@ public class SecurityConfig {
 //                .anyRequest().authenticated()
 //        ;
 
+        http.csrf(AbstractHttpConfigurer::disable);
 
         http.exceptionHandling(authenticationManager -> authenticationManager
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
