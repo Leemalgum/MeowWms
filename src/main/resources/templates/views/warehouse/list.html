@@ -124,33 +124,7 @@
     };
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
-    if (navigator.geolocation) {
-        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                var lat = position.coords.latitude, // 위도
-                    lon = position.coords.longitude; // 경도
-
-                var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 생성합니다
-
-                // 지도 중심을 변경하고, 마커가 표시될 위치와 마커의 위치를 같이 이동시킵니다
-                map.setCenter(locPosition);
-                map.setLevel(3);
-
-                // 마커와 인포윈도우를 표시합니다
-                displayMarker(locPosition);
-            },
-            function (error) {
-                console.error(error);
-            }
-        );
-    } else {
-        alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.");
-    }
-
     var geocoder = new kakao.maps.services.Geocoder();
-    var currentDataTable = "warehouseList"; // 현재 보고 있는 데이터 타입
 
     $(document).ready(function () {
         warehouseData(); // 초기 페이지 로딩 시 문의글 데이터 로드
@@ -160,9 +134,11 @@
         var searchType = $('#searchType').val();
         var searchKeyword = $('#searchKeyword').val();
         // 현재 상태에 따라 적절한 데이터 로드
-        if (currentDataTable === "warehouseList") {
-            warehouseData(searchType, searchKeyword);
-        }
+
+        console.log(searchType, searchKeyword);
+
+        console.log(searchType, searchKeyword);
+        warehouseData(searchType, searchKeyword);
     });
 
     function warehouseData(searchType = '', searchKeyword = '') {
@@ -180,6 +156,7 @@
                 "url": `/warehouse/data?${params}`,
                 "type": "GET",
                 "dataSrc": function (data) {
+                    positions = [];
                     data.forEach(item => {
                         var position = {
                             title: item.name,
