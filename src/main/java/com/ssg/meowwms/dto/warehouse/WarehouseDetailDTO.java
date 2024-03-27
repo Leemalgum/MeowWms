@@ -1,5 +1,6 @@
 package com.ssg.meowwms.dto.warehouse;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 /**
@@ -18,32 +19,16 @@ public class WarehouseDetailDTO {
     private String name;
 
     /**
-     * 창고의 대분류 입니다.
-     * Category 테이블을 참조합니다.
+     * 창고 카테고리 입니다.
      */
-    private String mainCategory;
+    @NotNull
+    private String category;
 
     /**
-     * 창고의 중뷴류 입니다.
-     * Category 테이블을 참조합니다.
+     * 창고 위치입니다. (지번 주소)
      */
-    private String middleCategory;
-
-    /**
-     * 창고의 소분류 입니다.
-     * Category 테이블을 참조합니다.
-     */
-    private String subCategory;
-
-    /**
-     * 창고의 위치 중 위도를 나타납니다.
-     */
-    private double latitude;
-
-    /**
-     * 창고의 위치 중 경도를 나타냅니다.
-     */
-    private double longitude;
+    @NotNull
+    private String address;
 
     /**
      * 창고 관리자 아이디입니다.

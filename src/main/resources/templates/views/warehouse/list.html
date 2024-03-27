@@ -1,237 +1,110 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Page Title</title>
-    <!-- Header 프래그먼트 포함 -->
+    <title>창고 조회</title>
     <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
 </head>
 <body>
 
-<!-- 페이지 래퍼 -->
 <div id="wrapper">
-    <!-- 사이드바 -->
     <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
 
-    <!-- 콘텐츠 래퍼 -->
     <div id="content-wrapper" class="d-flex flex-column">
-        <!-- 메인 콘텐츠 -->
-        <div id="content">
-            <!-- 탑바 -->
-            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+        <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
 
-            <!-- 페이지 콘텐츠 시작 -->
 
-            <div class="container-fluid">
-                <h1 class="h3 mb-2 text-gray-800">창고 관리</h1>
-                <p class="mb-4">
-                    DataTables is a third party plugin that is used to generate the
-                    demo table below. For more information about DataTables, please
-                    visit the
-                    <a target="_blank" href="https://datatables.net"
-                    >official DataTables documentation</a
-                    >
-                </p>
+        <div class="container-fluid">
+            <h1 class="h3 mb-2 text-gray-800">창고 조회</h1>
+            <p class="mb-4">
+                DataTables is a third party plugin that is used to generate the
+                demo table below. For more information about DataTables, please
+                visit the
+                <a target="_blank" href="https://datatables.net"
+                >official DataTables documentation</a
+                >
+            </p>
 
-                <!-- 창고 등록 양식 -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">창고 조회</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <!-- 창고 이름 입력 -->
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label for="productId-input">창고 이름</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input
-                                                    type="text"
-                                                    id="productId-input"
-                                                    class="form-control"
-                                                    required
-                                                    autocomplete="false"
-                                                    placeholder="창고 이름을 입력하세요."
-                                            />
-                                        </div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">창고 조회</h6>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+
+                        <!-- 검색 조건 입력 폼 -->
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <select class="custom-select" id="searchType">
+                                            <option selected disabled hidden>-- 검색 타입 선택 --</option>
+                                            <option value="id">창고 ID</option>
+                                            <option value="name">창고 이름</option>
+                                            <option value="categoryId">창고 분류</option>
+                                            <option value="address">창고 주소</option>
+                                        </select>
                                     </div>
-                                    <br />
-
-                                    <!-- 창고 분류 입력 -->
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label for="majorType-input">창고 분류</label>
-                                        </div>
-                                        <!-- 대분류 -->
-                                        <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 대분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 중분류 -->
-                                        <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 중분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 소분류 -->
-                                        <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 소분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <br />
-
-                                    <!-- 창고 위치 입력 -->
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label for="address">창고 위치</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input
-                                                    type="search"
-                                                    id="address"
-                                                    class="form-control"
-                                                    placeholder="창고 주소를 입력하세요."
-                                            />
-                                        </div>
-                                    </div>
-                                    <br />
-
-                                    <div class="row">
-                                        <div class="col-md-2"></div>
-                                        <div style="text-align: center; margin-right: 10px">
-                                            <!-- 전체 간격을 일정하게 열 맞춤 -->
-                                            <button
-                                                    id="retrieval-register-button"
-                                                    class="btn btn-primary"
-                                            >
-                                                검색
-                                            </button>
-                                        </div>
-
-                                        <div style="text-align: center">
-                                            <!-- 전체 간격을 일정하게 열 맞춤 -->
-                                            <button
-                                                    id="retrieval-register-button"
-                                                    class="btn btn-primary"
-                                            >
-                                                다시 입력
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <br />
-
-                                    <!-- 카카오맵 -->
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-10">
-                                            <div
-                                                    id="map"
-                                                    style="width: 100%; height: 600px"
-                                            ></div>
-                                        </div>
-                                    </div>
-                                    <br />
-                                </div>
-                            </div>
-
-                            <!-- 창고 리스트 -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">
-                                        창고 목록
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <label for="total-list-output">Total 00</label>
-                                    <br />
-                                    <div class="table-responsive">
-                                        <table
-                                                class="table table-bordered"
-                                                id="warehouseTable"
-                                                width="100%"
-                                                cellspacing="0"
-                                        >
-                                            <thead>
-                                            <tr style="background-color: #4e73df; color: white">
-                                                <th>창고 ID</th>
-                                                <th>창고 이름</th>
-                                                <th>창고 분류</th>
-                                                <th>창고 위치</th>
-                                                <th>상세 보기</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="warehouseTableBody">
-                                            <!-- 동적으로 생성될 행들이 여기에 추가됩니다 -->
-                                            </tbody>
-                                        </table>
-
-                                        <div class="pagination" style="justify-content: center">
-                                            <a href="#" class="pagination-number"
-                                            >&laquo;&emsp;</a
-                                            >
-                                            <a href="#" class="pagination-number">1&emsp;</a>
-                                            <a href="#" class="pagination-number">2&emsp;</a>
-                                            <a href="#" class="pagination-number">3&emsp;</a>
-                                            <a href="#" class="pagination-number">4&emsp;</a>
-                                            <a href="#" class="pagination-number">5&emsp;</a>
-                                            <a href="#" class="pagination-number">6&emsp;</a>
-                                            <a href="#" class="pagination-number">&raquo;</a>
-                                        </div>
+                                    <input type="text" class="form-control" id="searchKeyword"
+                                           placeholder="검색어를 입력하세요...">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" type="button"
+                                                id="button-search">검색
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- <div class="row">
-                              <div class="col-md-12" style="text-align: center">
-                                <button
-                                  id="retrieval-register-button"
-                                  class="btn btn-primary"
-                                >
-                                  창고 등록
-                                </button>
-                              </div>
-                            </div> -->
+                        <!-- 카카오맵 -->
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <div
+                                        id="map"
+                                        style="width: 100%; height: 600px"
+                                ></div>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">창고 목록</h6>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr style="background-color: #4e73df; color: white">
+                                            <th>창고 ID</th>
+                                            <th>창고 이름</th>
+                                            <th>창고 분류</th>
+                                            <th>위도</th>
+                                            <th>경도</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!-- DataTables will fill the data here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
-        <!-- 푸터 -->
         <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
     </div>
 </div>
 
-<!-- 스크롤 탑 버튼 -->
 <th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
-
-<!-- 로그아웃 모달 -->
 <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
-
-<!-- 스크립트 -->
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
 
 <!-- 카카오맵 api -->
 <script
@@ -338,17 +211,6 @@
         // LatLngBounds 객체에 좌표를 추가합니다
         bounds.extend(coords);
 
-        // 동적으로 생성된 행을 추가합니다
-        var tableBody = document.getElementById("warehouseTableBody");
-        var newRow = tableBody.insertRow();
-        newRow.innerHTML = `
-        <td>${index + 1}</td>
-        <td><a href="#" class="warehouse-name">${position.title}</a></td>
-        <td>일반</td>
-        <td>위치 주소</td>
-        <td><a href="#" class="detail-link" data-toggle="modal" data-target="#warehouseDetailModal">상세 보기</a></td>
-      `;
-
         // 주소로 좌표를 검색하여 위치 주소를 가져옵니다
         var geocoder = new kakao.maps.services.Geocoder();
         geocoder.coord2Address(
@@ -357,42 +219,13 @@
             function (result, status) {
                 if (status === kakao.maps.services.Status.OK) {
                     var address = result[0].address.address_name; // 위치 주소
-                    // 해당 행에 위치 주소를 업데이트합니다
-                    newRow.cells[3].textContent = address;
+                    // 테이블을 생성하는 로직을 제외하였으므로, 해당 주소를 활용하는 부분은 생략합니다
                 }
             }
         );
 
         // 창고 이름을 클릭했을 때 해당 마커가 중심이 되도록 설정
-        newRow
-            .querySelector(".warehouse-name")
-            .addEventListener("click", function (e) {
-                e.preventDefault();
-                map.setCenter(coords);
-                // 인포윈도우를 열고, 다른 마커의 인포윈도우는 닫습니다
-                infowindow.open(map, marker);
-                positions.forEach(function (pos) {
-                    if (pos.title !== position.title) {
-                        pos.infowindow.close();
-                    }
-                });
-            });
-
         // 상세 보기 링크를 클릭했을 때 모달에 창고 정보 추가
-        newRow
-            .querySelector(".detail-link")
-            .addEventListener("click", function () {
-                var warehouseName = position.title;
-                var warehouseCategory = "일반"; // 창고 분류
-                var warehouseAddress = newRow.cells[3].textContent; // 위치 주소
-                document.getElementById("warehouseDetailModalTitle").textContent =
-                    warehouseName;
-                document.getElementById("warehouseCategory-input").value =
-                    warehouseCategory;
-                document.getElementById("warehouseAddress-input").value =
-                    warehouseAddress;
-            });
-
         // 마커에 인포윈도우 속성으로 추가
         position.infowindow = infowindow;
     });
@@ -440,7 +273,123 @@
     });
 </script>
 
-<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var currentDataTable = "inquiries"; // 현재 보고 있는 데이터 타입
+
+    $(document).ready(function () {
+        warehouseData(); // 초기 페이지 로딩 시 문의글 데이터 로드
+    });
+
+    // $('#showNoticesButton').click(function () {
+    //     currentDataTable = "notices"; // 공지사항 데이터 로드로 상태 변경
+    //     loadNoticesData(); // 검색 조건 없이 공지사항 데이터 로드
+    // });
+    //
+    // $('#viewInquiriesButton').click(function () {
+    //     currentDataTable = "inquiries"; // 문의글 데이터 로드로 상태 변경
+    //     warehouseData(); // 검색 조건 없이 문의글 데이터 로드
+    // });
+
+    $('#button-search').click(function () {
+        var searchType = $('#searchType').val();
+        var searchKeyword = $('#searchKeyword').val();
+        // 현재 상태에 따라 적절한 데이터 로드
+        if (currentDataTable === "inquiries") {
+            warehouseData(searchType, searchKeyword);
+        } else if (currentDataTable === "notices") {
+            loadNoticesData(searchType, searchKeyword);
+        }
+    });
+
+    function warehouseData(searchType = '', searchKeyword = '') {
+        var params = new URLSearchParams({
+            searchType: searchType,
+            searchKeyword: searchKeyword
+        }).toString();
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').DataTable().destroy();
+        }
+
+        $('#dataTable').DataTable({
+            "ajax": {
+                "url": `/warehouse/data?${params}`,
+                "type": "GET",
+                "dataSrc": ""
+            },
+            "columns": [
+                {"data": "id"},
+                {"data": "name"},
+                {"data": "categoryId"},
+                {"data": "latitude"},
+                {"data": "longitude"},
+                // {
+                //     "data": "postTitle",
+                //     "render": function(data, type, row) {
+                //         return `<a href="/views/inquiry/read-content/${row.postNum}">${data}</a>`;
+                //     }
+                // },
+                // { "data": "userId" },
+                // {
+                //     "data": "postDate",
+                //     "render": function(data) {
+                //         return moment(data).format('YYYY-MM-DD');
+                //     }
+                // }
+            ],
+            "searching": false,
+            "paging": true,
+            "ordering": true,
+            "info": true,
+            "pageLength": 10
+        });
+    }
+
+    // function loadNoticesData(searchType = '', searchKeyword = '') {
+    //     var params = new URLSearchParams({
+    //         searchType: searchType,
+    //         searchKeyword: searchKeyword
+    //     }).toString();
+    //
+    //     if ($.fn.DataTable.isDataTable('#dataTable')) {
+    //         $('#dataTable').DataTable().destroy();
+    //     }
+    //
+    //     $('#dataTable').DataTable({
+    //         "ajax": {
+    //             "url": `/views/inquiry/noticeData?${params}`,
+    //             "type": "GET",
+    //             "dataSrc": ""
+    //         },
+    //         "columns": [
+    //             {"data": "no"},
+    //             {"data": "type"},
+    //             {
+    //                 "data": "title",
+    //                 "render": function (data, type, row) {
+    //                     return `<a href="/views/inquiry/read-notice/${row.no}">${data}</a>`;
+    //                 }
+    //             },
+    //             {"data": "userId"},
+    //             {
+    //                 "data": "noticeDate",
+    //                 "render": function (data) {
+    //                     return moment(data).format('YYYY-MM-DD');
+    //                 }
+    //             }
+    //         ],
+    //         "searching": false,
+    //         "paging": true,
+    //         "ordering": true,
+    //         "info": true,
+    //         "pageLength": 10
+    //     });
+    // }
+
+    /*]]>*/
+</script>
+
 
 </body>
 </html>

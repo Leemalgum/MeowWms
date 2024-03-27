@@ -47,8 +47,8 @@ public class WarehouseServiceImpl implements WarehouseService{
     }
 
     @Override
-    public List<WarehouseDTO> getWarehouseWithCategory(int categoryId) {
-        return warehouseMapper.selectWarehouseWithCategory(categoryId);
+    public List<WarehouseDTO> getWarehouseWithCategory(String category) {
+        return warehouseMapper.selectWarehouseWithCategory(category);
     }
 
     @Override

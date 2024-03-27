@@ -29,37 +29,43 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label for="salesNo">지출 번호</label>
+                        <label for="salesNo">매출 번호</label>
                         <input type="text" class="form-control" id="salesNo" name="salesNo">
                     </div>
                     <div class="col-md-2">
-                        <label for="startDate">지출날짜 (시작일)</label>
+                        <label for="startDate">매출날짜 (시작일)</label>
                         <input type="date" class="form-control" id="startDate" name="startDate">
                     </div>
                     <div class="col-md-2">
-                        <label for="endDate">지출날짜 (종료일)</label>
+                        <label for="endDate">매출날짜 (종료일)</label>
                         <input type="date" class="form-control" id="endDate" name="endDate">
                     </div>
                     <div class="col-md-2">
-                        <label for="startAmount">지출 금액 (시작)</label>
+                        <label for="startAmount">매출 금액 (시작)</label>
                         <input type="number" class="form-control" id="startAmount" name="startAmount" placeholder="0">
                     </div>
                     <div class="col-md-2">
-                        <label for="endAmount">지출 금액 (종료)</label>
+                        <label for="endAmount">매출 금액 (종료)</label>
                         <input type="number" class="form-control" id="endAmount" name="endAmount" placeholder="0">
                     </div>
                     <div class="col-md-2">
-                        <label for="salesDetail">지출 내역</label>
+                        <label for="salesDetail">매출 내역</label>
                         <input type="text" class="form-control" id="salesDetail" name="salesDetail">
                     </div>
                     <div class="col-md-2">
                         <label for="warehouseNo">창고 번호</label>
-                        <input type="text" class="form-control" id="warehouseNo" name="warehouseNo">
+                        <select class="form-control" id="warehouseNo" name="warehouseNo">
+                            <option value="">전체</option>
+                            <th:block th:each="no : ${warehouseNumbers}">
+                                <option th:value="${no}" th:text="${no}"></option>
+                            </th:block>
+                        </select>
                     </div>
                     <div class="col-md-12 mt-3">
                         <button id="searchButton" class="btn btn-success">조회</button>
                         <button id="resetButton" class="btn btn-secondary">초기화</button>
-                        <button class="btn btn-info">지출내역 엑셀 다운로드</button>
+                        <button class="btn btn-info" id="downloadExcel">매출내역 엑셀 다운로드</button>
+                        <button type="button" class="btn btn-primary" id="addsalesButton">매출 정보 추가</button>
                     </div>
                 </div>
 
@@ -70,12 +76,13 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>지출 번호</th>
-                                    <th>지출 내역</th>
-                                    <th>지출 날짜</th>
-                                    <th>지출 금액</th>
+                                    <th>매출 번호</th>
+                                    <th>매출 내역</th>
+                                    <th>매출 날짜</th>
+                                    <th>매출 금액</th>
                                     <th>창고 번호</th>
                                     <th>수정</th>
+                                    <th>삭제</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -91,15 +98,18 @@
                     <div class="col-md-2">
                         <label for="salesYearForGraph">년도 선택</label>
                         <select class="form-control" id="salesYearForGraph">
-                            <option value="">전체</option>
                             <th:block th:each="year : ${years}">
                                 <option th:value="${year}" th:text="${year}"></option>
                             </th:block>
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label for="warehouseNoForGraph">창고 번호</label>
-                        <input type="text" class="form-control" id="warehouseNoForGraph">
+                        <label for="warehouseNo">창고 번호</label>
+                        <select class="form-control" id="warehouseNoForGraph" name="warehouseNo">
+                            <th:block th:each="no : ${warehouseNumbers}">
+                                <option th:value="${no}" th:text="${no}"></option>
+                            </th:block>
+                        </select>
                     </div>
                     <!-- 조회 버튼 추가 -->
                     <div class="col-md-8 text-right">
@@ -118,10 +128,91 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="editsalesModal" tabindex="-1" role="dialog" aria-labelledby="editsalesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editsalesModalLabel">매출 정보 수정</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 모달 바디: 폼 입력 필드 -->
+                <form id="editsalesForm">
+                    <div class="form-group">
+                        <label for="salesNoEdit">매출 번호</label>
+                        <input type="text" class="form-control" id="salesNoEdit" name="salesNoEdit" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesDetailEdit">매출 내역</label>
+                        <input type="text" class="form-control" id="salesDetailEdit" name="salesDetailEdit">
+                    </div>
+                    <div class="form-group">
+                        <label for="salesDateEdit">매출 날짜</label>
+                        <input type="date" class="form-control" id="salesDateEdit" name="salesDateEdit">
+                    </div>
+                    <div class="form-group">
+                        <label for="salesAmountEdit">매출 금액</label>
+                        <input type="number" class="form-control" id="salesAmountEdit" name="salesAmountEdit">
+                    </div>
+                    <div class="form-group">
+                        <label for="warehouseNoEdit">창고 번호</label>
+                        <input type="text" class="form-control" id="warehouseNoEdit" name="warehouseNoEdit">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="saveChanges">변경 사항 저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 매출 정보 등록 모달 -->
+<div class="modal fade" id="addsalesModal" tabindex="-1" role="dialog" aria-labelledby="addsalesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addsalesModalLabel">매출 정보 등록</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 모달 바디: 폼 입력 필드 -->
+                <form id="addsalesForm">
+                    <div class="form-group">
+                        <label for="salesDetailAdd">매출 내역</label>
+                        <input type="text" class="form-control" id="salesDetailAdd" name="salesDetailAdd">
+                    </div>
+                    <div class="form-group">
+                        <label for="salesDateAdd">매출 날짜</label>
+                        <input type="date" class="form-control" id="salesDateAdd" name="salesDateAdd">
+                    </div>
+                    <div class="form-group">
+                        <label for="salesAmountAdd">매출 금액</label>
+                        <input type="number" class="form-control" id="salesAmountAdd" name="salesAmountAdd">
+                    </div>
+                    <div class="form-group">
+                        <label for="warehouseNoAdd">창고 번호</label>
+                        <input type="text" class="form-control" id="warehouseNoAdd" name="warehouseNoAdd">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="addsales">매출 정보 추가</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
 <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
 <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     $(document).ready(function() {
@@ -138,7 +229,14 @@
                 },
                 {'data': 'amount'},
                 {'data': 'warehouseId'},
-                {'data': 'editLink'}
+                {'data': 'editLink'},
+                {
+                    'data': 'id', // 'id' 필드를 기반으로 삭제 버튼을 생성
+                    'render': function(data, type, full, meta) {
+                        return '<button type="button" class="btn btn-danger deletesalesBtn" data-id="' + data + '">삭제</button>';
+                    },
+                    'orderable': false // 이 열은 정렬할 수 없음
+                }
             ],
             "searching": false,
             "paging": true,
@@ -149,7 +247,7 @@
                 'targets': 5,
                 'data': 'editLink',
                 'render': function(data, type, full, meta) {
-                    return '<a href="/path/to/edit/page?salesId=' + full.salesNo + '">Edit</a>';
+                    return '<button type="button" class="btn btn-primary editsalesBtn" data-id="' + full.id + '">수정</button>';
                 }
             }]
         });
@@ -165,6 +263,102 @@
         $('#resetButton').click(function() {
             resetSearchFilters();
             updateDataTable(); // 테이블을 최신 상태로 업데이트합니다.
+        });
+        $('#addsalesButton').click(function() {
+            // '매출 정보 추가' 모달 창을 표시
+            $('#addsalesModal').modal('show');
+        });
+    });
+    <!-- JavaScript 코드에서 edit 버튼 클릭 이벤트 핸들러 부분 수정 -->
+    $(document).on('click', '.editsalesBtn', function() {
+        var salesId = $(this).data('id');
+        // AJAX를 사용하여 서버로부터 해당 salesId의 상세 정보를 가져온다
+        $.ajax({
+            url: '/finance/sales/detail/' + salesId,
+            type: 'GET', // 수정: GET 요청으로 변경
+            success: function(data) {
+                // 데이터를 모달의 입력 필드에 채워 넣음
+                $('#salesNoEdit').val(data.id);
+                $('#salesDetailEdit').val(data.detail);
+                $('#salesDateEdit').val(data.date);
+                $('#salesAmountEdit').val(data.amount);
+                $('#warehouseNoEdit').val(data.warehouseId);
+                // 모달을 표시
+                $('#editsalesModal').modal('show');
+            },
+            error: function(xhr, status, error) {
+                alert('매출 정보를 가져오는 데 실패하였습니다.');
+            }
+        });
+    });
+    $(document).on('click', '.deletesalesBtn', function() {
+        var salesId = $(this).data('id'); // 버튼에서 데이터 ID 가져오기
+        if(confirm('정말로 삭제하시겠습니까?')) {
+            $.ajax({
+                url: '/finance/sales/delete',
+                type: 'POST', // 또는 서버 측 구현에 따라 'DELETE' 메소드를 사용할 수도 있습니다.
+                contentType: 'application/json',
+                data: JSON.stringify({ id: salesId }), // 서버에 전송할 데이터
+                success: function(response) {
+                    alert('매출 정보가 성공적으로 삭제되었습니다.');
+                    location.reload(); // 페이지 전체를 새로고침, 간단하지만 비효율적인 방법
+                },
+                error: function(xhr, status, error) {
+                    alert('매출 정보 삭제에 실패하였습니다.');
+                }
+            });
+        }
+    });
+
+
+
+    $('#saveChanges').click(function() {
+        var salesData = {
+            id: parseInt($('#salesNoEdit').val()),
+            warehouseId: parseInt($('#warehouseNoEdit').val()),
+            type: $('#salesDetailEdit').val(),
+            salesDate: $('#salesDateEdit').val(),
+            amount: parseInt($('#salesAmountEdit').val())
+        };
+
+        $.ajax({
+            url: '/finance/sales/update',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(salesData),
+            success: function(response) {
+                alert('매출 정보가 성공적으로 수정되었습니다.');
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert('매출 정보 수정에 실패하였습니다.');
+            }
+        });
+    });
+
+
+    $('#addsales').on('click', function(event) {
+        event.preventDefault();
+        var salesData = {
+            warehouseId: $('#warehouseNoAdd').val(),
+            type: $('#salesDetailAdd').val(),
+            salesDate: $('#salesDateAdd').val(),
+            amount: $('#salesAmountAdd').val()
+        };
+
+        $.ajax({
+            url: '/finance/sales/add',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(salesData),
+            success: function(response) {
+                alert('매출 정보가 성공적으로 추가되었습니다.');
+                $('#addsalesModal').modal('hide'); // 모달 숨김
+                location.reload(); // 또는 데이터 테이블을 직접 업데이트
+            },
+            error: function(xhr, status, error) {
+                alert('매출 정보 추가에 실패하였습니다.');
+            }
         });
     });
     // 검색 필터를 초기화하는 함수
@@ -206,6 +400,7 @@
             updateDataTable();
         });
     });
+
 
     function updateDataTable() {
         var searchFilters = getSearchFilters();
@@ -252,11 +447,11 @@
         var months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
         var salesData = new Array(12).fill(0);
 
-        var maxSales = 0; // 가장 큰 지출값을 찾기 위한 변수
+        var maxSales = 0; // 가장 큰 매출값을 찾기 위한 변수
         data.forEach(function(record) {
             var monthIndex = parseInt(record.month) - 1;
             salesData[monthIndex] = record.salesMonth;
-            if(record.salesMonth > maxSales) maxSales = record.salesMonth; // 가장 큰 지출값 업데이트
+            if(record.salesMonth > maxSales) maxSales = record.salesMonth; // 가장 큰 매출값 업데이트
         });
 
         if (window.mysalesChart) {
@@ -268,7 +463,7 @@
             data: {
                 labels: months,
                 datasets: [{
-                    label: '월별 지출',
+                    label: '월별 매출',
                     data: salesData,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -281,7 +476,7 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: maxSales * 1.2 // Y축 최대값을 가장 큰 지출 값의 1.2배로 설정
+                        max: maxSales * 1.2 // Y축 최대값을 가장 큰 매출 값의 1.2배로 설정
                     }
                 },
                 plugins: {
@@ -292,6 +487,31 @@
             }
         });
     }
+
+    document.getElementById('downloadExcel').addEventListener('click', function() {
+        // 서버로부터 데이터를 가져오는 AJAX 요청
+        var searchFilters = getSearchFilters();
+
+        fetch('/finance/sales/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(searchFilters) // 예시로 검색 필터를 제공합니다. 필요에 따라 수정하세요.
+        })
+            .then(response => response.json())
+            .then(data => {
+                // 데이터를 엑셀 파일로 변환
+                var worksheet = XLSX.utils.json_to_sheet(data);
+                var workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "지출 내역");
+
+                // 엑셀 파일 다운로드
+                XLSX.writeFile(workbook, "지출내역.xlsx");
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
 
     /*]]>*/
 </script>

@@ -378,12 +378,12 @@
                 emailError.textContent = '유효하지 않은 이메일입니다.';
                 emailInput.style.borderColor = 'red'; // 입력 필드 테두리 색상 변경
                 $('.editCompleteBtn').prop('disabled', true); // '완료' 버튼 비활성화
+
             } else {
                 emailError.textContent = ''; // 유효성 검사 통과 시 에러 메시지 제거
                 emailInput.style.borderColor = 'blue'; // 입력 필드 테두리 색상 원래대로 변경
             }
         });
-
         const phoneInput = document.getElementById('tel'); // 전화번호 입력 필드
         const phoneError = document.getElementById('phoneError'); // 전화번호 에러 메시지 요소
 

@@ -155,7 +155,7 @@
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item" th:if="${#authorization.expr('hasRole(''ADMIN'')')}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinance"
                aria-expanded="true" aria-controls="collapseFinance">
                 <i class="fas fa-fw fa-folder"></i>
@@ -164,9 +164,9 @@
             <div id="collapseFinance" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">재무 내역 조회</h6>
-                    <a class="collapse-item" href="">지출 내역</a>
-                    <a class="collapse-item" href="">매출 내역</a>
-                    <a class="collapse-item" href="">총정산내역</a>
+                    <a class="collapse-item" href="/finance/expense">지출 내역</a>
+                    <a class="collapse-item" href="/finance/sales">매출 내역</a>
+                    <a class="collapse-item" href="/finance/allfinance">총정산내역</a>
                 </div>
             </div>
         </li>
@@ -180,8 +180,7 @@
             </a>
             <div id="collapseInquery" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="">공지사항</a>
-                    <a class="collapse-item" href="">문의글 작성</a>
+                    <a class="collapse-item" href="/inquiry/inquiry">고객센터</a>
                 </div>
             </div>
         </li>

@@ -12,23 +12,27 @@
             color: #007bff; /* Bootstrap primary color */
             margin-right: 15px;
         }
+
         .info-card-body {
             display: flex;
             align-items: center;
         }
+
         .info-card-text {
             margin-bottom: 0; /* Remove margin for tighter spacing */
         }
+
         .card-custom {
             margin-top: 20px;
             min-height: 150px; /* Ensure consistent card height */
         }
+
         /* Custom styling for the chart area for better visual separation */
         .chart-area {
             padding: 20px;
             background-color: #f8f9fa;
             border-radius: 5px;
-            box-shadow: 0 0 15px rgba(0,0,0,.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, .1);
             margin-bottom: 20px; /* Space between chart and summary cards */
         }
     </style>
@@ -67,7 +71,7 @@
                     <div class="col-md-12 mt-3">
                         <button id="searchButton" class="btn btn-success">조회</button>
                         <button id="resetButton" class="btn btn-secondary">초기화</button>
-                        <button class="btn btn-info">지출내역 엑셀 다운로드</button>
+                        <button class="btn btn-info" id="downloadExcel">정산 내역 엑셀 다운로드</button>
                     </div>
                 </div>
 
@@ -134,28 +138,33 @@
                 <!-- More existing content -->
             </div>
         </div>
-        <!-- Include FontAwesome for icons -->
-        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-        <!-- Existing scripts -->
+    </div>
+</div>
+<!-- Include FontAwesome for icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<!-- Existing scripts -->
 <th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
 <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
 <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    $(document).ready(function() {
+    $(document).ready(function () {
         // 그래프 조회 버튼 클릭 이벤트
-        $('#searchButton').click(function() { // 여기를 수정했습니다.
+        $('#searchButton').click(function () { // 여기를 수정했습니다.
             fetchGraphData();
         });
         // 초기화 버튼 클릭 이벤트 바인딩
-        $('#resetButton').click(function() {
+        $('#resetButton').click(function () {
             resetSearchFilters();
         });
     });
+
     function resetSearchFilters() {
         $('#settlementYear').val('');
         $('#warehouseNo').val('');
     }
+
     function fetchGraphData() {
         var year = $('#settlementYear').val();
         var warehouseId = $('#warehouseNo').val();
@@ -166,24 +175,25 @@
                 year: year,
                 warehouseId: warehouseId
             },
-            success: function(data) {
+            success: function (data) {
                 drawGraph(data);
             },
-            error: function(error) {
+            error: function (error) {
                 console.error("Error fetching graph data:", error);
             }
         });
     }
+
     function drawGraph(data) {
         var ctx = document.getElementById('settlementChart').getContext('2d');
         var months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
         var settlementData = new Array(12).fill(0);
 
         var maxsettlement = 0; // 가장 큰 지출값을 찾기 위한 변수
-        data.forEach(function(record) {
+        data.forEach(function (record) {
             var monthIndex = parseInt(record.month) - 1;
             settlementData[monthIndex] = record.settlementMonth;
-            if(record.settlementMonth > maxsettlement) maxsettlement = record.settlementMonth; // 가장 큰 지출값 업데이트
+            if (record.settlementMonth > maxsettlement) maxsettlement = record.settlementMonth; // 가장 큰 지출값 업데이트
         });
 
         if (window.mysettlementChart) {
@@ -219,6 +229,37 @@
             }
         });
     }
+
+    // document.getElementById('downloadExcel').addEventListener('click', function () {
+    //     var year = $('#settlementYear').val() || ''; // 년도 선택 값
+    //     var warehouseId = $('#warehouseNo').val() || 0; // 창고 번호 선택 값
+    //     console.log(year);
+    //     console.log(warehouseId);
+    //
+    //     // 서버로부터 데이터를 받아오는 AJAX 요청
+    //         fetch('/finance/allfinance/graph', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ year: year, warehouseId: warehouseId }),
+    //         })
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 console.log(data);
+    //                 // 데이터를 엑셀 파일로 변환
+    //                 var worksheet = XLSX.utils.json_to_sheet(data);
+    //                 var workbook = XLSX.utils.book_new();
+    //                 XLSX.utils.book_append_sheet(workbook, worksheet, "정산 내역");
+    //
+    //                 // 엑셀 파일 다운로드
+    //                 XLSX.writeFile(workbook, "정산내역.xlsx");
+    //             })
+    //             .catch(error => console.error('Error:', error));
+    //
+    // }); 임시 오류로 주석처리
+
+
     /*]]>*/
 </script>
 </body>
