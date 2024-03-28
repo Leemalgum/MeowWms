@@ -13,11 +13,18 @@
     <select id="selectOne" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
         select *
         from Warehouse
-        where id = #{warehouseId}
+        where name = #{name}
     </select>
 
+    <resultMap id="warehouseResultMap" type="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+        <result property="id" column="id"/>
+        <result property="name" column="name" />
+        <result property="category" column="category" />
+        <result property="address" column="address" />
+    </resultMap>
+
     <!--    검색 조건에 해당하는 창고 전체 가져오기-->
-    <select id="selectAll" parameterType="java.util.List" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+    <select id="selectAll" parameterType="java.util.List" resultMap="warehouseResultMap">
         select *
         from Warehouse
         <where>
@@ -28,19 +35,22 @@
                             and id = #{option.value}
                         </when>
                         <when test="option.type == 'name'">
-                            and name = #{option.value}
+                            and name like concat('%', #{option.value}, '%')
                         </when>
                         <when test="option.type == 'category'">
-                            and category = #{option.value}
+                            and category like concat('%', #{option.value}, '%')
                         </when>
                         <when test="option.type == 'address'">
-                            and address = #{option.value}
+                            and address like concat('%', #{option.value}, '%')
                         </when>
                     </choose>
                 </foreach>
             </if>
         </where>
+        order by id desc
     </select>
+
+
 
     <select id="selectWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
         select w.name,
@@ -74,5 +84,15 @@
         select id
         from Warehouse
         group by id
+    </select>
+
+    <select id="selectAllWarehouse" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+        select *
+        from Warehouse
+    </select>
+
+    <select id="selectSumOfVolume">
+        select sum(volume)
+        from Warehouse
     </select>
 </mapper>

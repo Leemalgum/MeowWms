@@ -29,6 +29,9 @@ public class StockTakingVO {
     @Min(value = 1, message = "재고실사 ID 는 1이상 이여야 합니다")
     private int stockTakingId;
 
+
+    private int warehouseId;
+
     /**
      * 재고아이디 : 1 이상, Auto Increment
      */
@@ -64,5 +67,7 @@ public class StockTakingVO {
      */
     @Nullable
     private String statusDetail;
+
+    private int quantity;
 
 }

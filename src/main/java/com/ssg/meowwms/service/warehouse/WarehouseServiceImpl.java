@@ -4,6 +4,7 @@ import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO;
+
 import com.ssg.meowwms.mapper.warehouse.WarehouseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,6 +21,13 @@ import java.util.stream.Collectors;
 public class WarehouseServiceImpl implements WarehouseService{
     private final WarehouseMapper warehouseMapper;
     private final ModelMapper modelMapper;
+
+    @Override
+    public WarehouseDTO getWarehouse(String name) {
+        WarehouseVO warehouseVO = warehouseMapper.selectOne(name);
+
+        return modelMapper.map(warehouseVO, WarehouseDTO.class);
+    }
 
     @Override
     public void register(WarehouseDTO warehouseDTO) {
@@ -59,5 +67,17 @@ public class WarehouseServiceImpl implements WarehouseService{
     @Override
     public List<Integer> getAllWarehouseId() {
         return warehouseMapper.selectAllWarehouseId();
+    }
+
+    @Override
+    public List<WarehouseDTO> getAllWarehouse() {
+        return warehouseMapper.selectAllWarehouse().stream()
+                .map(warehouseVO -> modelMapper.map(warehouseVO, WarehouseDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getSumOfVolume() {
+        return warehouseMapper.selectSumOfVolume();
     }
 }

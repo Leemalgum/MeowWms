@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <!-- Header fragment included -->
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+</head>
+<body>
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="container mb-4">
+                    <div class="row align-items-center">
+                        <!-- 이미지 열 -->
+                        <div class="col-md-4">
+                            <img src="/bootstrap/img/meowwms_white_icon.png" alt="Welcome Image" style="max-width: 300px; height: auto;"/>
+                        </div>
+
+                        <!-- 텍스트 열 -->
+                        <div class="col-md-8">
+                            <h1 class="h1">TomCat is Meow: 야옹창고</h1>
+                            <h2 class="h3">새로워진 WMS 시스템을 소개합니다.</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row -->
+                <div class="row">
+                    <div class="col-xl-6 col-lg-7">
+                        <!-- Page Introduction Card -->
+                        <div class="card shadow mb-4 " style="height: 300px;">
+                            <div class="card-header py-3">
+                                <h6 class="m-2 font-weight-bold text-primary" style="font-size: 22px;">
+                                    야옹 창고란?
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <p> 귀여운 고양이 톰과 함께하는 창고관리 시스템을 말합니다. <br> TomCat is Meow: 야옹창고 창고관리 시스템과 함께라면 보다 효율적이고 귀여운 창고 관리가 가능합니다. 입고부터 출고, 재고 및 재무상황 관리까지 자동화 된 시스템의 편리함을 느껴보세요! <br> 시스템 사용 신청은 고객센터를 이용해주세요! <br><br> Team4: 구민석, 김태진, 백종우, 이맑음, 이인서, 이지현 </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-5">
+                        <!-- Empty Card Placeholder -->
+                        <div class="card shadow mb-4" style="height: 300px;">
+                            <div class="container mt-5">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <!-- 배너 카드 -->
+                                        <div>
+                                            <div class="text-center" >
+                                                <p class="card-text "> / \__/ \ <br> (  =  o.o  =  )<br> >  ^  <</p>
+                                                <h4 class="card-title ">특별  야옹 이벤트가 시작됩니다!</h4>
+                                                <p class="card-text ">한정된 시간 동안만 진행되는 고양이 할인! 지금 바로 확인하세요!</p>
+                                                <a href="/inquiry/inquiry" class="btn btn-primary btn-lg">공지사항 바로가기</a>
+                                            </div>
+
+                                            <div class="footer" style="height: 50px;"></div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button -->
+<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+
+<!-- Logout Modal -->
+<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+
+<!-- Scripts -->
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+
+</body>
+</html>

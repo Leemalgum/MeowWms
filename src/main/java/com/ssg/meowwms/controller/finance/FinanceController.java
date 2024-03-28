@@ -7,6 +7,7 @@ import com.ssg.meowwms.service.finance.SalesService;
 import com.ssg.meowwms.service.warehouse.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/finance")
+@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 public class FinanceController {
     private final ExpenseService expenseService;

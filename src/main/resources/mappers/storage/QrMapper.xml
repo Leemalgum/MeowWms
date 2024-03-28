@@ -9,5 +9,10 @@
         INSERT INTO QR_Barcode (product_id, barcode_data, creation_date)
         VALUES (#{productId}, #{qrCodeImage}, #{creationDate})
     </insert>
+<!--    <select id="getQrCodeImageByProductId" resultType="byte[]" parameterType="int">-->
+<!--        SELECT barcode_data-->
+<!--        FROM QR_Barcode-->
+<!--        WHERE product_id = #{productId}-->
+<!--    </select>-->
 
 </mapper>

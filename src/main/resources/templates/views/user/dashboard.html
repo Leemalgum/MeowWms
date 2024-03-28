@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Title</title>
+    <!-- Header 프래그먼트 포함 -->
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+<!--    <style>-->
+<!--        /* 카드 내부 그리드를 위한 스타일 */-->
+<!--        .card-deck .card .card-content .info-card-grid {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(2, 1fr); /* 2x2 그리드 */-->
+<!--            gap: 10px; /* 그리드 간격 */-->
+<!--        }-->
+
+<!--        .card-custom {-->
+<!--            flex: 1; /* 그리드 내 카드의 유연한 크기 조정 */-->
+<!--            min-width: 0; /* 카드 크기 최소화 */-->
+<!--        }-->
+
+<!--        .card-deck {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(4, 1fr); /* 4열 그리드 */-->
+<!--            grid-template-rows: repeat(2, 1fr); /* 2행 그리드 */-->
+<!--            gap: 20px; /* 카드 사이의 간격 */-->
+<!--        }-->
+
+<!--        .card {-->
+<!--            display: flex;-->
+<!--            flex-direction: column; /* 카드 내용을 수직으로 정렬 */-->
+<!--        }-->
+
+<!--        .card-body {-->
+<!--            flex: 1; /* 카드 본문이 카드 공간을 꽉 채우도록 함 */-->
+<!--        }-->
+<!--    </style>-->
+</head>
+<body>
+
+<!-- 페이지 래퍼 -->
+<div id="wrapper">
+    <!-- 사이드바 -->
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <!-- 콘텐츠 래퍼 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- 메인 콘텐츠 -->
+        <div id="content">
+            <!-- 탑바 -->
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+
+            <!-- 페이지 콘텐츠 시작 -->
+            <div class="container-fluid">
+                <!-- Here you put page content -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                </div>
+
+                <!-- Content Row -->
+                <div class="row">
+
+                    <!-- 연간 순이익 -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            연간 순이익</div>
+                                        <!-- 서버 측에서 처리된 sumSales 값을 받아와 표시합니다. -->
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="settlement-figure" th:text="${sumSettlement}"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 연간 지출 -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            연간 지출</div>
+                                        <!-- 서버 측에서 처리된 sumExpense 값을 받아와 표시합니다. -->
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="expense-figure" th:text="${sumExpense}"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 연간 매출 -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            연간 매출</div>
+                                        <!-- 서버 측에서 처리된 sumExpense 값을 받아와 표시합니다. -->
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="sales-figure" th:text="${sumSales}"></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 순이익 증감률 -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            순이익 증감률 (전년 대비)
+                                        </div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <!-- 여기에 Thymeleaf 표현식을 사용하여 profitChangeRate 값을 표시합니다. -->
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${profitChangeRate} + '%'"></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm mr-2">
+                                                    <!-- progress bar의 width를 profitChangeRate 값에 따라 동적으로 설정합니다. -->
+                                                    <div class="progress-bar bg-info" role="progressbar"
+                                                         th:style="'width:' + ${profitChangeRate} + '%'"
+                                                         th:aria-valuenow="${profitChangeRate}" aria-valuemin="0"
+                                                         aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 고객센터 미답변 -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            미응답한 문의글
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${noResponseInquiry}">
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 전체회원수 -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            전체 회원 수
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${sumUser}">
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 전체회원수 -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            회원 가입 요청 수
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${sumInActiveUser}">
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 창고 용량 -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            전체 창고 사용률
+                                        </div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <!-- 여기에 Thymeleaf 표현식을 사용하여 profitChangeRate 값을 표시합니다. -->
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${warehouseUseRate} + '%'"></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm mr-2">
+                                                    <!-- progress bar의 width를 profitChangeRate 값에 따라 동적으로 설정합니다. -->
+                                                    <div class="progress-bar bg-info" role="progressbar"
+                                                         th:style="'width:' + ${warehouseUseRate} + '%'"
+                                                         th:aria-valuenow="${warehouseUseRate}" aria-valuemin="0"
+                                                         aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row -->
+
+                <div class="row">
+
+                    <!-- Area Chart -->
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6>정산 그래프</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="card-body">
+                                    <div class="chart-area" style="height: 750px">
+                                        <canvas id="settlementChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 창고 지도 -->
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">전체 창고 위치</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="container-fluid">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            <div
+                                                    id="map"
+                                                    style="width: 100%; height: 750px"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        <!-- 푸터 -->
+        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+    </div>
+</div>
+
+<!-- 스크롤 탑 버튼 -->
+<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+
+<!-- 로그아웃 모달 -->
+<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+
+<!-- 스크립트 -->
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        fetchGraphData();
+    });
+
+    function fetchGraphData() {
+        var currentDate = new Date(); // 현재 날짜와 시간을 나타내는 Date 객체 생성
+        var year = currentDate.getFullYear(); // 현재 년도 가져오기
+        var warehouseId = 0
+        $.ajax({
+            url: '/finance/allfinance/graph',
+            type: 'POST',
+            data: {
+                year: year,
+                warehouseId: warehouseId
+            },
+            success: function (data) {
+                drawGraph(data);
+            },
+            error: function (error) {
+                console.error("Error fetching graph data:", error);
+            }
+        });
+    }
+
+    function drawGraph(data) {
+        var ctx = document.getElementById('settlementChart').getContext('2d');
+        var months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+        var settlementData = new Array(12).fill(0);
+
+        var maxsettlement = 0; // 가장 큰 지출값을 찾기 위한 변수
+        data.forEach(function (record) {
+            var monthIndex = parseInt(record.month) - 1;
+            settlementData[monthIndex] = record.settlementMonth;
+            if (record.settlementMonth > maxsettlement) maxsettlement = record.settlementMonth; // 가장 큰 지출값 업데이트
+        });
+
+        if (window.mysettlementChart) {
+            window.mysettlementChart.destroy();
+        }
+
+        window.mysettlementChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: '월별 지출',
+                    data: settlementData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: maxsettlement * 1.2 // Y축 최대값을 가장 큰 지출 값의 1.2배로 설정
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        // sumSales 값을 가져옵니다. Thymeleaf가 서버 측에서 처리한 값을 사용합니다.
+        var sumSales = document.getElementById('sales-figure').innerText;
+
+        // 숫자로 변환합니다. 실제 사용 시 문자열을 숫자로 변환하는 과정이 필요합니다.
+        var sumSalesNumber = parseInt(sumSales);
+
+        // toLocaleString을 사용하여 숫자를 형식화합니다.
+        var formattedSales = sumSalesNumber.toLocaleString('ko-KR') + "₩";
+
+        // 형식화된 값을 다시 해당 요소에 설정합니다.
+        document.getElementById('sales-figure').innerText = formattedSales;
+
+        var sumExpense = document.getElementById('expense-figure').innerText;
+
+        // 숫자로 변환합니다. 실제 사용 시 문자열을 숫자로 변환하는 과정이 필요합니다.
+        var sumExpenseNumber = parseInt(sumExpense);
+
+        // toLocaleString을 사용하여 숫자를 형식화합니다.
+        var formattedExpense = sumExpenseNumber.toLocaleString('ko-KR') + "₩";
+
+        // 형식화된 값을 다시 해당 요소에 설정합니다.
+        document.getElementById('expense-figure').innerText = formattedExpense;
+
+        var currentSettlement = document.getElementById('settlement-figure').innerText;
+
+        // 숫자로 변환합니다. 실제 사용 시 문자열을 숫자로 변환하는 과정이 필요합니다.
+        var currentSettlementNumber = parseInt(currentSettlement);
+
+        // toLocaleString을 사용하여 숫자를 형식화합니다.
+        var formattedSettlement = currentSettlementNumber.toLocaleString('ko-KR') + "₩";
+
+        // 형식화된 값을 다시 해당 요소에 설정합니다.
+        document.getElementById('settlement-figure').innerText = formattedSettlement;
+    });
+
+</script>
+
+<script
+        type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7a41ce0dd37c22d03fc4b8624754162b&libraries=services"
+></script>
+<script th:inline="javascript">
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
+
+    // 지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    // 주소-좌표 변환 객체를 생성합니다
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+    var bounds = new kakao.maps.LatLngBounds(); //추가한 코드
+
+    /* Thymeleaf에서 전달받은 warehouseList 사용 */
+    var warehouseList = /*[[${warehouseList}]]*/ [];
+
+    if (warehouseList) {
+        warehouseList.forEach(function (warehouse) {
+            // 주소로 좌표를 검색합니다
+            geocoder.addressSearch(warehouse.address, function(result, status) {
+
+                // 정상적으로 검색이 완료됐으면
+                if (status === kakao.maps.services.Status.OK) {
+
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+                    marker.setMap(map); //추가한 코드
+
+                    // LatLngBounds 객체에 좌표를 추가합니다
+                    bounds.extend(coords); //추가한 코드
+
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">' + warehouse.name + '</div>'
+                    });
+                    infowindow.open(map, marker);
+
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    // map.setCenter(coords); //제거한 코드
+                    setBounds(); //추가한 코드
+                }
+            });
+        });
+    }
+
+    function setBounds() { //추가한 함수
+        // LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
+        // 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다
+        map.setBounds(bounds);
+    }
+</script>
+</body>
+</html>
+

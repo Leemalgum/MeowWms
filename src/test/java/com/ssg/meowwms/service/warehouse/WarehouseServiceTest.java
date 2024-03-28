@@ -1,8 +1,8 @@
-package com.ssg.meowwms.service.warehouse;
+package com.ssg.meowwms.service;
 
-import com.ssg.meowwms.dto.search.OptionDTO;
+import com.ssg.meowwms.domain.warehouse.WarehouseVO;
+import com.ssg.meowwms.dto.OptionDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
-import com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO;
 import com.ssg.meowwms.service.warehouse.WarehouseService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +21,14 @@ public class WarehouseServiceTest {
 
     @Autowired
     private WarehouseService warehouseService;
+
+    @Test
+    @DisplayName("창고 1개 조회")
+    void getWarehouse() {
+        String name = "운양동 우유 창고";
+
+        log.info(warehouseService.getWarehouse(name));
+    }
 
     @Test
     @DisplayName("창고 등록 서비스 테스트")

@@ -27,8 +27,8 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">창고현황 리스트</h1>
-                    <p class="mb-4">창고현황 리스트는 해당 창고에 어떤 제품이 있고 입고와 출고가 몇개가 됬으며 재고가 얼마나 남았는지에 대해 한 눈에 볼 수 있는 테이블 입니다.
+                    <h1 class="h3 mb-2 text-gray-800">재고 리스트</h1>
+                    <p class="mb-4">재고 리스트는 해당 재고가 어느 창고에 있고 어떤 상품을 가지고 있는지에 대해 한 눈에 볼 수 있는 테이블 입니다.
 
                     </p>
 
@@ -36,7 +36,7 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">창고현황 리스트</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">재고 리스트</h6>
                         </div>
                         <div class="card-body">
                             <br>
@@ -44,35 +44,22 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr style="background-color:#4e73df; color: white;">
+                                        <th>재고ID</th>
                                         <th>창고ID</th>
-                                        <th>창고명</th>
-                                        <th>창고분류</th>
-                                        <th>제품아이디</th>
-                                        <th>제품명</th>
-<!--                                        <th>상세정보</th>-->
-                                        <th>재고수량</th>
-                                        <th>입고수량</th>
-                                        <th>출고수량</th>
-                                        <th>재고상태</th>
+                                        <th>상품ID</th>
+                                        <th>수량</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tbody id="dataTable tbody">
-                                    <tr th:each="warehouse : ${warehouseList}">
-                                        <td th:text="${warehouse.warehouseId}"></td>
-                                        <td th:text="${warehouse.warehouseName}"></td>
-                                        <td th:text="${warehouse.category}"></td>
-                                        <td th:text="${warehouse.productId}"></td>
-                                        <td th:text="${warehouse.productName}"></td>
-<!--                                        나중에 해당 상품으로 페이지 이동-->
-<!--                                        <td th:text="${warehouse.detail == null ? 'N/A' : warehouse.detail}"></td>-->
-                                        <td th:text="${warehouse.stockQuantity}"></td>
-                                        <td th:text="${warehouse.inboundQuantity}"></td>
-                                        <td th:text="${warehouse.outboundQuantity}"></td>
+                                    <tr th:each="stock : ${stockList}">
+                                        <td th:text="${stock.stockId}"></td>
                                         <td>
-                                            <a th:text="${warehouse.inboundQuantity - warehouse.outboundQuantity == warehouse.stockQuantity ? '정상' : '불일치'}"
-                                               th:href="@{/stockTaking/list}"></a>
+                                            <a th:text="${stock.warehouseId}"
+                                               th:href="@{/stock/warehouseStatus}"></a>
                                         </td>
+                                        <td th:text="${stock.productId}"></td>
+                                        <td th:text="${stock.quantity}"></td>
                                     </tr>
                                     </tbody>
                                     </tfoot>

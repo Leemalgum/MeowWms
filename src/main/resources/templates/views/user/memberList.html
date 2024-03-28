@@ -45,24 +45,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- 검색 조건 입력 폼 -->
-                <!--                <div class="row mb-4">-->
-                <!--                    <div class="col">-->
-                <!--                        <div class="input-group">-->
-                <!--                            <div class="input-group-prepend">-->
-                <!--                                <select class="custom-select" id="searchType">-->
-                <!--                                    <option selected>검색 타입 선택</option>-->
-                <!--                                    <option value="writer">전체</option>-->
-                <!--                                </select>-->
-                <!--                            </div>-->
-                <!--                            <input type="text" class="form-control" id="searchKeyword" placeholder="검색어를 입력하세요...">-->
-                <!--                            <div class="input-group-append">-->
-                <!--                                <button class="btn btn-outline-primary" type="button" id="button-search">검색</button>-->
-                <!--                            </div>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-                <!--            </div>-->
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
@@ -79,6 +61,8 @@
     <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
     <!-- 스크립트 -->
     <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
     <!-- 회원 정보 수정 Modal-->
 
     <div>
@@ -147,6 +131,7 @@
                                                 <div class="col-sm-6">
                                                     <label for="tel">전화번호</label>
                                                     <input type="text" class="form-control" id="tel">
+                                                    <div id="phoneError" style="color: red; font-size: 12px;"></div>
                                                 </div>
                                             </div>
                                         </form>
@@ -194,6 +179,23 @@
 
         $(document).ready(function () {
             loadData(); // 초기 페이지 로딩 시 전체 회원 데이터 로드
+
+            $('#dataTable').DataTable({
+                language: {
+                    "lengthMenu": "페이지당 _MENU_ 개 항목 표시",
+                    "zeroRecords": "검색 결과가 없습니다",
+                    "info": "페이지 _PAGE_ / _PAGES_",
+                    "infoEmpty": "사용 가능한 기록이 없습니다",
+                    "infoFiltered": "(총 _MAX_ 개 기록에서 필터링됨)",
+                    "search": "검색:",
+                    "paginate": {
+                        "first": "처음",
+                        "last": "마지막",
+                        "next": "다음",
+                        "previous": "이전"
+                    }
+                },
+            });
 
             // 테이블의 각 행을 클릭할 때 모달을 띄우는 이벤트 처리
             $('#dataTable tbody').on('click', 'tr', function () {
@@ -394,12 +396,30 @@
             if (!emailRegex.test(email)) {
                 emailError.textContent = '유효하지 않은 이메일입니다.';
                 emailInput.style.borderColor = 'red'; // 입력 필드 테두리 색상 변경
+                $('.editCompleteBtn').prop('disabled', true); // '완료' 버튼 비활성화
+
             } else {
                 emailError.textContent = ''; // 유효성 검사 통과 시 에러 메시지 제거
                 emailInput.style.borderColor = 'blue'; // 입력 필드 테두리 색상 원래대로 변경
             }
         });
+        const phoneInput = document.getElementById('tel'); // 전화번호 입력 필드
+        const phoneError = document.getElementById('phoneError'); // 전화번호 에러 메시지 요소
 
+        phoneInput.addEventListener('input', function(event) {
+            const phoneNumber = event.target.value;
+            const phoneRegex = /^\(?(\d{3})\)?[- ]?(\d{4})[- ]?(\d{4})$/;
+
+            if (!phoneRegex.test(phoneNumber)) {
+                phoneError.textContent = '유효하지 않은 전화번호입니다.';
+                phoneInput.style.borderColor = 'red'; // 입력 필드 테두리 색상 변경
+                $('.editCompleteBtn').prop('disabled', true); // '완료' 버튼 비활성화
+            } else {
+                phoneError.textContent = ''; // 유효성 검사 통과 시 에러 메시지 제거
+                phoneInput.style.borderColor = 'blue'; // 입력 필드 테두리 색상 원래대로 변경
+            }
+        });
     </script>
+
 </body>
 </html>

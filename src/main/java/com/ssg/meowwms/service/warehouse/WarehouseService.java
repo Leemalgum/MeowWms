@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface WarehouseService {
+    WarehouseDTO getWarehouse(String name);
     void register(WarehouseDTO warehouseDTO);
     List<WarehouseDTO> selectAll(List<OptionDTO> optionList);
     List<WarehouseDetailDTO> getWarehouseDetail(int warehouseId);
     List<WarehouseDTO> getWarehouseWithCategory(String category);
     Optional<Integer> getWarehouseIdByName(String warehouseName);
     List<Integer> getAllWarehouseId();
+    List<WarehouseDTO> getAllWarehouse();
+    int getSumOfVolume();
 }

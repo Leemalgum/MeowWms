@@ -12,7 +12,7 @@
     <update id="updateStockMovementStatus" parameterType="map">
         UPDATE Stock_Movement
         SET status_code = #{statusCode}
-        WHERE id = #{requestId}
+        WHERE product_id = #{requestId}
     </update>
 
     <!-- updateStockMovement -->
@@ -36,5 +36,52 @@
     <select id="selectStockMovementsById" resultType="com.ssg.meowwms.domain.storage.StockMovementVO" parameterType="int">
         SELECT * FROM Stock_Movement WHERE product_id = #{productId}
     </select>
+
+    <select id="searchMergedLists" parameterType="map" resultType="com.ssg.meowwms.dto.storage.MergeDTO">
+        SELECT
+        p.id as "product_id",
+        sm.user_id as "user_id",
+        p.name as "name",
+        p.category_id as "category_id",
+        p.price as "price",
+        p.sale_price as "sale_price",
+        p.quantity as "quantity",
+        sm.status_code as "status_code",
+        sm.request_datetime as "request_datetime",
+        sm.approved_datetime as "approved_datetime",
+        sm.warehouse_id as "warehouse_id"
+        FROM Product p
+        JOIN Stock_Movement sm ON p.id = sm.product_id
+        <where>
+            <if test="productId != null">
+                AND p.id = #{productId}
+            </if>
+            <if test="userId != null">
+                AND sm.user_id = #{userId}
+            </if>
+            <if test="productName != null and productName != ''">
+                AND p.name LIKE CONCAT('%', #{productName}, '%')
+            </if>
+            <if test="category_id != null">
+                AND p.category_id = #{category_id}
+            </if>
+            <if test="price != null">
+                AND p.price = #{price}
+            </if>
+            <if test="sale_price != null">
+                AND p.sale_price = #{sale_price}
+            </if>
+            <if test="quantity != null">
+                AND p.quantity = #{quantity}
+            </if>
+            <if test="status_code != null and status_code != ''">
+                AND sm.status_code LIKE #{status_code}
+            </if>
+            <if test="warehouseId != null">
+                AND sm.warehouse_id = #{warehouseId}
+            </if>
+        </where>
+    </select>
+
 
 </mapper>

@@ -44,4 +44,7 @@ public class StockVO {
     @Positive(message = "상품은 0개 이상 이여야 합니다")
     private int quantity;
 
+    private String mainCategory;
+    private String middleCategory;
+    private String subCategory;
 }

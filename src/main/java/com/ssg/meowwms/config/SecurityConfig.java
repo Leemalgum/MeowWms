@@ -24,7 +24,7 @@ public class SecurityConfig {
         http.formLogin((formLogin) -> formLogin
                         .failureUrl("/views/user/login?error") // 로그인 실패시 이동할 페이지
                         .loginPage("/views/user/login") // 로그인 페이지 설정
-                        .defaultSuccessUrl("/views/user/index"))// 로그인 성공시 이동할 페이지)
+                        .defaultSuccessUrl("/user/dashboard"))// 로그인 성공시 이동할 페이지)
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/views/user/logout")) // 로그아웃 url 설정
                         .logoutSuccessUrl("/views/user/login") // 로그아웃 성공 시 이동할 url
@@ -34,7 +34,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/bootstrap/**").permitAll()
-                        .requestMatchers("/", "/views/user/login","views/user/register", "/item/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/views/user/login","/views/user/register","/views/user/findId","/views/user/findPw","/user/**", "/item/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
