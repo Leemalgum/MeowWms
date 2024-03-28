@@ -114,6 +114,12 @@ public class StorageServiceImpl implements StorageService {
                 .map(productVO -> modelMapper.map(productVO,ProductDTO.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public int getSumOfVolume() {
+        return productMapper.selectSumOfVolume();
+    }
+
     @Override
     public List<StockMovementDTO> getStorageList() {
         List<StockMovementVO> stockMovementVOList = stockMovementMapper.selectAllStockMovements();

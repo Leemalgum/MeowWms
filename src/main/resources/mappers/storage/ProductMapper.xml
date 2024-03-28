@@ -23,6 +23,12 @@
     <select id="selectAllProducts" resultType="com.ssg.meowwms.domain.storage.ProductVO">
         SELECT * FROM Product
     </select>
+
+    <select id="selectSumOfVolume">
+        select sum(volume)
+        from Product;
+    </select>
+
 <!--<resultMap id="productResultMap" type="com.ssg.meowwms.domain.product.ProductVO">-->
 <!--        <result property="id" column="id"/>-->
 <!--        <result property="name" column="name"/>-->

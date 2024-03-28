@@ -71,4 +71,6 @@ public interface WarehouseMapper {
     List<Integer> selectAllWarehouseId();
 
     List<WarehouseVO> selectAllWarehouse();
+
+    int selectSumOfVolume();
 }

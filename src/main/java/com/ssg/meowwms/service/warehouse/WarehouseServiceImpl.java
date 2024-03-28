@@ -75,4 +75,9 @@ public class WarehouseServiceImpl implements WarehouseService{
                 .map(warehouseVO -> modelMapper.map(warehouseVO, WarehouseDTO.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public int getSumOfVolume() {
+        return warehouseMapper.selectSumOfVolume();
+    }
 }
