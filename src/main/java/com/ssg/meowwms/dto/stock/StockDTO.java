@@ -35,4 +35,7 @@ public class StockDTO {
      */
     private int quantity;
 
+    private String mainCategory;
+    private String middleCategory;
+    private String subCategory;
 }

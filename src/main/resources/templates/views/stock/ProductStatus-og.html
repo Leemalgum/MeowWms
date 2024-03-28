@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Title</title>
+    <!-- Header 프래그먼트 포함 -->
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+</head>
+<body>
+
+<!-- 페이지 래퍼 -->
+<div id="wrapper">
+    <!-- 사이드바 -->
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <!-- 콘텐츠 래퍼 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- 메인 콘텐츠 -->
+        <div id="content">
+            <!-- 탑바 -->
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+
+            <!-- 페이지 콘텐츠 시작 -->
+            <div class="container-fluid">
+                <!-- 여기에 페이지별 내용을 넣습니다 -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">품목현황 리스트</h1>
+                    <p class="mb-4">품목현황 리스트는 해당 창고에 재고로 어떤 상품이 언제 몇 개 들어왔는지와 상품에 대한 가격을 한 눈에 볼 수 있는 테이블 입니다.
+
+<!--                        <a target="_blank"-->
+<!--                                                                                   href="https://datatables.net">official-->
+<!--                            DataTables documentation</a>. -->
+                    </p>
+
+                    <!-- DataTales Example -->
+<!--                    <div class="card shadow mb-4">-->
+<!--                        <div class="card-header py-3 d-flex justify-content-between align-items-center">-->
+<!--                            <h6 class="m-0 font-weight-bold text-primary">품목현황 조회</h6>-->
+<!--                            <div>-->
+<!--                                <button id="all-date-button" class="btn btn-primary">All</button>-->
+<!--                                <button id="today-date-button" class="btn btn-primary">Today</button>-->
+<!--                                <button id="month-date-button" class="btn btn-primary">This Month</button>-->
+<!--                                <button id="year-date-button" class="btn btn-primary">This Year</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="card-body">-->
+<!--                            <div class="container-fluid">-->
+<!--                                <div class="row">-->
+<!--&lt;!&ndash;                                    <div class="col-md-6">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <label for="product-startDate-input">시작일</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <input type="date" id="product-startDate-input" class="form-control"/>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <div class="col-md-6">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <label for="orderDate-input">종료일</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <input type="date" id="orderDate-input" class="form-control"/><br>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
+
+<!--                                    <div class="col-md-4"> &lt;!&ndash; 1열 시작 &ndash;&gt;-->
+
+
+<!--&lt;!&ndash;                                        <label for="large-category-list">대분류</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <select id="large-category-list" class="form-control">&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <option value="" selected disabled hidden>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                -&#45;&#45; 대분류 -&#45;&#45;&ndash;&gt;-->
+<!--&lt;!&ndash;                                            </option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <option th:each="category : ${largeCategories}" th:value="${category}" th:text="${category}"></option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        </select>&ndash;&gt;-->
+
+<!--                                        <br>-->
+
+<!--                                    </div> &lt;!&ndash; 1열 끝 &ndash;&gt;-->
+<!--                                    <div class="col-md-4"> &lt;!&ndash; 2열 시작 &ndash;&gt;-->
+
+<!--&lt;!&ndash;                                        <label for="middle-category-list">중분류</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <select id="middle-category-list" class="form-control">&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <option value="" selected disabled hidden>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                -&#45;&#45; 중분류 -&#45;&#45;&ndash;&gt;-->
+<!--&lt;!&ndash;                                            </option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <option th:each="category : ${middleCategories}" th:value="${category}" th:text="${category}"></option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        </select>&ndash;&gt;-->
+
+<!--                                        <br>-->
+<!--                                    </div> &lt;!&ndash; 2열 끝 &ndash;&gt;-->
+<!--                                    <div class="col-md-4"> &lt;!&ndash; 3열 시작 &ndash;&gt;-->
+<!--&lt;!&ndash;                                        <label for="small-category-list">소분류</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <select id="small-category-list" class="form-control">&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <option value="" selected disabled hidden>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                -&#45;&#45; 소분류 -&#45;&#45;&ndash;&gt;-->
+<!--&lt;!&ndash;                                            </option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <option th:each="category : ${smallCategories}" th:value="${category}" th:text="${category}"></option>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        </select>&ndash;&gt;-->
+
+<!--                                        <br>-->
+<!--&lt;!&ndash;                                        <label for="brandName-input">브랜드명</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <input type="text" id="brandName-input" class="form-control" placeholder="브랜드명을 입력하세요"/><br>&ndash;&gt;-->
+
+<!--                                    </div> &lt;!&ndash; 3열 끝 &ndash;&gt;-->
+<!--                                    <div class="col-md-12">-->
+<!--&lt;!&ndash;                                        <label for="search-input"></label>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <input type="text" id="search-input" class="form-control" placeholder="검색 내용을 입력하세요."/><br>&ndash;&gt;-->
+<!--                                    </div>-->
+<!--                                </div> &lt;!&ndash; 각 행의 끝 &ndash;&gt;-->
+<!--                                <div class="row">-->
+<!--&lt;!&ndash;                                    <div class="col-md-12" style="text-align: right;"> &lt;!&ndash; 전체 간격: 일정하게 열 맞춤 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <button id="retrieval-register-button" class="btn btn-primary">검색</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">품목현황 리스트</h6>
+                        </div>
+                        <div class="card-body">
+<!--                            <label for="dataTable">Total 00</label>-->
+                            <br>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr style="background-color:#4e73df; color: white;">
+                                        <th>입고날짜</th>
+                                        <th>재고ID</th>
+                                        <th>창고ID</th>
+                                        <th>창고이름</th>
+                                        <th>창고분류</th>
+                                        <th>제품아이디</th>
+                                        <th>제품명</th>
+                                        <th>재고수량</th>
+                                        <th>판매가격</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tbody id="dataTable tbody">
+                                    <tr th:each="product : ${productList}">
+                                        <td th:text="${product.approvedDatetime}"></td>
+                                        <td th:text="${product.stockId}"></td>
+                                        <td th:text="${product.warehouseId}"></td>
+                                        <td th:text="${product.warehouseName}"></td>
+                                        <td th:text="${product.warehouseSubCategory}"></td>
+                                        <td th:text="${product.productId}"></td>
+                                        <td th:text="${product.productName}"></td>
+                                        <td th:text="${product.stockQuantity}"></td>
+                                        <td th:text="${product.productPrice}"></td>
+                                    </tr>
+                                    </tbody>
+                                    </tfoot>
+                                    <tbody>
+
+                                    </tbody>
+
+                                    </tbody>
+                                </table>
+
+<!--                                <div class="pagination" style="justify-content: center;">-->
+<!--                                    <a href="#" class="pagination-number">&laquo;&emsp;</a>-->
+<!--                                    <a href="#" class="pagination-number" >1&emsp;</a>-->
+<!--                                    <a href="#" class="pagination-number">2&emsp;</a>-->
+<!--                                    <a href="#" class="pagination-number">3&emsp;</a>-->
+<!--                                    <a href="#" class="pagination-number">4&emsp;</a>-->
+<!--                                    <a href="#" class="pagination-number">5&emsp;</a>-->
+<!--                                    <a href="#" class="pagination-number">6&emsp;</a>-->
+<!--                                    <a href="#" class="pagination-number">&raquo;</a>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+        </div>
+
+        <!-- 푸터 -->
+        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+    </div>
+</div>
+
+<!-- 스크롤 탑 버튼 -->
+<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+
+<!-- 로그아웃 모달 -->
+<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+
+<!-- 스크립트 -->
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+        // Initialize DataTable with render function for date columns
+        $('#dataTable').DataTable({
+            "columnDefs": [
+                {
+                    "targets": [0], // Assuming the first column is the date column
+                    // "render": function(data) {
+                    //     return moment(data).format('YYYY-MM-DD');
+                    // }
+                }
+            ]
+        });
+
+        // AJAX request on button click
+        $('#retrieval-register-button').click(function() {
+            console.log("Button clicked!"); // Add this line for debugging
+            // var from = $('#fromDate').val();
+            // var to = $('#toDate').val();
+            // var mainCategory = $('#large-category-list').val();
+            // var middleCategory = $('#middle-category-list').val();
+            // var subCategory = $('#small-category-list').val();
+            // var searchTerm = $('#search-input').val();
+
+            // AJAX request to fetch search results
+            $.ajax({
+                url: '/stock/productStatus',
+                type: 'GET',
+                data: {
+                    // from: from,
+                    // to: to,
+                    // mainCategory: mainCategory,
+                    // middleCategory: middleCategory,
+                    // subCategory: subCategory,
+                    // searchTerm: searchTerm
+                },
+                success: function(response) {
+                    // Clear existing table data
+                    $('#dataTable tbody').empty();
+
+                    // Loop through the response data and append rows to the table
+                    $.each(response, function(index, product) {
+                        var row = '<tr>' +
+                            '<td>' + product.approvedDatetime + '</td>' +
+                            '<td>' + product.stockId + '</td>' +
+                            '<td>' + product.warehouseId + '</td>' +
+                            '<td>' + product.warehouseName + '</td>' +
+                            '<td>' + product.warehouseSubCategory + '</td>' +
+                            '<td>' + product.productId + '</td>' +
+                            '<td>' + product.productName + '</td>' +
+                            '<td>' + product.stockQuantity + '</td>' +
+                            '<td>' + product.productPrice + '</td>' +
+                            '</tr>';
+                        $('#dataTable tbody').append(row);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    console.error(xhr.responseText);
+                    alert('Error occurred: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+</body>
+</html>

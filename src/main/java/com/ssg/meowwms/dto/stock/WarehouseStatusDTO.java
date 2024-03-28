@@ -29,12 +29,13 @@ public class WarehouseStatusDTO {
     /**
      * 창고 소분류 이름 : 45자 제한
      */
-    private String warehouseSubCategory;
+    private String category;
 
     /**
      * 제품 이름 : 45자 제한
      */
     private String productName;
+    private int productId;
 
     /**
      * 제품 상세정보 : 빈값 가능

@@ -56,9 +56,8 @@ public class StockTakingMapperTests {
         log.info("/test Update StockTaking...");
         StockTakingVO stockTakingVO = new StockTakingVO().builder()
                 .stockTakingId(1)
-                .stockId(1)
                 .plannedDate(new Date())
-                .inspector("김태진")
+                .inspector("김태진dd")
                 .status(Status.완료)
                 .statusDetail("검사 완료")
                 .build();
@@ -97,4 +96,14 @@ public class StockTakingMapperTests {
         log.info(stockTakingMapper.selectAllStocktaking());
         stockTakingMapper.selectAllStocktaking();
     }
+
+    @Test
+    public void testSelectSTDetail() {
+        int stid= 1;
+
+        log.info("StockTaking select ST detail...");
+        log.info(stockTakingMapper.selectSTDetail(stid));
+        stockTakingMapper.selectSTDetail(stid);
+    }
+
 }

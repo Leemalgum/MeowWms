@@ -15,6 +15,10 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockTakingDetailVO {
+
+    @NotNull
+    private int stockId;
+
     /**
      * 제품 아이디 : 1 이상, Auto Increment
      */
@@ -34,7 +38,7 @@ public class StockTakingDetailVO {
      */
     @NotNull
     @Length(max = 45, message = "카테고리 이름은 45자 이하여야 합니다")
-    private String productSubCategory;
+    private String category;
 
     /**
      * 전산재고 : 0 이상, +값
@@ -47,7 +51,7 @@ public class StockTakingDetailVO {
      * 실사 재고 : 출고 - 입고 값, +값
      * 실사재고 값이 (-) 값으로 나온다면 말이 안되는 문제이기 때문에 오류 발생
      */
-    @NotNull
+    @Nullable
     @Positive(message = "에러발생 : 실사재고는 0 이상이여야 합니다. 입출고량을 확인해주세요")
     private int actualStock;
 
@@ -55,7 +59,7 @@ public class StockTakingDetailVO {
     /**
      * 조정 수량 : 전산재고 - 실사재고
      */
-    @NotNull
+    @Nullable
     private int adjustmentQuantity = this.computerizedStock - this.actualStock;;
 
     /**
@@ -89,7 +93,7 @@ public class StockTakingDetailVO {
         return "StockTakingDetailVO{" +
                 "productId=" + productId +
                 ", productName='" + productName + '\'' +
-                ", productSubCategory='" + productSubCategory + '\'' +
+                ", productSubCategory='" + category + '\'' +
                 ", computerizedStock=" + computerizedStock +
                 ", actualStock=" + actualStock +
                 ", adjustmentQuantity=" + sign + adjustmentQuantity +

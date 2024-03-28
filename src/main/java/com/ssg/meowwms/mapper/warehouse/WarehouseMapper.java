@@ -1,4 +1,4 @@
-package com.ssg.meowwms.mapper.warehouse;
+package com.ssg.meowwms.mapper;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;

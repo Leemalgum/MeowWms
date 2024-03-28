@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Optional;
 
 
 @Log4j2
@@ -33,8 +34,8 @@ public class StockMapperTests {
     @Test
     public void testSelectStockByMainCategory() {
         log.info("/test select stock by Main Category...");
-        log.info(stockMapper.selectStockByMainCategory("냉장"));
-        stockMapper.selectStockByMainCategory("냉장");
+        log.info(stockMapper.selectStockByMainCategory());
+        stockMapper.selectStockByMainCategory();
     }
 
     @Test
@@ -60,47 +61,23 @@ public class StockMapperTests {
 
         // 현재 없는 데이터 테스팅
         log.info(stockMapper.selectProductStatusList(
-                new Date()
-                , new Date()
-                , "ahhh"
-                , "냉장"
-                , "식품"
-                , "유제품"
-                , 1
-                , 1
+//                new Date()
+//                , new Date()
+//                , "ahhh"
+//                , "냉장"
+//                , "식품"
+//                , "유제품"
+
         ));
 
-        // 날짜 테스팅
-        log.info(stockMapper.selectProductStatusList(
-                date
-                , date
-                , ""
-                , "냉장"
-                , "식품"
-                , "유제품"
-                , 1
-                , 1
-        ));
-        log.info(stockMapper.selectProductStatusList(
-                lastyear
-                , date
-                , ""
-                , "냉장"
-                , "식품"
-                , "유제품"
-                , 1
-                , 1
-        ));
 
         // 실제 테스팅
         stockMapper.selectProductStatusList(
-                lastyear
-                , date, "1"
-                , "냉장"
-                , "식품"
-                , "유제품"
-                , 1
-                , 1
+//                lastyear
+//                , date, "1"
+//                , "냉장"
+//                , "식품"
+//                , "유제품"
         );
     }
 
@@ -118,17 +95,17 @@ public class StockMapperTests {
         // 현재 없는 데이터 테스팅
         // 실험 코드
         log.info(stockMapper.selectWarehouseStatusList(
-            "운양동 우유 창고"
-            ,"냉장"
-            , "식품"
-            , "유제품"
+//            "운양동 우유 창고"
+//            ,"냉장"
+//            , "식품"
+//            , "유제품"
         ));
         // 실제 테스팅
         stockMapper.selectWarehouseStatusList(
-                "운양동 우유 창고"
-                ,"냉장"
-                , "식품"
-                , "유제품"
+//                "운양동 우유 창고"
+//                ,"냉장"
+//                , "식품"
+//                , "유제품"
         );
     }
 
