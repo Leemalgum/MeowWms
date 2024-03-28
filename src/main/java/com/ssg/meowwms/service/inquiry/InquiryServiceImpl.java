@@ -53,4 +53,10 @@ public class InquiryServiceImpl implements InquiryService {
         InquiryVO inquiryVO = modelMapper.map(inquiry, InquiryVO.class);
         inquiryMapper.updateInquiry(inquiryVO);
     }
+
+    @Override
+    public int selectDoNotResponseInquiry() {
+        int sum = inquiryMapper.selectDoNotResponseInquiry();
+        return sum;
+    }
 }

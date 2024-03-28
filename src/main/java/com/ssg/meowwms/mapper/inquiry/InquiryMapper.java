@@ -14,4 +14,5 @@ public interface InquiryMapper {
     InquiryVO selectInquiry(int postNum);
     void deleteInquiry(int postNum);
     void updateInquiry(InquiryVO inquiry);
+    int selectDoNotResponseInquiry();
 }

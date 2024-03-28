@@ -11,4 +11,5 @@ public interface InquiryService {
     InquiryDTO selectInquiry(int postNum);
     void deleteInquiry(int postNum);
     void updateInquiry(InquiryDTO inquiry);
+    int selectDoNotResponseInquiry();
 }
