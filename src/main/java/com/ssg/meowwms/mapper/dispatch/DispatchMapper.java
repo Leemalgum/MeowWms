@@ -10,9 +10,9 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface DispatchMapper {
     void insertDispatch(DispatchVO dispatchVO);
-    DispatchVO selectOneById(int id);
+    DispatchVO selectOneByShippingOrdersId(int id);
     List<DispatchVO> selectAll();
-    void updateDispatch(DispatchVO dispatchVO);
-    void deleteDispatch(int id);
+    void updateByShippingOrdersId(DispatchVO dispatchVO);
+    void deleteByShippingOrdersId(int id);
     List<ShippingOrdersVO> search(@Param("options") List<OptionDTO> options);
 }

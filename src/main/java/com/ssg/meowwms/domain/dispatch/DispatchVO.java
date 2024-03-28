@@ -16,12 +16,15 @@ public class DispatchVO {
     private int id;
 
     @NotNull
-    private String vehicleNum;
-
-    @Nullable
-    private int warehouseId;
+    private int shippingOrdersId;
 
     @NotNull
+    private String vehicleNum;
+
+    /*@Nullable
+    private int warehouseId;
+*/
+    @Nullable
     private LocalDateTime requestDate;
 
     @Nullable
