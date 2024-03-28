@@ -170,7 +170,12 @@
             },
             "columns": [
                 {"data": "id"},
-                {"data": "name"},
+                {
+                    "data": "name",
+                    "render": function(data, type, row) {
+                        return `<a href="/warehouse/read/${row.name}">${data}</a>`;
+                    }
+                },
                 {"data": "category"},
                 {"data": "address"}
             ],

@@ -22,6 +22,13 @@ public class WarehouseServiceImpl implements WarehouseService{
     private final ModelMapper modelMapper;
 
     @Override
+    public WarehouseDTO getWarehouse(String name) {
+        WarehouseVO warehouseVO = warehouseMapper.selectOne(name);
+
+        return modelMapper.map(warehouseVO, WarehouseDTO.class);
+    }
+
+    @Override
     public void register(WarehouseDTO warehouseDTO) {
         log.info("register...!!!");
 
