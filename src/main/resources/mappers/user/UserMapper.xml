@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssg.meowwms.mapper.User.UserMapper">
+<mapper namespace="com.ssg.meowwms.mapper.user.UserMapper">
 
-    <select id="insertUser">
+    <select id="insert">
         insert into User(uid, uname, birth, upw, email, tel)
         values (#{uid}, #{uname}, #{birth}, #{upw}, #{email}, #{tel})
     </select>
 
-    <update id="updateStatus">
+    <update id="update">
         update User
         SET sid   = #{sid},
             rid   = #{rid},
@@ -17,18 +17,25 @@
         WHERE uid = #{uid}
     </update>
 
-    <select id="selectUser" resultType="com.ssg.meowwms.domain.User.UserVO">
+    <select id="selectUser" resultType="com.ssg.meowwms.domain.user.UserVO">
         select *
         from User
         where uid = #{uid}
     </select>
 
-    <select id="selectAll" resultType="com.ssg.meowwms.domain.User.UserVO">
+    <select id="selectAll" resultType="com.ssg.meowwms.domain.user.UserVO">
+        select *
+        from User
+        order by uid desc
+    </select>
+
+    <select id="selectSearch" resultType="com.ssg.meowwms.domain.user.UserVO">
         select *
         from User
         <where>
+            //select * from table where id like %%''
             <!-- 권한에 대한 필터링 -->
-            <if test="rid != null">
+            <if test='rid != null'>
                 AND rid = #{rid}
             </if>
         </where>
@@ -49,4 +56,9 @@
         and uid = #{uid}
     </select>
 
+    <select id="selectWarehouseManager" resultType="com.ssg.meowwms.domain.user.UserVO">
+        select *
+        from User
+        where rid = 2
+    </select>
 </mapper>

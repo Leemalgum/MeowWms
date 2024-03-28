@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssg.meowwms.mapper.WarehouseMapper">
+<mapper namespace="com.ssg.meowwms.mapper.warehouse.WarehouseMapper">
     <!--    창고 등록-->
     <select id="insert">
-        insert into Warehouse(name, category_id, manager_id, volume, latitude, longitude)
-        values (#{name}, #{categoryId}, #{managerId}, #{volume}, #{latitude}, #{longitude})
+        insert into Warehouse(name, category, manager_id, volume, address)
+        values (#{name}, #{category}, #{managerId}, #{volume}, #{address})
     </select>
 
     <!--    창고 한 개 가져오기-->
@@ -15,29 +15,72 @@
         from Warehouse
         where id = #{warehouseId}
     </select>
-    
-    <select id="selectAll" parameterType="java.util.List" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+
+    <resultMap id="warehouseResultMap" type="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+        <result property="id" column="id"/>
+        <result property="name" column="name" />
+        <result property="category" column="category" />
+        <result property="address" column="address" />
+    </resultMap>
+
+    <!--    검색 조건에 해당하는 창고 전체 가져오기-->
+    <select id="selectAll" parameterType="java.util.List" resultMap="warehouseResultMap">
         select *
         from Warehouse
         <where>
             <if test="optionList != null">
                 <foreach collection="optionList" item="option">
                     <choose>
+                        <when test="option.type == 'id'">
+                            and id = #{option.value}
+                        </when>
                         <when test="option.type == 'name'">
-                            and name = #{option.value}
+                            and name like concat('%', #{option.value}, '%')
                         </when>
-                        <when test="option.type == 'categoryId'">
-                            and categoryId = #{option.value}
+                        <when test="option.type == 'category'">
+                            and category like concat('%', #{option.value}, '%')
                         </when>
-                        <when test="option.type == 'latitude'">
-                            and latitude = #{option.value}
-                        </when>
-                        <when test="option.type == 'longitude'">
-                            and longitude = #{option.value}
+                        <when test="option.type == 'address'">
+                            and address like concat('%', #{option.value}, '%')
                         </when>
                     </choose>
                 </foreach>
             </if>
         </where>
+        order by id desc
+    </select>
+
+    <select id="selectWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
+        select w.name,
+               w.category,
+               w.address,
+               w.manager_id,
+               p.id as productId,
+               p.name as productName,
+               s.quantity as stockQuantity,
+               p.volume as productVolume
+        from Warehouse w
+                 join Stock s on w.id = s.warehouse_id
+                 join Product p on s.product_id = p.id
+                 join User u on w.manager_id = u.uid
+        where w.id = #{warehouseId}
+    </select>
+
+    <select id="selectWarehouseWithCategory" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDTO">
+        select *
+        from Warehouse
+        where category = #{category}
+    </select>
+
+    <select id="selectIdByName" resultType="java.lang.Integer">
+        SELECT COALESCE(id, 0) AS id
+        FROM Warehouse
+        WHERE name = #{warehouseName}
+    </select>
+
+    <select id="selectAllWarehouseId" resultType="java.lang.Integer">
+        select id
+        from Warehouse
+        group by id
     </select>
 </mapper>

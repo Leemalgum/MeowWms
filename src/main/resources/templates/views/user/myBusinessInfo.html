@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Title</title>
+    <!-- Header 프래그먼트 포함 -->
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+</head>
+<body style>
+
+<!-- 페이지 래퍼 -->
+<div id="wrapper">
+    <!-- 사이드바 -->
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+    <!-- 콘텐츠 래퍼 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- 메인 콘텐츠 -->
+        <div id="content">
+            <!-- 탑바 -->
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+            <!-- 페이지 콘텐츠 시작 -->
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">사업장 정보</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <div>
+                                    <form class="user">
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <label for="id">아이디</label>
+                                                <input type="text" class="form-control" id="id">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="shopName">쇼핑몰 이름</label>
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control " id="shopName">
+                                                        </div>
+                                                        <div class="col">
+                                                            <a class="btn btn-primary btn-user btn-block" href="#"
+                                                               data-toggle="modal" data-target="#shopNameModal">
+                                                                변경
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <label for="id">사업자번호</label>
+                                                <input type="text" class="form-control " id="id">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="shopAddress">쇼핑몰 주소</label>
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control " id="shopAddress">
+                                                        </div>
+                                                        <div class="col">
+                                                            <a class="btn btn-primary btn-user btn-block" href="#"
+                                                               data-toggle="modal" data-target="#shopAddrMdoal">
+                                                                변경
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <label for="businessType">분류</label>
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <input type="text" class="form-control " id="businessType">
+                                                        </div>
+                                                        <div class="col">
+                                                            <a class="btn btn-primary btn-user btn-block" href="#"
+                                                               data-toggle="modal" data-target="#categoryModal">
+                                                                변경
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="onlineBusinessNumber">온라인 사업자 번호</label>
+                                                <input type="text" class="form-control " id="onlineBusinessNumber">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <label for="fax">팩스번호</label>
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <input type="text" class="form-control " id="fax">
+                                                        </div>
+                                                        <div class="col">
+                                                            <a class="btn btn-primary btn-user btn-block" href="#"
+                                                               data-toggle="modal" data-target="#faxModal">
+                                                                변경
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row justify-content-center">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <a href="login.html" class="btn btn-primary btn-user btn-block">
+                                                    돌아가기
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+        <!-- 푸터 -->
+        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+    </div>
+    <!-- 콘텐트 래퍼 끝 -->
+</div>
+<!-- 페이지 래퍼 끝 -->
+<!-- 스크롤 탑 버튼 -->
+<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+<!-- 로그아웃 모달 -->
+<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+<!-- 스크립트 -->
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+<!-- 팩스 변경 Modal-->
+<div class="modal fade" id="faxModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>팩스 번호 변경</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div>
+                        <label for="name">현재 팩스 번호</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div>
+                        <label for="password">변경할 팩스 번호</label>
+                        <input type="text" class="form-control " id="password">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                <a class="btn btn-primary" href="login.html">변경</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 쇼핑몰 이름 변경 Modal-->
+<div class="modal fade" id="shopNameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>쇼핑몰 이름 변경</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div>
+                        <label for="name">현재 쇼핑몰 이름</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div>
+                        <label for="password">변경할 쇼핑몰 이름</label>
+                        <input type="text" class="form-control " id="password">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                <a class="btn btn-primary" href="login.html">변경</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 쇼핑몰 주소 변경 Modal-->
+<div class="modal fade" id="shopAddrMdoal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>쇼핑몰 주소 변경</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div>
+                        <label for="name">현재 쇼핑몰 주소</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div>
+                        <label for="password">변경할 쇼핑몰 주소</label>
+                        <input type="text" class="form-control " id="password">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                <a class="btn btn-primary" href="login.html">변경</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 분류 변경 Modal-->
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>분류 변경</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div>
+                        <label for="name">현재 분류</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div>
+                        <label for="password">변경할 분류</label>
+                        <input type="text" class="form-control " id="password">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                <a class="btn btn-primary" href="login.html">변경</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

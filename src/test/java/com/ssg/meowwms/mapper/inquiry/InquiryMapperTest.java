@@ -78,6 +78,7 @@ class InquiryMapperTest {
                 .postType("Updated Type")
                 .postTitle("Updated Title")
                 .postContent("Updated Content")
+                .response("응???")
                 .build();
 
         // 업데이트 메서드 실행
@@ -91,6 +92,7 @@ class InquiryMapperTest {
         assertThat(updatedInquiry.getPostType()).isEqualTo("Updated Type");
         assertThat(updatedInquiry.getPostTitle()).isEqualTo("Updated Title");
         assertThat(updatedInquiry.getPostContent()).isEqualTo("Updated Content");
+        assertThat(updatedInquiry.getResponse()).isEqualTo("응???");
     }
 
 }

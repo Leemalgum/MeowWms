@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssg.meowwms.mapper.storage.StockMovementMapper">
+
+    <!-- insertStock -->
+    <insert id="insertStock" parameterType="com.ssg.meowwms.domain.storage.StockMovementVO">
+        INSERT INTO Stock_Movement (product_id, user_id, status_code, request_datetime, approved_datetime, warehouse_id)
+        VALUES (#{productId}, #{userId}, #{statusCode}, #{requestDatetime}, #{approvedDatetime}, #{warehouseId})
+    </insert>
+
+    <!-- updateStockMovementStatus -->
+    <update id="updateStockMovementStatus" parameterType="map">
+        UPDATE Stock_Movement
+        SET status_code = #{statusCode}
+        WHERE id = #{requestId}
+    </update>
+
+    <!-- updateStockMovement -->
+    <update id="updateStockMovement" parameterType="map">
+        UPDATE Stock_Movement
+        SET request_datetime = #{requestDatetime}
+        WHERE product_id = #{requestId}
+    </update>
+
+    <!-- selectAllStockMovements -->
+    <select id="selectAllStockMovements" resultType="com.ssg.meowwms.domain.storage.StockMovementVO">
+        SELECT * FROM Stock_Movement
+    </select>
+
+    <!-- selectMovementByStatus -->
+    <select id="selectMovementByStatus" resultType="com.ssg.meowwms.domain.storage.StockMovementVO" parameterType="string">
+        SELECT * FROM Stock_Movement WHERE status_code = #{statusCode}
+    </select>
+
+    <!-- selectStockMovementsById -->
+    <select id="selectStockMovementsById" resultType="com.ssg.meowwms.domain.storage.StockMovementVO" parameterType="int">
+        SELECT * FROM Stock_Movement WHERE product_id = #{productId}
+    </select>
+
+</mapper>

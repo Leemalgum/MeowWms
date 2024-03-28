@@ -14,4 +14,5 @@ public interface ExpenseService {
     void updateExpense(ExpenseDTO expenseDTO);
     int sumExpenses(List<OptionDTO> optionList);
     List<ExpenseMonthDTO> sumExpensesByYear(int warehouseId, String year);
+    List<String> getAllYears();
 }

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Page Title</title>
+    <!-- Header 프래그먼트 포함 -->
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+
+</head>
+<!-- 페이지 래퍼 -->
+<body>
+
+<!-- 페이지 래퍼 -->
+<div id="wrapper">
+    <!-- 사이드바 -->
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <!-- 콘텐츠 래퍼 -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- 메인 콘텐츠 -->
+        <div id="content">
+            <!-- 탑바 -->
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+            <!-- 페이지 콘텐츠 시작 -->
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">회원 정보</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <form class="user">
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <label for="uname">이름</label>
+                                                <input type="text" class="form-control" id="uname" value="uname"
+                                                       readonly>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="birth">생년월일</label>
+                                                <input type="text" class="form-control" id="birth" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <label for="uid">아이디</label>
+                                                <input type="text" class="form-control " id="uid" readonly>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="upw">비밀번호</label>
+                                                <input type="password" class="form-control " id="upw" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <label for="email">이메일</label>
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-9">
+                                                            <input type="text" class="form-control " id="email"
+                                                                   readonly>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <a id="emailEdit" class="btn btn-primary btn-user btn-block"
+                                                               href="#" data-toggle="modal" data-target="#emailModal">
+                                                                변경
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="tel">전화번호</label>
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-9">
+                                                            <input type="text" class="form-control " id="tel" readonly>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <a id="telEdit" class="btn btn-primary btn-user btn-block"
+                                                               href="#" data-toggle="modal" data-target="#telModal">
+                                                                변경
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <a href="#" class="btn btn-primary btn-user btn-block">
+                                                    돌아가기
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <a class="btn btn-primary btn-user btn-block" href="#"
+                                                   data-toggle="modal" data-target="#withDrawModal">
+                                                    탈퇴하기
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+        <!-- 스크롤 탑 버튼 -->
+        <th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+        <!-- 로그아웃 모달 -->
+        <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+        <!-- 스크립트 -->
+        <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+        <script>
+            $(document).ready(function () {
+                console.log("test");
+                loadUserData();
+                // 이메일 변경 모달이 열릴 때
+                $('#emailEdit').on('click', function () {
+                    // 현재 이메일 값을 가져옵니다. 이 값은 서버에서 가져오거나, 화면에 표시되어 있는 값일 수 있습니다.
+                    var currentEmail = $('#email').val(); // 이메일 입력 필드의 값으로 가정합니다.
+                    // 모달 내의 현재 이메일 입력 필드에 값을 설정합니다.
+                    $('#currentEmail').val(currentEmail);
+                });
+                // 이메일 변경 모달에서 '변경' 버튼을 클릭했을 때
+                $('#changeEmailBtn').on('click', function () {
+                    // 새 이메일 값을 가져옵니다.
+                    var newEmail = $('#newEmail').val(); // 변경할 이메일 입력 필드의 값
+                    // Ajax를 사용하여 서버에 변경할 이메일 값을 전송합니다.
+                    $.ajax({
+                        type: "POST", // POST 메서드를 사용하여 데이터를 전송합니다.
+                        url: "/views/user/change-email", // 변경할 이메일을 처리하는 엔드포인트 URL입니다.
+                        data: {
+                            newEmail: newEmail // 변경할 이메일 값을 전송합니다.
+                        },
+                        success: function (response) {
+                            // 요청이 성공하면 서버에서의 처리 결과를 받아옵니다.
+                            console.log(response);
+                            // 이메일 변경에 성공하면 사용자에게 알림을 표시할 수 있습니다.
+                            alert("이메일이 성공적으로 변경되었습니다.");
+                            // 변경 성공 시 페이지 새로고침
+                            window.location.href = "/views/user/myInfo";
+                        },
+                        error: function (xhr, status, error) {
+                            // 요청이 실패할 경우 에러 처리를 합니다.
+                            console.error("Error changing email:", error);
+                            // 사용자에게 오류 메시지를 표시할 수 있습니다.
+                            alert("이메일 변경에 실패했습니다. 다시 시도해주세요.");
+                        }
+                    });
+                });
+                $('#telEdit').on('click', function () {
+                    var currentTel = $('#tel').val();
+                    $('#currentTel').val(currentTel);
+                });
+                $('#changeTelBtn').on('click', function () {
+                    var newTel = $('#newTel').val();
+                    $.ajax({
+                        type: "POST",
+                        url: "/views/user/change-tel",
+                        data: {
+                            newTel: newTel
+                        },
+                        success: function (response) {
+                            console.log(response);
+                            alert("전화번호가 성공적으로 변경되었습니다.");
+                            window.location.href = "/views/user/myInfo";
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error changing email:", error);
+                            alert("전화번호 변경에 실패했습니다. 다시 시도해주세요.");
+                        }
+                    });
+                });
+                $('#withdrawBtn').on('click', function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "/views/user/withdraw",
+                        success: function (response) {
+                            // 탈퇴가 성공적으로 이루어졌을 때의 처리를 진행합니다.
+                            console.log(response);
+                            alert("회원 탈퇴가 성공적으로 이루어졌습니다.");
+                            // 탈퇴 후 로그인 페이지로 이동합니다.
+                            window.location.href = "/views/user/login";
+                        },
+                        error: function (xhr, status, error) {
+                            // 탈퇴 처리가 실패했을 때의 처리를 진행합니다.
+                            console.error("Error withdrawing:", error);
+                            alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
+                        }
+                    });
+                });
+            });
+
+            function loadUserData() {
+                // Ajax를 사용하여 사용자 정보를 가져오는 요청을 보냅니다.
+                $.ajax({
+                    type: "GET", // GET 메서드를 사용하여 데이터를 요청합니다.
+                    url: "/views/user/getUserData", // 사용자 정보를 가져오는 엔드포인트 URL입니다.
+                    success: function (response) {
+                        console.log(response);
+                        // 요청이 성공하면 사용자 정보를 받아옵니다.
+                        // 받아온 정보를 각 입력 필드에 채워넣습니다.
+                        $('#uname').val(response.uname);
+                        $('#birth').val(response.birth);
+                        $('#uid').val(response.uid);
+                        $('#upw').val(response.upw);
+                        $('#email').val(response.email);
+                        $('#tel').val(response.tel);
+                    },
+                    error: function (xhr, status, error) {
+                        // 요청이 실패할 경우 에러 처리를 합니다.
+                        console.error("Error loading user data:", error);
+                        // 사용자에게 오류 메시지를 표시할 수 있습니다.
+                        // 예를 들어, 사용자에게 데이터 로드에 실패했다는 경고를 표시할 수 있습니다.
+                        alert("Failed to load user data. Please try again later.");
+                    }
+                });
+            }
+        </script>
+        <!-- 이메일 변경 Modal-->
+        <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>이메일 변경</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div>
+                                <label for="currentEmail">현재 이메일</label>
+                                <input type="text" class="form-control" id="currentEmail" readonly>
+                            </div>
+                            <div>
+                                <label for="newEmail">변경할 이메일</label>
+                                <input type="text" class="form-control " id="newEmail">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                        <a id="changeEmailBtn" class="btn btn-primary" href="#">변경</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 전화번호 변경 Modal-->
+        <div class="modal fade" id="telModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>전화번호 변경</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div>
+                                <label for="currentTel">현재 전화번호</label>
+                                <input type="text" class="form-control" id="currentTel" readonly>
+                            </div>
+                            <div>
+                                <label for="newTel">변경할 전화번호</label>
+                                <input type="text" class="form-control " id="newTel">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                        <a id="changeTelBtn" class="btn btn-primary" href="#">변경</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 탈퇴Modal-->
+        <div class="modal fade" id="withDrawModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>정말 탈퇴하시겠습니까?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                        <a id="withdrawBtn" class="btn btn-primary" href="#">네</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 푸터 -->
+        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+
+
+</body>
+
+</html>

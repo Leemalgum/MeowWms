@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExpenseMonthDTO {
-    int expenseMonth;
-    String month;
+    private int month;
+    private int expenseMonth;
 }

@@ -1,237 +1,109 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Page Title</title>
-    <!-- Header 프래그먼트 포함 -->
+    <title>창고 조회</title>
     <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
 </head>
 <body>
 
-<!-- 페이지 래퍼 -->
 <div id="wrapper">
-    <!-- 사이드바 -->
     <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
 
-    <!-- 콘텐츠 래퍼 -->
     <div id="content-wrapper" class="d-flex flex-column">
-        <!-- 메인 콘텐츠 -->
-        <div id="content">
-            <!-- 탑바 -->
-            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+        <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
 
-            <!-- 페이지 콘텐츠 시작 -->
 
-            <div class="container-fluid">
-                <h1 class="h3 mb-2 text-gray-800">창고 관리</h1>
-                <p class="mb-4">
-                    DataTables is a third party plugin that is used to generate the
-                    demo table below. For more information about DataTables, please
-                    visit the
-                    <a target="_blank" href="https://datatables.net"
-                    >official DataTables documentation</a
-                    >
-                </p>
+        <div class="container-fluid">
+            <h1 class="h3 mb-2 text-gray-800">창고 관리</h1>
+            <p class="mb-4">
+                DataTables is a third party plugin that is used to generate the
+                demo table below. For more information about DataTables, please
+                visit the
+                <a target="_blank" href="https://datatables.net"
+                >official DataTables documentation</a
+                >
+            </p>
 
-                <!-- 창고 등록 양식 -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">창고 조회</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <!-- 창고 이름 입력 -->
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label for="productId-input">창고 이름</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input
-                                                    type="text"
-                                                    id="productId-input"
-                                                    class="form-control"
-                                                    required
-                                                    autocomplete="false"
-                                                    placeholder="창고 이름을 입력하세요."
-                                            />
-                                        </div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">창고 조회</h6>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+
+                        <!-- 검색 조건 입력 폼 -->
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <select class="custom-select" id="searchType">
+                                            <option selected disabled hidden>-- 검색 타입 선택 --</option>
+                                            <option value="id">ID</option>
+                                            <option value="name">창고 이름</option>
+                                            <option value="category">창고 분류</option>
+                                            <option value="address">창고 주소</option>
+                                        </select>
                                     </div>
-                                    <br />
-
-                                    <!-- 창고 분류 입력 -->
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label for="majorType-input">창고 분류</label>
-                                        </div>
-                                        <!-- 대분류 -->
-                                        <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 대분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 중분류 -->
-                                        <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 중분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- 소분류 -->
-                                        <div class="col-md-3">
-                                            <select id="majorType-input" class="form-control">
-                                                <option value="" selected disabled hidden>
-                                                    --- 소분류 ---
-                                                </option>
-                                                <option value="major1">대분류 옵션 1</option>
-                                                <option value="major2">대분류 옵션 2</option>
-                                                <option value="major3">대분류 옵션 3</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <br />
-
-                                    <!-- 창고 위치 입력 -->
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label for="address">창고 위치</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input
-                                                    type="search"
-                                                    id="address"
-                                                    class="form-control"
-                                                    placeholder="창고 주소를 입력하세요."
-                                            />
-                                        </div>
-                                    </div>
-                                    <br />
-
-                                    <div class="row">
-                                        <div class="col-md-2"></div>
-                                        <div style="text-align: center; margin-right: 10px">
-                                            <!-- 전체 간격을 일정하게 열 맞춤 -->
-                                            <button
-                                                    id="retrieval-register-button"
-                                                    class="btn btn-primary"
-                                            >
-                                                검색
-                                            </button>
-                                        </div>
-
-                                        <div style="text-align: center">
-                                            <!-- 전체 간격을 일정하게 열 맞춤 -->
-                                            <button
-                                                    id="retrieval-register-button"
-                                                    class="btn btn-primary"
-                                            >
-                                                다시 입력
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <br />
-
-                                    <!-- 카카오맵 -->
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-10">
-                                            <div
-                                                    id="map"
-                                                    style="width: 100%; height: 600px"
-                                            ></div>
-                                        </div>
-                                    </div>
-                                    <br />
-                                </div>
-                            </div>
-
-                            <!-- 창고 리스트 -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">
-                                        창고 목록
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <label for="total-list-output">Total 00</label>
-                                    <br />
-                                    <div class="table-responsive">
-                                        <table
-                                                class="table table-bordered"
-                                                id="warehouseTable"
-                                                width="100%"
-                                                cellspacing="0"
-                                        >
-                                            <thead>
-                                            <tr style="background-color: #4e73df; color: white">
-                                                <th>창고 ID</th>
-                                                <th>창고 이름</th>
-                                                <th>창고 분류</th>
-                                                <th>창고 위치</th>
-                                                <th>상세 보기</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="warehouseTableBody">
-                                            <!-- 동적으로 생성될 행들이 여기에 추가됩니다 -->
-                                            </tbody>
-                                        </table>
-
-                                        <div class="pagination" style="justify-content: center">
-                                            <a href="#" class="pagination-number"
-                                            >&laquo;&emsp;</a
-                                            >
-                                            <a href="#" class="pagination-number">1&emsp;</a>
-                                            <a href="#" class="pagination-number">2&emsp;</a>
-                                            <a href="#" class="pagination-number">3&emsp;</a>
-                                            <a href="#" class="pagination-number">4&emsp;</a>
-                                            <a href="#" class="pagination-number">5&emsp;</a>
-                                            <a href="#" class="pagination-number">6&emsp;</a>
-                                            <a href="#" class="pagination-number">&raquo;</a>
-                                        </div>
+                                    <input type="text" class="form-control" id="searchKeyword"
+                                           placeholder="검색어를 입력하세요...">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" type="button"
+                                                id="button-search">검색
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- <div class="row">
-                              <div class="col-md-12" style="text-align: center">
-                                <button
-                                  id="retrieval-register-button"
-                                  class="btn btn-primary"
-                                >
-                                  창고 등록
-                                </button>
-                              </div>
-                            </div> -->
+                        <!-- 카카오맵 -->
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <div
+                                        id="map"
+                                        style="width: 100%; height: 600px"
+                                ></div>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">창고 목록</h6>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr style="background-color: #4e73df; color: white">
+                                            <th>창고 ID</th>
+                                            <th>창고 이름</th>
+                                            <th>창고 분류</th>
+                                            <th>창고 주소</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!-- DataTables will fill the data here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
-        <!-- 푸터 -->
         <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
     </div>
 </div>
 
-<!-- 스크롤 탑 버튼 -->
 <th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
-
-<!-- 로그아웃 모달 -->
 <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
-
-<!-- 스크립트 -->
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
 
 <!-- 카카오맵 api -->
 <script
@@ -239,208 +111,150 @@
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7a41ce0dd37c22d03fc4b8624754162b&libraries=services"
 ></script>
 
-<script>
+<script th:inline="javascript">
+    var positions = [];
+    var currentPositions = [];
+    var markers = [];
+    var infowindows = []; // 인포윈도우 배열 추가
+
     var mapContainer = document.getElementById("map"); // 지도를 표시할 div
     var mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
         level: 3, // 지도의 확대 레벨
     };
-
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-    // 주소로 좌표를 검색합니다
-    var positions = [
-        {
-            title: "강남 창고",
-            latitude: 37.517331925853, // 위도
-            longitude: 127.047377408384, // 경도
-        },
-        {
-            title: "영등포 창고",
-            latitude: 37.5263635705036,
-            longitude: 126.896273923703,
-        },
-        {
-            title: "마포 창고",
-            latitude: 37.5662141900954,
-            longitude: 126.901955141101,
-        },
-        {
-            title: "동작 창고",
-            latitude: 37.5124820423519,
-            longitude: 126.93931505634,
-        },
-        {
-            title: "강서 창고",
-            latitude: 37.5509646154244,
-            longitude: 126.849533759514,
-        },
-        {
-            title: "구로 창고",
-            latitude: 37.4954330863648,
-            longitude: 126.88750531451,
-        },
-        {
-            title: "동대문 창고",
-            latitude: 37.5745229817122,
-            longitude: 127.039657001091,
-        },
-        {
-            title: "파주 창고",
-            latitude: 37.7600449967303,
-            longitude: 126.779881359268,
-        },
-        {
-            title: "양주 창고",
-            latitude: 37.7853136973154,
-            longitude: 127.045786084702,
-        },
-        {
-            title: "김포 창고",
-            latitude: 37.6152686898333,
-            longitude: 126.715657922927,
-        },
-    ];
+    var geocoder = new kakao.maps.services.Geocoder();
 
-    var bounds = new kakao.maps.LatLngBounds(); // LatLngBounds 객체를 생성합니다
+    $(document).ready(function () {
+        warehouseData(); // 초기 페이지 로딩 시 문의글 데이터 로드
+    });
 
-    positions.forEach(function (position, index) {
-        var coords = new kakao.maps.LatLng(
-            position.latitude,
-            position.longitude
-        );
+    $('#button-search').click(function () {
+        var searchType = $('#searchType').val();
+        var searchKeyword = $('#searchKeyword').val();
+        // 현재 상태에 따라 적절한 데이터 로드
 
-        // 마커를 생성합니다
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: coords,
-        });
+        console.log(searchType, searchKeyword);
 
-        // 인포윈도우를 생성합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            content:
-                '<div style="width:150px;text-align:center;padding:6px 0;">' +
-                position.title +
-                "</div>",
-        });
+        console.log(searchType, searchKeyword);
+        warehouseData(searchType, searchKeyword);
+    });
 
-        // 마커에 클릭 이벤트를 등록합니다
-        kakao.maps.event.addListener(marker, "click", function () {
-            // 이미 열려있는 인포윈도우가 있다면 닫기
-            if (infowindow.getMap()) {
-                infowindow.close();
-            } else {
-                // 인포윈도우를 마커 위치에 표시합니다
-                infowindow.open(map, marker);
+    function warehouseData(searchType = '', searchKeyword = '') {
+        var params = new URLSearchParams({
+            searchType: searchType,
+            searchKeyword: searchKeyword
+        }).toString();
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').DataTable().destroy();
+        }
+
+        var table = $('#dataTable').DataTable({
+            "ajax": {
+                "url": `/warehouse/data?${params}`,
+                "type": "GET",
+                "dataSrc": function (data) {
+                    positions = [];
+                    data.forEach(item => {
+                        var position = {
+                            title: item.name,
+                            address: item.address
+                        };
+                        positions.push(position); // 데이터 로드가 완료된 후 positions 배열에 데이터 추가
+                    });
+                    console.log(positions); // 데이터 로드 후에 positions 배열 확인
+                    return data; // DataTable에 표시할 데이터 반환
+                },
+            },
+            "columns": [
+                {"data": "id"},
+                {"data": "name"},
+                {"data": "category"},
+                {"data": "address"}
+            ],
+            "searching": false,
+            "paging": true,
+            "ordering": false,
+            "info": true,
+            "pageLength": 10,
+            "lengthChange": false,
+            "initComplete": function(settings, json) {
+                updateCurrentPositionsAndMarkers(); // 초기 로드 시 현재 페이지의 마커를 업데이트
             }
         });
 
-        // LatLngBounds 객체에 좌표를 추가합니다
-        bounds.extend(coords);
+        table.on('draw', function() {
+            clearMarkers();
+            clearInfowindows(); // 이전 인포윈도우를 닫음
+            currentPositions = [];
+            updateCurrentPositionsAndMarkers(); // 테이블이 다시 그려질 때(페이지 변경 포함) 마커 업데이트
+        });
 
-        // 동적으로 생성된 행을 추가합니다
-        var tableBody = document.getElementById("warehouseTableBody");
-        var newRow = tableBody.insertRow();
-        newRow.innerHTML = `
-        <td>${index + 1}</td>
-        <td><a href="#" class="warehouse-name">${position.title}</a></td>
-        <td>일반</td>
-        <td>위치 주소</td>
-        <td><a href="#" class="detail-link" data-toggle="modal" data-target="#warehouseDetailModal">상세 보기</a></td>
-      `;
+        function updateCurrentPositionsAndMarkers() {
+            var pageInfo = table.page.info();
+            var startIdx = pageInfo.start;
+            var endIdx = pageInfo.end;
+            currentPositions = positions.slice(startIdx, endIdx);
+            setMarkers(); // 현재 페이지에 해당하는 마커 설정
+        }
+    }
 
-        // 주소로 좌표를 검색하여 위치 주소를 가져옵니다
-        var geocoder = new kakao.maps.services.Geocoder();
-        geocoder.coord2Address(
-            coords.getLng(),
-            coords.getLat(),
-            function (result, status) {
+    function setMarkers() {
+        clearMarkers(); // 이전에 생성된 마커 제거
+        var bounds = new kakao.maps.LatLngBounds();
+
+        currentPositions.forEach(function(position) {
+            geocoder.addressSearch(position.address, function(result, status) {
                 if (status === kakao.maps.services.Status.OK) {
-                    var address = result[0].address.address_name; // 위치 주소
-                    // 해당 행에 위치 주소를 업데이트합니다
-                    newRow.cells[3].textContent = address;
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    markers.push(marker);
+
+                    marker.setMap(map); //추가한 코드
+                    bounds.extend(coords);
+
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    //변경한 코드
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">' + position.title + '</div>'
+                    });
+
+                    infowindow.open(map, marker); // 마커와 함께 인포윈도우 표시
+
+                    infowindows.push(infowindow); // 인포윈도우 배열에 추가
+
+                    setBounds();
                 }
-            }
-        );
-
-        // 창고 이름을 클릭했을 때 해당 마커가 중심이 되도록 설정
-        newRow
-            .querySelector(".warehouse-name")
-            .addEventListener("click", function (e) {
-                e.preventDefault();
-                map.setCenter(coords);
-                // 인포윈도우를 열고, 다른 마커의 인포윈도우는 닫습니다
-                infowindow.open(map, marker);
-                positions.forEach(function (pos) {
-                    if (pos.title !== position.title) {
-                        pos.infowindow.close();
-                    }
-                });
             });
-
-        // 상세 보기 링크를 클릭했을 때 모달에 창고 정보 추가
-        newRow
-            .querySelector(".detail-link")
-            .addEventListener("click", function () {
-                var warehouseName = position.title;
-                var warehouseCategory = "일반"; // 창고 분류
-                var warehouseAddress = newRow.cells[3].textContent; // 위치 주소
-                document.getElementById("warehouseDetailModalTitle").textContent =
-                    warehouseName;
-                document.getElementById("warehouseCategory-input").value =
-                    warehouseCategory;
-                document.getElementById("warehouseAddress-input").value =
-                    warehouseAddress;
-            });
-
-        // 마커에 인포윈도우 속성으로 추가
-        position.infowindow = infowindow;
-    });
-
-    // LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
-    map.setBounds(bounds);
-
-    // 모달 지도 관련
-    $("#warehouseDetailModal").on("shown.bs.modal", function () {
-        // 현재 열린 모달 내부의 창고 주소를 가져옵니다
-        var warehouseAddress = document.getElementById(
-            "warehouseAddress-input"
-        ).value;
-
-        // 지도를 표시할 div를 선택합니다
-        var modalMapContainer = document.getElementById("modalMap");
-
-        // 주소로 좌표를 검색하여 지도를 표시합니다
-        var geocoder = new kakao.maps.services.Geocoder();
-        geocoder.addressSearch(warehouseAddress, function (result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-                // 지도의 중심을 해당 위치로 설정합니다
-                var modalMapOption = {
-                    center: coords,
-                    level: 3,
-                };
-
-                // 새로운 지도를 생성합니다
-                var modalMap = new kakao.maps.Map(
-                    modalMapContainer,
-                    modalMapOption
-                );
-
-                // 해당 위치에 마커를 표시할 수 있습니다 (선택사항)
-                var marker = new kakao.maps.Marker({
-                    position: coords,
-                    map: modalMap,
-                });
-            } else {
-                console.error("Geocoder failed due to: " + status);
-            }
         });
-    });
+
+        function setBounds() { //추가한 함수
+            map.setBounds(bounds);
+        }
+    }
+
+    function clearMarkers() {
+        markers.forEach(function(marker) {
+            marker.setMap(null); // 마커를 지도에서 제거
+        });
+        markers = []; // 마커 배열 초기화
+    }
+
+    function clearInfowindows() {
+        infowindows.forEach(function(infowindow) {
+            infowindow.close(); // 인포윈도우를 닫음
+        });
+        infowindows = []; // 인포윈도우 배열 초기화
+    }
 </script>
 
-<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
 
 </body>
 </html>

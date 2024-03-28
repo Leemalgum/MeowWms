@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.retrieval.RetrievalTimelineMapper">
+
+    <insert id="insertRequestTime" parameterType="com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO">
+        INSERT INTO Retrieval_Timeline (id, request_time)
+        VALUES (#{id}, #{requestTime, jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateOrderTime" parameterType="com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO">
+        UPDATE Retrieval_Timeline
+        SET order_time = #{orderTime, jdbcType=TIMESTAMP}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateWorkingTime" parameterType="com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO">
+        UPDATE Retrieval_Timeline
+        SET working_time = #{workingTime, jdbcType=TIMESTAMP}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateFinishedTime" parameterType="com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO">
+        UPDATE Retrieval_Timeline
+        SET finished_time = #{finishedTime, jdbcType=TIMESTAMP}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

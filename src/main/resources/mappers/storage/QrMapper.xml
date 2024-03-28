@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssg.meowwms.mapper.storage.QrMapper">
+
+    <insert id="saveQrCodeImage" parameterType="map">
+        INSERT INTO QR_Barcode (product_id, barcode_data, creation_date)
+        VALUES (#{productId}, #{qrCodeImage}, #{creationDate})
+    </insert>
+
+</mapper>
