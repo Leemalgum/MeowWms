@@ -61,6 +61,8 @@
     <th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
     <!-- 스크립트 -->
     <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
     <!-- 회원 정보 수정 Modal-->
 
     <div>
@@ -177,6 +179,23 @@
 
         $(document).ready(function () {
             loadData(); // 초기 페이지 로딩 시 전체 회원 데이터 로드
+
+            $('#dataTable').DataTable({
+                language: {
+                    "lengthMenu": "페이지당 _MENU_ 개 항목 표시",
+                    "zeroRecords": "검색 결과가 없습니다",
+                    "info": "페이지 _PAGE_ / _PAGES_",
+                    "infoEmpty": "사용 가능한 기록이 없습니다",
+                    "infoFiltered": "(총 _MAX_ 개 기록에서 필터링됨)",
+                    "search": "검색:",
+                    "paginate": {
+                        "first": "처음",
+                        "last": "마지막",
+                        "next": "다음",
+                        "previous": "이전"
+                    }
+                },
+            });
 
             // 테이블의 각 행을 클릭할 때 모달을 띄우는 이벤트 처리
             $('#dataTable tbody').on('click', 'tr', function () {
@@ -401,5 +420,6 @@
             }
         });
     </script>
+
 </body>
 </html>
