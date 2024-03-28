@@ -46,7 +46,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="/dashboard">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -70,10 +70,11 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">My page</h6>
                     <a class="collapse-item" href="/views/user/myInfo">내 정보 보기</a>
-                    <a class="collapse-item" href="/views/user/myBusinessInfo">쇼핑몰 정보 보기</a>
                     <div class="collapse-divider"></div>
-                    <h6 class="collapse-header">회원 관리</h6>
-                    <a class="collapse-item" href="/views/user/memberList">회원 조회</a>
+                    <div th:if="${#authorization.expr('hasRole(''ADMIN'')')}">
+                        <h6 class="collapse-header">회원 관리</h6>
+                        <a class="collapse-item" href="/views/user/memberList">회원 조회</a>
+                    </div>
                 </div>
             </div>
         </li>
@@ -137,7 +138,7 @@
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item" >
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStock"
                aria-expanded="true" aria-controls="collapseStock">
                 <i class="fas fa-fw fa-folder"></i>
@@ -146,9 +147,10 @@
             <div id="collapseStock" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">재고 조회</h6>
-                    <a class="collapse-item" href="">품목 현황</a>
-                    <a class="collapse-item" href="">창고 현황</a>
-                    <a class="collapse-item" href="">재고 실사</a>
+                    <a class="collapse-item" href="/stock/list">재고 실사</a>
+                    <a class="collapse-item" href="/stock/productStatus">품목 현황</a>
+                    <a class="collapse-item" th:if="${#authorization.expr('hasRole(''ADMIN'')')}" href="/stock/warehouseStatus">창고 현황</a>
+                    <a class="collapse-item" th:if="${#authorization.expr('hasRole(''ADMIN'')')}" href="/stockTaking/list">재고 실사</a>
                 </div>
             </div>
         </li>
@@ -381,7 +383,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            <span class="mr-2 d-lg-inline text-gray-600 small" th:text="${#authentication.principal.username}"></span>
                             <img class="img-profile rounded-circle"
                                  th:src="@{/bootstrap/img/undraw_profile.svg}">
                         </a>

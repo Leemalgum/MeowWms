@@ -37,6 +37,7 @@
                 </foreach>
             </if>
         </where>
+        order by post_num desc;
     </select>
 
     <!-- select 쿼리에서 resultMap을 사용하도록 수정 -->
@@ -57,6 +58,10 @@
         INSERT INTO Inquiry (post_type, post_title, user_id, post_content, post_date)
         VALUES (#{postType}, #{postTitle}, #{userId}, #{postContent}, now())
     </insert>
+
+    <select id="selectDoNotResponseInquiry" resultType="int">
+        select count(*) from Inquiry where response is null;
+    </select>
 
 
 </mapper>

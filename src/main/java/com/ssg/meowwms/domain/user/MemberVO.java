@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * 사용자의 쇼핑몰 정보를 다루는 도메인 클래스 입니다
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
