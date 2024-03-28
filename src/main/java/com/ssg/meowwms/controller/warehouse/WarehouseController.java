@@ -158,8 +158,13 @@ public class WarehouseController {
             @RequestParam(required = false) String searchType,
             @RequestParam(required = false) String searchKeyword
     ) {
+        log.info(searchType);
+        log.info(searchKeyword);
+
         OptionList optionList = new OptionList();
         optionList.add(new OptionDTO(searchType, searchKeyword));
+
+        log.info(optionList);
 
         System.out.println(warehouseService.selectAll(optionList.getOptionList()));
 
@@ -176,8 +181,10 @@ public class WarehouseController {
      *
      * @return
      */
-    @GetMapping("/read")
-    public String getRead() {
+    @GetMapping("/read/{name}")
+    public String getRead(@PathVariable String name, Model model) {
+        model.addAttribute("warehouse", warehouseService.getWarehouse(name));
+
         return "views/warehouse/read";
     }
 }

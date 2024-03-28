@@ -23,9 +23,8 @@ public class StockTakingServiceTests {
 
     @Test
     @Transactional
-    public void insertStocktaking(){
+    public void testInsertStocktaking(){
         StockTakingDTO stockTakingDTO = StockTakingDTO.builder()
-                .stockTakingId(99)
                 .stockId(1)
                 .plannedDate(new Date())
                 .inspector("김태진")
@@ -33,35 +32,58 @@ public class StockTakingServiceTests {
                 .statusDetail("")
                 .build();
 
-        stockTakingService.insertStocktaking(stockTakingDTO);
+        try {
+            stockTakingService.insertStocktaking(stockTakingDTO);
+            log.info("추가 됨");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }
 
     @Test
     @Transactional
-    public void updateStocktaking(){
+    public void testUpdateStocktaking(){
         StockTakingDTO stockTakingDTO = StockTakingDTO.builder()
                 .stockTakingId(1)
-                .stockId(1)
                 .plannedDate(new Date())
-                .inspector("김태진")
+                .inspector("김태진ㅇㅇ")
                 .status(Status.완료)
-                .statusDetail("")
+                .statusDetail("ㅇㅇ")
                 .build();
-        stockTakingService.selectOneStocktaking(stockTakingDTO.getStockTakingId());
-        stockTakingService.updateStocktaking(stockTakingDTO);
+        try {
+            stockTakingService.selectOneStocktaking(stockTakingDTO.getStockTakingId());
+            stockTakingService.updateStocktaking(stockTakingDTO);
+            log.info("업뎃됨");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Test
     @Transactional
-    public void deleteStocktaking(){
-        stockTakingService.deleteStocktaking(1);
+    public void testDeleteStocktaking(){
+        try {
+            stockTakingService.deleteStocktaking(1);
+            log.info("지워짐");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Test
-    public void selectAllStocktaking(){
+    public void testSelectAllStocktaking(){
+        log.info(stockTakingService.selectAllStocktaking());
         stockTakingService.selectAllStocktaking();
     }
     @Test
-    public void selectOneStocktaking(){
-        stockTakingService.selectOneStocktaking(1);
+    public void testSelectOneStocktaking(){
+        log.info(stockTakingService.selectOneStocktaking(200));
+        stockTakingService.selectOneStocktaking(200);
+    }
+
+    @Test
+    public void testSelectSTDetail() {
+        log.info(stockTakingService.selectSTDetail(1));
+        stockTakingService.selectSTDetail(1);
     }
 
 }

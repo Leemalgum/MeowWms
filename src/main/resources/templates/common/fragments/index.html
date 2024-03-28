@@ -70,10 +70,11 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">My page</h6>
                     <a class="collapse-item" href="/views/user/myInfo">내 정보 보기</a>
-                    <a class="collapse-item" href="/views/user/myBusinessInfo">쇼핑몰 정보 보기</a>
                     <div class="collapse-divider"></div>
-                    <h6 class="collapse-header">회원 관리</h6>
-                    <a class="collapse-item" href="/views/user/memberList">회원 조회</a>
+                    <div th:if="${#authorization.expr('hasRole(''ADMIN'')')}">
+                        <h6 class="collapse-header">회원 관리</h6>
+                        <a class="collapse-item" href="/views/user/memberList">회원 조회</a>
+                    </div>
                 </div>
             </div>
         </li>
@@ -381,7 +382,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            <span class="mr-2 d-lg-inline text-gray-600 small" th:text="${#authentication.principal.username}"></span>
                             <img class="img-profile rounded-circle"
                                  th:src="@{/bootstrap/img/undraw_profile.svg}">
                         </a>

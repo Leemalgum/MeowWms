@@ -16,7 +16,7 @@
 
 
         <div class="container-fluid">
-            <h1 class="h3 mb-2 text-gray-800">창고 조회</h1>
+            <h1 class="h3 mb-2 text-gray-800">창고 관리</h1>
             <p class="mb-4">
                 DataTables is a third party plugin that is used to generate the
                 demo table below. For more information about DataTables, please
@@ -40,9 +40,9 @@
                                     <div class="input-group-prepend">
                                         <select class="custom-select" id="searchType">
                                             <option selected disabled hidden>-- 검색 타입 선택 --</option>
-                                            <option value="id">창고 ID</option>
+                                            <option value="id">ID</option>
                                             <option value="name">창고 이름</option>
-                                            <option value="categoryId">창고 분류</option>
+                                            <option value="category">창고 분류</option>
                                             <option value="address">창고 주소</option>
                                         </select>
                                     </div>
@@ -81,8 +81,7 @@
                                             <th>창고 ID</th>
                                             <th>창고 이름</th>
                                             <th>창고 분류</th>
-                                            <th>위도</th>
-                                            <th>경도</th>
+                                            <th>창고 주소</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -112,194 +111,34 @@
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7a41ce0dd37c22d03fc4b8624754162b&libraries=services"
 ></script>
 
-<script>
+<script th:inline="javascript">
+    var positions = [];
+    var currentPositions = [];
+    var markers = [];
+    var infowindows = []; // 인포윈도우 배열 추가
+
     var mapContainer = document.getElementById("map"); // 지도를 표시할 div
     var mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
         level: 3, // 지도의 확대 레벨
     };
-
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-    // 주소로 좌표를 검색합니다
-    var positions = [
-        {
-            title: "강남 창고",
-            latitude: 37.517331925853, // 위도
-            longitude: 127.047377408384, // 경도
-        },
-        {
-            title: "영등포 창고",
-            latitude: 37.5263635705036,
-            longitude: 126.896273923703,
-        },
-        {
-            title: "마포 창고",
-            latitude: 37.5662141900954,
-            longitude: 126.901955141101,
-        },
-        {
-            title: "동작 창고",
-            latitude: 37.5124820423519,
-            longitude: 126.93931505634,
-        },
-        {
-            title: "강서 창고",
-            latitude: 37.5509646154244,
-            longitude: 126.849533759514,
-        },
-        {
-            title: "구로 창고",
-            latitude: 37.4954330863648,
-            longitude: 126.88750531451,
-        },
-        {
-            title: "동대문 창고",
-            latitude: 37.5745229817122,
-            longitude: 127.039657001091,
-        },
-        {
-            title: "파주 창고",
-            latitude: 37.7600449967303,
-            longitude: 126.779881359268,
-        },
-        {
-            title: "양주 창고",
-            latitude: 37.7853136973154,
-            longitude: 127.045786084702,
-        },
-        {
-            title: "김포 창고",
-            latitude: 37.6152686898333,
-            longitude: 126.715657922927,
-        },
-    ];
-
-    var bounds = new kakao.maps.LatLngBounds(); // LatLngBounds 객체를 생성합니다
-
-    positions.forEach(function (position, index) {
-        var coords = new kakao.maps.LatLng(
-            position.latitude,
-            position.longitude
-        );
-
-        // 마커를 생성합니다
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: coords,
-        });
-
-        // 인포윈도우를 생성합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            content:
-                '<div style="width:150px;text-align:center;padding:6px 0;">' +
-                position.title +
-                "</div>",
-        });
-
-        // 마커에 클릭 이벤트를 등록합니다
-        kakao.maps.event.addListener(marker, "click", function () {
-            // 이미 열려있는 인포윈도우가 있다면 닫기
-            if (infowindow.getMap()) {
-                infowindow.close();
-            } else {
-                // 인포윈도우를 마커 위치에 표시합니다
-                infowindow.open(map, marker);
-            }
-        });
-
-        // LatLngBounds 객체에 좌표를 추가합니다
-        bounds.extend(coords);
-
-        // 주소로 좌표를 검색하여 위치 주소를 가져옵니다
-        var geocoder = new kakao.maps.services.Geocoder();
-        geocoder.coord2Address(
-            coords.getLng(),
-            coords.getLat(),
-            function (result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    var address = result[0].address.address_name; // 위치 주소
-                    // 테이블을 생성하는 로직을 제외하였으므로, 해당 주소를 활용하는 부분은 생략합니다
-                }
-            }
-        );
-
-        // 창고 이름을 클릭했을 때 해당 마커가 중심이 되도록 설정
-        // 상세 보기 링크를 클릭했을 때 모달에 창고 정보 추가
-        // 마커에 인포윈도우 속성으로 추가
-        position.infowindow = infowindow;
-    });
-
-    // LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
-    map.setBounds(bounds);
-
-    // 모달 지도 관련
-    $("#warehouseDetailModal").on("shown.bs.modal", function () {
-        // 현재 열린 모달 내부의 창고 주소를 가져옵니다
-        var warehouseAddress = document.getElementById(
-            "warehouseAddress-input"
-        ).value;
-
-        // 지도를 표시할 div를 선택합니다
-        var modalMapContainer = document.getElementById("modalMap");
-
-        // 주소로 좌표를 검색하여 지도를 표시합니다
-        var geocoder = new kakao.maps.services.Geocoder();
-        geocoder.addressSearch(warehouseAddress, function (result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-                // 지도의 중심을 해당 위치로 설정합니다
-                var modalMapOption = {
-                    center: coords,
-                    level: 3,
-                };
-
-                // 새로운 지도를 생성합니다
-                var modalMap = new kakao.maps.Map(
-                    modalMapContainer,
-                    modalMapOption
-                );
-
-                // 해당 위치에 마커를 표시할 수 있습니다 (선택사항)
-                var marker = new kakao.maps.Marker({
-                    position: coords,
-                    map: modalMap,
-                });
-            } else {
-                console.error("Geocoder failed due to: " + status);
-            }
-        });
-    });
-</script>
-
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var currentDataTable = "inquiries"; // 현재 보고 있는 데이터 타입
+    var geocoder = new kakao.maps.services.Geocoder();
 
     $(document).ready(function () {
         warehouseData(); // 초기 페이지 로딩 시 문의글 데이터 로드
     });
 
-    // $('#showNoticesButton').click(function () {
-    //     currentDataTable = "notices"; // 공지사항 데이터 로드로 상태 변경
-    //     loadNoticesData(); // 검색 조건 없이 공지사항 데이터 로드
-    // });
-    //
-    // $('#viewInquiriesButton').click(function () {
-    //     currentDataTable = "inquiries"; // 문의글 데이터 로드로 상태 변경
-    //     warehouseData(); // 검색 조건 없이 문의글 데이터 로드
-    // });
-
     $('#button-search').click(function () {
         var searchType = $('#searchType').val();
         var searchKeyword = $('#searchKeyword').val();
         // 현재 상태에 따라 적절한 데이터 로드
-        if (currentDataTable === "inquiries") {
-            warehouseData(searchType, searchKeyword);
-        } else if (currentDataTable === "notices") {
-            loadNoticesData(searchType, searchKeyword);
-        }
+
+        console.log(searchType, searchKeyword);
+
+        console.log(searchType, searchKeyword);
+        warehouseData(searchType, searchKeyword);
     });
 
     function warehouseData(searchType = '', searchKeyword = '') {
@@ -312,82 +151,113 @@
             $('#dataTable').DataTable().destroy();
         }
 
-        $('#dataTable').DataTable({
+        var table = $('#dataTable').DataTable({
             "ajax": {
                 "url": `/warehouse/data?${params}`,
                 "type": "GET",
-                "dataSrc": ""
+                "dataSrc": function (data) {
+                    positions = [];
+                    data.forEach(item => {
+                        var position = {
+                            title: item.name,
+                            address: item.address
+                        };
+                        positions.push(position); // 데이터 로드가 완료된 후 positions 배열에 데이터 추가
+                    });
+                    console.log(positions); // 데이터 로드 후에 positions 배열 확인
+                    return data; // DataTable에 표시할 데이터 반환
+                },
             },
             "columns": [
                 {"data": "id"},
-                {"data": "name"},
-                {"data": "categoryId"},
-                {"data": "latitude"},
-                {"data": "longitude"},
-                // {
-                //     "data": "postTitle",
-                //     "render": function(data, type, row) {
-                //         return `<a href="/views/inquiry/read-content/${row.postNum}">${data}</a>`;
-                //     }
-                // },
-                // { "data": "userId" },
-                // {
-                //     "data": "postDate",
-                //     "render": function(data) {
-                //         return moment(data).format('YYYY-MM-DD');
-                //     }
-                // }
+                {
+                    "data": "name",
+                    "render": function(data, type, row) {
+                        return `<a href="/warehouse/read/${row.name}">${data}</a>`;
+                    }
+                },
+                {"data": "category"},
+                {"data": "address"}
             ],
             "searching": false,
             "paging": true,
-            "ordering": true,
+            "ordering": false,
             "info": true,
-            "pageLength": 10
+            "pageLength": 10,
+            "lengthChange": false,
+            "initComplete": function(settings, json) {
+                updateCurrentPositionsAndMarkers(); // 초기 로드 시 현재 페이지의 마커를 업데이트
+            }
         });
+
+        table.on('draw', function() {
+            clearMarkers();
+            clearInfowindows(); // 이전 인포윈도우를 닫음
+            currentPositions = [];
+            updateCurrentPositionsAndMarkers(); // 테이블이 다시 그려질 때(페이지 변경 포함) 마커 업데이트
+        });
+
+        function updateCurrentPositionsAndMarkers() {
+            var pageInfo = table.page.info();
+            var startIdx = pageInfo.start;
+            var endIdx = pageInfo.end;
+            currentPositions = positions.slice(startIdx, endIdx);
+            setMarkers(); // 현재 페이지에 해당하는 마커 설정
+        }
     }
 
-    // function loadNoticesData(searchType = '', searchKeyword = '') {
-    //     var params = new URLSearchParams({
-    //         searchType: searchType,
-    //         searchKeyword: searchKeyword
-    //     }).toString();
-    //
-    //     if ($.fn.DataTable.isDataTable('#dataTable')) {
-    //         $('#dataTable').DataTable().destroy();
-    //     }
-    //
-    //     $('#dataTable').DataTable({
-    //         "ajax": {
-    //             "url": `/views/inquiry/noticeData?${params}`,
-    //             "type": "GET",
-    //             "dataSrc": ""
-    //         },
-    //         "columns": [
-    //             {"data": "no"},
-    //             {"data": "type"},
-    //             {
-    //                 "data": "title",
-    //                 "render": function (data, type, row) {
-    //                     return `<a href="/views/inquiry/read-notice/${row.no}">${data}</a>`;
-    //                 }
-    //             },
-    //             {"data": "userId"},
-    //             {
-    //                 "data": "noticeDate",
-    //                 "render": function (data) {
-    //                     return moment(data).format('YYYY-MM-DD');
-    //                 }
-    //             }
-    //         ],
-    //         "searching": false,
-    //         "paging": true,
-    //         "ordering": true,
-    //         "info": true,
-    //         "pageLength": 10
-    //     });
-    // }
+    function setMarkers() {
+        clearMarkers(); // 이전에 생성된 마커 제거
+        var bounds = new kakao.maps.LatLngBounds();
 
-    /*]]>*/
+        currentPositions.forEach(function(position) {
+            geocoder.addressSearch(position.address, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    markers.push(marker);
+
+                    marker.setMap(map); //추가한 코드
+                    bounds.extend(coords);
+
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    //변경한 코드
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">' + position.title + '</div>'
+                    });
+
+                    infowindow.open(map, marker); // 마커와 함께 인포윈도우 표시
+
+                    infowindows.push(infowindow); // 인포윈도우 배열에 추가
+
+                    setBounds();
+                }
+            });
+        });
+
+        function setBounds() { //추가한 함수
+            map.setBounds(bounds);
+        }
+    }
+
+    function clearMarkers() {
+        markers.forEach(function(marker) {
+            marker.setMap(null); // 마커를 지도에서 제거
+        });
+        markers = []; // 마커 배열 초기화
+    }
+
+    function clearInfowindows() {
+        infowindows.forEach(function(infowindow) {
+            infowindow.close(); // 인포윈도우를 닫음
+        });
+        infowindows = []; // 인포윈도우 배열 초기화
+    }
 </script>
 
 

@@ -1,4 +1,4 @@
-package com.ssg.meowwms.mapper.warehouse;
+package com.ssg.meowwms.mapper;
 
 import com.ssg.meowwms.domain.warehouse.WarehouseVO;
 import com.ssg.meowwms.dto.search.OptionDTO;
@@ -26,10 +26,10 @@ public interface WarehouseMapper {
     /**
      * 창고 테이블에서 warehouseId에 해당하는 창고 정보를 가져와 WarehouseVO로 반환합니다.
      *
-     * @param warehouseId
+     * @param name
      * @return
      */
-    WarehouseVO selectOne(int warehouseId);
+    WarehouseVO selectOne(String name);
 
     /**
      * 창고 테이블에서 전체 창고에 대한 정보를 가져와서 반환합니다.
