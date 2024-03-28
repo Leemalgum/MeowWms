@@ -9,4 +9,5 @@ public interface RetrievalTimelineMapper {
     void updateOrderTime(RetrievalTimelineVO retrievalTimelineVO);
     void updateWorkingTime(RetrievalTimelineVO retrievalTimelineVO);
     void updateFinishedTime(RetrievalTimelineVO retrievalTimelineVO);
+    void deleteByShippingOrdersId(int shippingOrdersId);
 }
