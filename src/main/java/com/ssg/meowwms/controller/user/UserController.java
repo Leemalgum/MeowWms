@@ -37,18 +37,6 @@ public class UserController {
     }
 
     /**
-     * 로그인 페이지를 보여주고, 사용자의 로그인을 처리
-     *
-     * @return
-     */
-    @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
-        System.out.println(username + " " + password);
-
-        return "redirect:/views/user/index";
-    }
-
-    /**
      * 로그아웃 기능을 처리
      *
      * @return
