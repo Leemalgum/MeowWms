@@ -68,4 +68,11 @@ public class WarehouseServiceImpl implements WarehouseService{
     public List<Integer> getAllWarehouseId() {
         return warehouseMapper.selectAllWarehouseId();
     }
+
+    @Override
+    public List<WarehouseDTO> getAllWarehouse() {
+        return warehouseMapper.selectAllWarehouse().stream()
+                .map(warehouseVO -> modelMapper.map(warehouseVO, WarehouseDTO.class))
+                .collect(Collectors.toList());
+    }
 }

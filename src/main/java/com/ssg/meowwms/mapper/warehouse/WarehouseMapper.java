@@ -69,4 +69,6 @@ public interface WarehouseMapper {
      * @return 창고 아이디
      */
     List<Integer> selectAllWarehouseId();
+
+    List<WarehouseVO> selectAllWarehouse();
 }

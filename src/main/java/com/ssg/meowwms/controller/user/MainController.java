@@ -1,6 +1,7 @@
 package com.ssg.meowwms.controller.user;
 
 import com.ssg.meowwms.dto.search.OptionDTO;
+import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.service.finance.ExpenseService;
 import com.ssg.meowwms.service.finance.SalesService;
 import com.ssg.meowwms.service.inquiry.InquiryService;
@@ -30,6 +31,7 @@ public class MainController {
     public String showDashboard(Model model){
         List<String> years = expenseService.getAllYears();
         List<Integer> warehouseNumbers = warehouseService.getAllWarehouseId();
+        List<WarehouseDTO> warehouseList = warehouseService.getAllWarehouse();
 
         // 년도가 null인 경우, 사용 가능한 가장 최근의 년도를 기본값으로 설정합니다.
         String year = years.stream()
@@ -46,6 +48,7 @@ public class MainController {
 
         model.addAttribute("years", years);
         model.addAttribute("warehouseNumbers", warehouseNumbers);
+        model.addAttribute("warehouseList", warehouseList);
 
         int sumSales = salesService.sumSales(currentOptionList);
         int sumExpense = expenseService.sumExpenses(currentOptionList);
