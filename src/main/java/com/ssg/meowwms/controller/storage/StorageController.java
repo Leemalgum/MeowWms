@@ -1,12 +1,12 @@
 package com.ssg.meowwms.controller.storage;
 
-import com.ssg.meowwms.dto.category.CategoryDTO;
 import com.ssg.meowwms.dto.category.MainCategoryDTO;
 import com.ssg.meowwms.dto.category.MiddleCategoryDTO;
 import com.ssg.meowwms.dto.category.SubCategoryDTO;
 import com.ssg.meowwms.dto.storage.ProductDTO;
 import com.ssg.meowwms.dto.storage.StockMovementDTO;
 import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
+import com.ssg.meowwms.security.SecurityUtils;
 import com.ssg.meowwms.service.category.CategoryService;
 import com.ssg.meowwms.service.storage.StorageService;
 import com.ssg.meowwms.service.warehouse.WarehouseService;
@@ -144,14 +144,14 @@ public class StorageController {
                     .salePrice(productSalePrice)
                     .quantity(productQuantity)
                     .volume(productVolume)
-                    .userId("jongwoobaek")
+                    .userId(SecurityUtils.getCurrentUserDetails().getUsername())
                     .build();
 
             int productId = storageService.registerProduct(productDTO);
 
             StockMovementDTO stockMovementDTO = StockMovementDTO.builder()
                     .productId(productId)
-                    .userId("jongwoobaek")
+                    .userId(SecurityUtils.getCurrentUserDetails().getUsername())
                     .statusCode(StockMovementStatus.REQUESTED.getCode())
                     .requestDatetime(LocalDate.now())
                     .warehouseId(warehouseId)
@@ -162,6 +162,6 @@ public class StorageController {
             e.printStackTrace();
         }
 
-        return "redirect:/";
+        return "redirect:/storage/incoming";
     }
 }
