@@ -50,6 +50,8 @@
         order by id desc
     </select>
 
+
+
     <select id="selectWarehouseDetail" resultType="com.ssg.meowwms.dto.warehouse.WarehouseDetailDTO">
         select w.name,
                w.category,
@@ -82,5 +84,10 @@
         select id
         from Warehouse
         group by id
+    </select>
+
+    <select id="selectAllWarehouse" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
+        select *
+        from Warehouse
     </select>
 </mapper>
