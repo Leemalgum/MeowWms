@@ -16,4 +16,5 @@ public interface WarehouseService {
     Optional<Integer> getWarehouseIdByName(String warehouseName);
     List<Integer> getAllWarehouseId();
     List<WarehouseDTO> getAllWarehouse();
+    int getSumOfVolume();
 }
