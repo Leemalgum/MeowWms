@@ -5,6 +5,7 @@ import com.ssg.meowwms.dto.warehouse.WarehouseDTO;
 import com.ssg.meowwms.service.finance.ExpenseService;
 import com.ssg.meowwms.service.finance.SalesService;
 import com.ssg.meowwms.service.inquiry.InquiryService;
+import com.ssg.meowwms.service.storage.StorageService;
 import com.ssg.meowwms.service.user.UserService;
 import com.ssg.meowwms.service.warehouse.WarehouseService;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +28,18 @@ public class MainController {
     private final SalesService salesService;
     private final InquiryService inquiryService;
     private final UserService userService;
+    private final StorageService storageService;
+
     @GetMapping("/dashboard")
     public String showDashboard(Model model){
         List<String> years = expenseService.getAllYears();
         List<Integer> warehouseNumbers = warehouseService.getAllWarehouseId();
         List<WarehouseDTO> warehouseList = warehouseService.getAllWarehouse();
+        int warehouseVolume = warehouseService.getSumOfVolume();
+        int storageVolume = storageService.getSumOfVolume();
+
+        System.out.println(warehouseVolume);
+        System.out.println(storageVolume);
 
         // 년도가 null인 경우, 사용 가능한 가장 최근의 년도를 기본값으로 설정합니다.
         String year = years.stream()
@@ -63,6 +71,9 @@ public class MainController {
         }
         int noResponseInquiry = inquiryService.selectDoNotResponseInquiry();
 
+//        double warehouseUseRate = (double) (storageVolume * 100) / warehouseVolume;
+        double warehouseUseRate = ((double) Math.round(((double) storageVolume / warehouseVolume) * 1000) / 10);
+        System.out.println(warehouseUseRate);
 
         model.addAttribute("sumSales", sumSales); // 당해년도 매출
         model.addAttribute("sumExpense", sumExpense); // 당해년도 지출
@@ -71,6 +82,7 @@ public class MainController {
         model.addAttribute("noResponseInquiry", inquiryService.selectDoNotResponseInquiry());
         model.addAttribute("sumUser", userService.totalUserCount());
         model.addAttribute("sumInActiveUser", userService.nonUserRequest());
+        model.addAttribute("warehouseUseRate", warehouseUseRate);
 
         return "views/user/dashboard";
     }
