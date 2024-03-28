@@ -164,7 +164,7 @@
                                 <tr th:each="detail : ${stDetailList}">
                                     <td th:text="${detail.productId}"></td>
                                     <td th:text="${detail.productName}"></td>
-                                    <td th:text="${detail.productSubCategory}"></td>
+                                    <td th:text="${detail.category}"></td>
                                     <td th:text="${detail.computerizedStock}"></td>
                                     <td th:text="${detail.actualStock}"></td>
                                     <td th:text="${detail.adjustmentQuantity}"></td>
@@ -230,7 +230,7 @@
                         const newRow = `<tr>
                     <td>${detail.productId}</td>
                     <td>${detail.productName}</td>
-                    <td>${detail.productSubCategory}</td>
+                    <td>${detail.category}</td>
                     <td>${detail.computerizedStock}</td>
                     <td>${detail.actualStock}</td>
                     <td>${detail.adjustmentQuantity}</td>
