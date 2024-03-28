@@ -2,6 +2,7 @@ package com.ssg.meowwms.mapper.retrieval;
 
 import com.ssg.meowwms.domain.user.MemberVO;
 import com.ssg.meowwms.domain.retrieval.ShippingOrdersVO;
+import com.ssg.meowwms.dto.retrieval.ShippingOrderDetailsDTO;
 import com.ssg.meowwms.dto.retrieval.ShippingOrdersListDTO;
 import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.search.OptionList;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,8 +45,8 @@ public class ShippingOrdersMapperTests {
 
     @Test
     void selectOneByIdTest() {
-        ShippingOrdersVO shippingOrdersVO = shippingOrdersMapper.selectOneById(5);
-        assertThat(shippingOrdersVO.getUid()).isEqualTo("user3");
+        ShippingOrderDetailsDTO dto = shippingOrdersMapper.selectOneById(5);
+        assertThat(dto.getUid()).isEqualTo("user3");
     }
 
     @Test

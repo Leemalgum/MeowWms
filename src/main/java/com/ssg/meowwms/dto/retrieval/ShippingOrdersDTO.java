@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShippingOrdersDTO {
-    private int id;
+    //private int id;
     private String uid;
     private String postcode;
     private String streetNameAddress;
