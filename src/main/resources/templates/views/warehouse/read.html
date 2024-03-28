@@ -180,8 +180,7 @@
                                                 <th>상품 ID</th>
                                                 <th>상품 이름</th>
                                                 <th>상품 수량</th>
-                                                <th>상품 용량(m<sup>3</sup>)</th>
-                                                <th>상세 보기</th>
+                                                <th>상품 용량(cell)</th>
                                             </tr>
                                             </thead>
                                             <tbody id="warehouseTableBody">
@@ -228,66 +227,11 @@
 <!-- 재고 목록 관련 js -->
 <script>
     var products = [
-        {
-            id: 1,
-            name: "갤럭시 24",
-            quantity: 25,
-            volume: 1,
-        },
-        {
-            id: 2,
-            name: "다이슨 진공 청소기",
-            quantity: 150,
-            volume: 100,
-        },
-        {
-            id: 3,
-            name: "아이폰 13",
-            quantity: 50,
-            volume: 2,
-        },
-        {
-            id: 4,
-            name: "맥북 프로 2022",
-            quantity: 30,
-            volume: 5,
-        },
-        {
-            id: 5,
-            name: "LG OLED TV",
-            quantity: 80,
-            volume: 30,
-        },
-        {
-            id: 6,
-            name: "삼성 드럼세탁기",
-            quantity: 120,
-            volume: 150,
-        },
-        {
-            id: 7,
-            name: "LG 냉장고",
-            quantity: 90,
-            volume: 200,
-        },
-        {
-            id: 8,
-            name: "아이패드 에어 4세대",
-            quantity: 40,
-            volume: 3,
-        },
-        {
-            id: 9,
-            name: "Bose 블루투스 스피커",
-            quantity: 60,
-            volume: 2,
-        },
-        {
-            id: 10,
-            name: "삼성 갤럭시 버즈 프로",
-            quantity: 100,
-            volume: 1,
-        },
+        { id: 1, name: "갤럭시 24", quantity: 1000, volume: 5 },
+        { id: 5, name: "아이폰 13", quantity: 500, volume: 2 },
+        { id: 8, name: "아이패드 에어 4세대", quantity: 700, volume: 3 },
+        { id: 9, name: "Bose 블루투스 스피커", quantity: 600, volume: 4 },
+        { id: 115, name: "삼성 갤럭시 버즈 프로", quantity: 850, volume: 4 },
     ];
 
     // 재고 목록 테이블의 tbody 요소를 가져옵니다
@@ -304,7 +248,6 @@
         <td>${product.name}</td>
         <td>${product.quantity}</td>
         <td>${product.volume}</td>
-        <td><a href="#" class="detail-link" data-toggle="modal" data-target="#warehouseDetailModal">상세 보기</a></td>
     `;
 
         // 새로운 행을 tbody에 추가합니다
@@ -323,11 +266,11 @@
         title: "강남 창고",
         latitude: 37.517331925853, // 위도
         longitude: 127.047377408384, // 경도
-        manager: "홍길동",
+        manager: "WarehouseManager",
         category: {
-            main: "전자제품",
-            middle: "휴대폰",
-            sub: "스마트폰",
+            main: "상온",
+            middle: "전자제품",
+            sub: "모바일 기기",
         },
     };
 
@@ -397,27 +340,22 @@
             middle: "휴대폰",
             sub: "스마트폰",
         },
-        volume: 70, // 창고의 용량
+        volume: 40, // 창고의 용량
     };
 
-    var products = [
-        { id: 1, name: "갤럭시 24", quantity: 25, volume: 1 },
-        { id: 2, name: "다이슨 진공 청소기", quantity: 150, volume: 10 },
-        { id: 3, name: "아이폰 13", quantity: 50, volume: 1 },
-        { id: 4, name: "맥북 프로 2022", quantity: 30, volume: 3 },
-        { id: 5, name: "LG OLED TV", quantity: 80, volume: 20 },
-        { id: 6, name: "삼성 드럼세탁기", quantity: 120, volume: 10 },
-        { id: 7, name: "LG 냉장고", quantity: 90, volume: 10 },
-        { id: 8, name: "아이패드 에어 4세대", quantity: 40, volume: 2 },
-        { id: 9, name: "Bose 블루투스 스피커", quantity: 60, volume: 2 },
-        { id: 115, name: "삼성 갤럭시 버즈 프로", quantity: 100, volume: 1 },
-    ];
+    // var products = [
+    //     { id: 1, name: "갤럭시 24", quantity: 1000, volume: 5 },
+    //     { id: 5, name: "아이폰 13", quantity: 500, volume: 2 },
+    //     { id: 8, name: "아이패드 에어 4세대", quantity: 700, volume: 3 },
+    //     { id: 9, name: "Bose 블루투스 스피커", quantity: 600, volume: 4 },
+    //     { id: 115, name: "삼성 갤럭시 버즈 프로", quantity: 850, volume: 4 },
+    // ];
 
     var ctx = document.getElementById("myBarChart");
     var myBarChart = new Chart(ctx, {
         type: "bar",
         data: {
-            labels: products.map((product) => product.id),
+            labels: products.map((product) => product.name),
             datasets: [
                 {
                     label: "상품 용량(cell)",
@@ -450,7 +388,7 @@
                             stepSize: warehouse.volume / 4,
                             max: warehouse.volume, // 최대 volume 값으로 설정
                             callback: function (value, index, values) {
-                                return value + "m³"; // 세로 축 눈금에 세제곱 미터 추가
+                                return value + "cell"; // 세로 축 눈금에 세제곱 미터 추가
                             },
                         },
                         gridLines: {
@@ -481,7 +419,7 @@
                         var datasetLabel =
                             chart.datasets[tooltipItem.datasetIndex].label || "";
                         return (
-                            datasetLabel + ": " + tooltipItem.yLabel.toFixed(1) + "m³"
+                            datasetLabel + ": " + tooltipItem.yLabel.toFixed(1) + "cell"
                         ); // 소숫점 이하 자리수 조정
                     },
                 },
