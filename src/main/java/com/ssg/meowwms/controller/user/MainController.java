@@ -71,4 +71,9 @@ public class MainController {
 
         return "views/user/dashboard";
     }
+
+    @GetMapping("/dash-user")
+    public String showUserDash(Model model){
+        return "views/user/dash-user";
+    }
 }
