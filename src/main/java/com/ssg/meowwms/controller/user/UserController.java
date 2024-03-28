@@ -46,11 +46,6 @@ public class UserController {
         return "redirect:/views/user/login";
     }
 
-    @GetMapping("/index")
-    public void index() {
-
-    }
-
     /**
      * 회원가입 페이지
      */
