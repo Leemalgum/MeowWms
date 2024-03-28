@@ -187,4 +187,13 @@ public class WarehouseController {
 
         return "views/warehouse/read";
     }
+
+    @GetMapping("/all")
+    public String getAllWarehouse(Model model) {
+        List<WarehouseDTO> warehouseList = warehouseService.getAllWarehouse();
+
+        model.addAttribute("warehouseList", warehouseList);
+
+        return "views/warehouse/warehouse-main";
+    }
 }
