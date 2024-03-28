@@ -32,12 +32,12 @@ public class WaybillVO {
      */
     @NotNull
     @Min(value = 1, message = "출고 지시서 ID 는 1이상 이여야 합니다")
-    private int ShippingOrdersId;
+    private int shippingOrdersId;
 
     /**
      * 차량 번호 : 1 이상, Auto Increment
      */
-    @NotNull
+    @Nullable
     @Max(value = 45, message = "차량 번호는 45자 이하여야 합니다")
     private String vehicleNum;
 
@@ -45,20 +45,45 @@ public class WaybillVO {
      * 출발일 : yyyy-MM-dd 형식, 한국(서울) 시간
      */
     @Nullable
-    @JsonFormat(pattern ="yyyy-MM-dd", timezone = "Asia/Seoul")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate departureDate;
 
     /**
      * 도착일 : yyyy-MM-dd 형식, 한국(서울) 시간
      */
     @Nullable
-    @JsonFormat(pattern ="yyyy-MM-dd", timezone = "Asia/Seoul")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate arrivalDate;
 
     /**
      * 운송장 상태 : 0 이상의 수로 표기
      */
-    @NotNull
+    @Nullable
     @Positive(message = "운송장 상태는 0 이상이여야 합니다.")
     private int status;
+
+    /**
+     * 회원 아이디 (출고 상품을 공급 받는 자)
+     */
+    @NotNull
+    private String uid;
+
+    /**
+     * 창고 아이디 : for 납품 장소
+     */
+    @Nullable
+    private int warehouseId;
+
+    /**
+     * 상품 아이디
+     */
+    @Nullable
+    private int productId;
+
+    /**
+     * 상세 출고 지시서 아이디
+     */
+    @Nullable
+    private int shippingOrdersDetailId;
 }
+
