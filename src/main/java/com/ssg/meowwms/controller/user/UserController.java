@@ -23,11 +23,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/dashboard")
-    public void main() {
-
-    }
-
     /**
      * 로그인 페이지를 보여주고, 사용자의 로그일을 처리
      */

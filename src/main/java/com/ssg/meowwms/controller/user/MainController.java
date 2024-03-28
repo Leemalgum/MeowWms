@@ -1,14 +1,16 @@
-package com.ssg.meowwms.controller;
+package com.ssg.meowwms.controller.user;
 
 import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.service.finance.ExpenseService;
 import com.ssg.meowwms.service.finance.SalesService;
 import com.ssg.meowwms.service.inquiry.InquiryService;
+import com.ssg.meowwms.service.user.UserService;
 import com.ssg.meowwms.service.warehouse.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,12 +18,14 @@ import java.util.Comparator;
 import java.util.List;
 
 @Controller
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class MainController {
     private final ExpenseService expenseService;
     private final WarehouseService warehouseService;
     private final SalesService salesService;
     private final InquiryService inquiryService;
+    private final UserService userService;
     @GetMapping("/dashboard")
     public String showDashboard(Model model){
         List<String> years = expenseService.getAllYears();
@@ -56,12 +60,15 @@ public class MainController {
         }
         int noResponseInquiry = inquiryService.selectDoNotResponseInquiry();
 
+
         model.addAttribute("sumSales", sumSales); // 당해년도 매출
         model.addAttribute("sumExpense", sumExpense); // 당해년도 지출
         model.addAttribute("sumSettlement", currentSettlement); // 당해년도 순이익
         model.addAttribute("profitChangeRate", Math.round(profitChangeRate)); // 당기순이익 변동률 (전년도와 비교)
         model.addAttribute("noResponseInquiry", inquiryService.selectDoNotResponseInquiry());
+        model.addAttribute("sumUser", userService.totalUserCount());
+        model.addAttribute("sumInActiveUser", userService.nonUserRequest());
 
-        return "views/dashboard";
+        return "views/user/dashboard";
     }
 }
