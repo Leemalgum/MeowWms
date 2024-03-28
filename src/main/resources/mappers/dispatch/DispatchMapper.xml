@@ -2,15 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssg.meowwms.mapper.dispatch.DispatchMapper">
 
-    <insert id="insertDispatch" parameterType="com.ssg.meowwms.domain.dispatch.DispatchVO">
+<!--    <insert id="insertDispatch" parameterType="com.ssg.meowwms.domain.dispatch.DispatchVO">
         INSERT INTO Dispatch (vehicle_num, warehouse_id, request_date, dispatch_date)
         VALUES (#{vehicleNum}, #{warehouseId}, #{requestDate}, #{dispatchDate})
+    </insert>-->
+
+    <insert id="insertDispatch" parameterType="com.ssg.meowwms.domain.dispatch.DispatchVO">
+        INSERT INTO Dispatch (vehicle_num, shipping_orders_id, request_date, dispatch_date)
+        VALUES (#{vehicleNum}, #{shippingOrdersId}, #{requestDate}, #{dispatchDate})
     </insert>
 
-    <select id="selectOneById" resultType="com.ssg.meowwms.domain.dispatch.DispatchVO">
+    <select id="selectOneByShippingOrdersId" resultType="com.ssg.meowwms.domain.dispatch.DispatchVO">
         SELECT *
         FROM Dispatch
-        WHERE id = #{id}
+        WHERE shipping_orders_id = #{shippingOrdersId}
     </select>
 
     <select id="selectAll" resultType="com.ssg.meowwms.domain.dispatch.DispatchVO">
@@ -18,7 +23,7 @@
         FROM Dispatch
     </select>
 
-    <update id="updateDispatch" parameterType="com.ssg.meowwms.domain.dispatch.DispatchVO">
+    <!--<update id="updateDispatch" parameterType="com.ssg.meowwms.domain.dispatch.DispatchVO">
         UPDATE Dispatch
         SET vehicle_num = #{vehicleNum},
             warehouse_id = #{warehouseId},
@@ -26,11 +31,20 @@
             warehouse_id = #{warehouseId},
             dispatch_date = #{dispatchDate}
         WHERE id = #{id}
+    </update>-->
+
+    <update id="updateByShippingOrdersId" parameterType="com.ssg.meowwms.domain.dispatch.DispatchVO">
+        UPDATE Dispatch
+        SET vehicle_num = #{vehicleNum},
+            shipping_orders_id = #{shippingOrdersId},
+            request_date = #{requestDate},
+            dispatch_date = #{dispatchDate}
+        WHERE shipping_orders_id = #{shippingOrdersId}
     </update>
 
-    <delete id="deleteDispatch">
+    <delete id="deleteByShippingOrderId">
         DELETE FROM Dispatch
-        WHERE id = #{id}
+        WHERE shipping_orders_id = #{shippingOrdersId}
     </delete>
 
     <select id="search" parameterType="java.util.List" resultType="com.ssg.meowwms.domain.dispatch.DispatchVO">
@@ -40,8 +54,8 @@
             <if test="options != null">
                 <foreach collection="options" item="option" separator=" ">
                     <choose>
-                        <when test="option.type == 'id'">
-                            id = #{option.value}
+                        <when test="option.type == 'shippingOrdersId'">
+                            shipping_orders_id = #{option.value}
                         </when>
                         <when test="option.type == 'vehicleNum'">
                             vehicle_num = #{option.value}

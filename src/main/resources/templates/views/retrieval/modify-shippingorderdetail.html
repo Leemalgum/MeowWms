@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>MeowWMS :: 출고 지시서 상세 수정</title>
+    <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
+</head>
+<body>
+
+<div id="wrapper">
+    <th:block th:replace="common/fragments/index :: sidebar-fragment"></th:block>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <th:block th:replace="common/fragments/index :: topbar-fragment"></th:block>
+
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">출고 상세 정보 수정</h1>
+                <p class="mb-4"></p>
+
+                <!-- Shipping Order Details -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">출고 상세 정보</h6>
+                    </div>
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-6"> <!-- 1열 시작 -->
+                                        <label for="shippingOrderId-input">출고 번호</label>
+                                        <input type="text" id="shippingOrderId-input" class="form-control"
+                                               th:value="${shippingOrderDetails.id}" readonly/><br>
+                                        <label for="uid-input">회원 아이디</label>
+                                        <input type="text" id="uid-input" class="form-control"
+                                               th:value="${shippingOrderDetails.uid}" readonly/><br>
+                                        <label for="postcode-input">우편번호</label>
+                                        <input type="text" id="postcode-input" class="form-control"
+                                               th:value="${shippingOrderDetails.postcode}"/><br>
+                                        <label for="streetNameAddress-input">도로명 주소</label>
+                                        <input type="text" id="streetNameAddress-input" class="form-control"
+                                               th:value="${shippingOrderDetails.streetNameAddress}"/><br>
+                                        <label for="streetNumberAddress-input">지번 주소</label>
+                                        <input type="text" id="streetNumberAddress-input" class="form-control"
+                                               th:value="${shippingOrderDetails.streetNumberAddress}"/><br>
+                                        <label for="detailAddress-input">상세 주소</label>
+                                        <input type="text" id="detailAddress-input" class="form-control"
+                                               th:value="${shippingOrderDetails.detailAddress}"/><br>
+                                    </div> <!-- 1열 끝 -->
+                                    <div class="col-md-6"> <!-- 2열 시작 -->
+                                        <label for="expectedDate-input">출고 희망일</label>
+                                        <input type="date" id="expectedDate-input" class="form-control"
+                                               th:value="${shippingOrderDetails.expectedDate}"/><br>
+                                        <label for="productId-input">제품 아이디</label>
+                                        <input type="text" id="productId-input" class="form-control"
+                                               th:value="${shippingOrderDetails.productId}"/><br>
+                                        <label for="name-input">제품명</label>
+                                        <input type="text" id="name-input" class="form-control"
+                                               th:value="${shippingOrderDetails.name}" readonly/><br>
+                                        <label for="quantity-input">상품 수량</label>
+                                        <input type="number" id="quantity-input" class="form-control"
+                                               th:value="${shippingOrderDetails.quantity}"/><br>
+                                        <label for="brand-input">브랜드</label>
+                                        <input type="text" id="brand-input" class="form-control"
+                                               th:value="${shippingOrderDetails.brand}" readonly/><br>
+                                        <label for="price-input">가격</label>
+                                        <input type="number" id="price-input" class="form-control"
+                                               th:value="${shippingOrderDetails.price}" readonly/><br>
+                                        <label for="salePrice-input">할인 가격</label>
+                                        <input type="number" id="salePrice-input" class="form-control"
+                                               th:value="${shippingOrderDetails.salePrice}" readonly/><br>
+                                        <label for="volume-input">부피</label>
+                                        <input type="number" id="volume-input" class="form-control"
+                                               th:value="${shippingOrderDetails.volume}" readonly/><br>
+                                    </div> <!-- 2열 끝 -->
+                                </div>
+                                <div class="container-fluid d-flex justify-content-end">
+                                    <div class="container-fluid d-flex justify-content-end">
+                                        <a th:href="@{/retrieval/shippingorder/__${#strings.replace(shippingOrderDetails.id, ',', '')}__}"
+                                           class="btn btn-secondary mr-2">취소</a>
+                                        <button type="submit" class="btn btn-primary mr-2" id="modify-confirm-button">확인</button>
+                                        <a href="/retrieval/main" class="btn btn-dark">리스트</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
+    </div>
+</div>
+<th:block th:replace="common/fragments/index :: scroll-to-top-fragment"></th:block>
+<th:block th:replace="common/fragments/index :: logout-modal-fragment"></th:block>
+<th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
+
+<!-- 확인버튼 누르면 수정된 정보 전송 -->
+<script th:inline="javascript">
+    document.getElementById("modify-confirm-button").addEventListener("click", function() {
+
+        // 사용자가 입력한 값을 가져옴
+        var shippingOrderId = document.getElementById("shippingOrderId-input").value;
+        var postcode = document.getElementById("postcode-input").value;
+        var streetNameAddress = document.getElementById("streetNameAddress-input").value;
+        var streetNumberAddress = document.getElementById("streetNumberAddress-input").value;
+        var detailAddress = document.getElementById("detailAddress-input").value;
+        var expectedDate = document.getElementById("expectedDate-input").value;
+        var productId = document.getElementById("productId-input").value;
+        var quantity = document.getElementById("quantity-input").value;
+
+        // 데이터를 JSON 형식으로 변환
+        var shippingOrderDetailsData = {
+            id: shippingOrderId,
+            postcode: postcode,
+            streetNameAddress: streetNameAddress,
+            streetNumberAddress: streetNumberAddress,
+            detailAddress: detailAddress,
+            expectedDate: expectedDate,
+            productId: productId,
+            quantity: quantity
+        };
+
+        // 서버에 데이터를 전송
+        fetch('/retrieval/modifyshippingorder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                shippingOrderDetails: shippingOrderDetailsData
+            })
+        })
+            .then(response => {
+                // 서버 응답 처리
+                if (response.ok) {
+                    // 성공적으로 응답을 받았을 때 할 작업
+                    alert("출고지시서 상세정보가 수정되었습니다.");
+                    // 리다이렉트
+                    window.location.href = "/retrieval/main";
+
+                } else {
+                    // 오류가 발생했을 때 할 작업
+                    console.log('오류 발생');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+
+
+
+</body>
+</html>

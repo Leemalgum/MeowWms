@@ -1,10 +1,8 @@
 package com.ssg.meowwms.mapper.retrieval;
 
 import com.ssg.meowwms.domain.user.MemberVO;
-import com.ssg.meowwms.domain.dispatch.DispatchVO;
-import com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO;
-import com.ssg.meowwms.domain.retrieval.ShippingOrdersStatusVO;
 import com.ssg.meowwms.domain.retrieval.ShippingOrdersVO;
+import com.ssg.meowwms.dto.retrieval.ShippingOrderDetailsDTO;
 import com.ssg.meowwms.dto.retrieval.ShippingOrdersListDTO;
 import com.ssg.meowwms.dto.search.OptionDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,12 +15,17 @@ public interface ShippingOrdersMapper {
     /**
      * 출고 지시서 등록 : 새로운 출고 지시서를 요청하며 등록합니다.
      * */
-    void insertShippingOrder(ShippingOrdersVO shippingOrdersVO);
+    int insertShippingOrder(ShippingOrdersVO shippingOrdersVO);
+
+    /**
+     * 마지막으로 등록된 레코드의 id 가져오기 : 출고 지시서와 출고 상세 지시서, 출고 상태의 필요한 값들을 연결해줍니다.
+     * */
+    int selectLastShippingOrderId();
 
     /**
      * 출고 지시서 조회 : 출고지시서 아이디로 단건을 조회합니다.
      * */
-    ShippingOrdersVO selectOneById(int id);
+    ShippingOrderDetailsDTO selectOneById(int id);
 
     /**
      * 출고 지시서 업데이트 : 운송장을 수정해줍니다.

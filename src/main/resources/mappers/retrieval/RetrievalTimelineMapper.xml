@@ -3,26 +3,30 @@
 <mapper namespace="com.ssg.meowwms.mapper.retrieval.RetrievalTimelineMapper">
 
     <insert id="insertRequestTime" parameterType="com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO">
-        INSERT INTO Retrieval_Timeline (id, request_time)
-        VALUES (#{id}, #{requestTime, jdbcType=TIMESTAMP})
+        INSERT INTO Retrieval_Timeline (shipping_orders_id, request_time)
+        VALUES (#{shippingOrdersId}, #{requestTime, jdbcType=TIMESTAMP})
     </insert>
 
     <update id="updateOrderTime" parameterType="com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO">
         UPDATE Retrieval_Timeline
         SET order_time = #{orderTime, jdbcType=TIMESTAMP}
-        WHERE id = #{id}
+        WHERE shipping_orders_id = #{shippingOrdersId}
     </update>
 
     <update id="updateWorkingTime" parameterType="com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO">
         UPDATE Retrieval_Timeline
         SET working_time = #{workingTime, jdbcType=TIMESTAMP}
-        WHERE id = #{id}
+        WHERE shipping_orders_id = #{shippingOrdersId}
     </update>
 
     <update id="updateFinishedTime" parameterType="com.ssg.meowwms.domain.retrieval.RetrievalTimelineVO">
         UPDATE Retrieval_Timeline
         SET finished_time = #{finishedTime, jdbcType=TIMESTAMP}
-        WHERE id = #{id}
+        WHERE shipping_orders_id = #{shippingOrdersId}
     </update>
+
+    <delete id="deleteByShippingOrdersId" parameterType="int">
+        DELETE FROM Retrieval_Timeline WHERE shipping_orders_id = #{shippingOrdersId}
+    </delete>
 
 </mapper>

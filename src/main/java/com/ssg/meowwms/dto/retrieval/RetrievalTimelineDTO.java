@@ -14,6 +14,7 @@ public class RetrievalTimelineDTO {
      * 출고지시서 아이디 
      */
     private int id;
+    private int shippingOrdersId;
     private LocalDateTime requestTime;
     private LocalDateTime orderTime;
     private LocalDateTime workingTime;

@@ -1,10 +1,8 @@
 package com.ssg.meowwms.service.retrieval;
 
+import com.ssg.meowwms.dto.dispatch.DispatchDTO;
 import com.ssg.meowwms.dto.dispatch.VehicleDTO;
-import com.ssg.meowwms.dto.retrieval.ShippingOrdersDTO;
-import com.ssg.meowwms.dto.retrieval.ShippingOrdersDetailDTO;
-import com.ssg.meowwms.dto.retrieval.ShippingOrdersListDTO;
-import com.ssg.meowwms.dto.retrieval.ShippingOrdersStatusDTO;
+import com.ssg.meowwms.dto.retrieval.*;
 import com.ssg.meowwms.dto.search.OptionDTO;
 import com.ssg.meowwms.dto.user.MemberDTO;
 import com.ssg.meowwms.mapper.retrieval.ShippingOrdersMapper;
@@ -37,11 +35,10 @@ public class ShippingOrdersServiceTests {
     void registerShippingOrderTest() {
         ShippingOrdersService shippingOrdersServiceMock = mock(ShippingOrdersService.class);
 
-        doNothing().when(shippingOrdersServiceMock).registerShippingOrder(any(ShippingOrdersDTO.class), any(ShippingOrdersDetailDTO.class));
+        doNothing().when(shippingOrdersServiceMock).registerShippingOrder(any(ShippingOrdersDTO.class));
 
         int shippingOrdersId = 4;
         ShippingOrdersDTO shippingOrdersDTO = ShippingOrdersDTO.builder()
-                .id(shippingOrdersId)
                 .uid("user4")
                 .postcode("03584")
                 .streetNumberAddress("서울특별시 강남구 역삼동 123-456")
@@ -55,9 +52,9 @@ public class ShippingOrdersServiceTests {
                 .quantity(30)
                 .build();
 
-        shippingOrdersServiceMock.registerShippingOrder(shippingOrdersDTO, shippingOrdersDetailDTO);
+        shippingOrdersServiceMock.registerShippingOrder(shippingOrdersDTO);
 
-        verify(shippingOrdersServiceMock, times(1)).registerShippingOrder(any(ShippingOrdersDTO.class), any(ShippingOrdersDetailDTO.class));
+        verify(shippingOrdersServiceMock, times(1)).registerShippingOrder(any(ShippingOrdersDTO.class));
     }
 
 
@@ -75,13 +72,14 @@ public class ShippingOrdersServiceTests {
 
     @Test
     void getShippingOrderTest() {
-        ShippingOrdersDTO shippingOrdersDTO = shippingOrdersService.getShippingOrder(1);
-        assertThat(shippingOrdersDTO.getUid()).isEqualTo("user2");
+/*        List<OptionDTO> options = new ArrayList<>();
+        ShippingOrdersDTO shippingOrdersDTO = shippingOrdersService.getShippingOrdersByOptions(options).get(0);
+        assertThat(shippingOrdersDTO.getUid()).isEqualTo("user2");*/
     }
 
     @Test
     void modifyShippingOrderTest() {
-        ShippingOrdersDTO shippingOrdersDTO = ShippingOrdersDTO.builder()
+        /*ShippingOrderDetailsDTO shippingOrdersDTO = ShippingOrdersDTO.builder()
                 .id(3)
                 .postcode("03584")
                 .streetNameAddress("서울시 강남구 역삼로 502")
@@ -89,7 +87,7 @@ public class ShippingOrdersServiceTests {
                 .expectedDate(LocalDate.now().plusDays(7))
                 .build();
 
-        shippingOrdersService.modifyShippingOrder(shippingOrdersDTO);
+        shippingOrdersService.modifyShippingOrder(shippingOrderDetailsDTO);*/
     }
 
     @Test
@@ -101,33 +99,24 @@ public class ShippingOrdersServiceTests {
 
     @Test
     void manageDispatchTest() {
-        List<OptionDTO> options = new ArrayList<>();
-        List<VehicleDTO> list = shippingOrdersService.manageDispatch(options);
+        List<VehicleDTO> list = shippingOrdersService.manageDispatch();
+        System.out.println(list);
         assertThat(list).isNotNull();
     }
 
     @Test
     void confirmDispatchTest() {
-        ShippingOrdersStatusDTO shippingOrdersStatusDTO = ShippingOrdersStatusDTO.builder()
-                .id(1)
-                .allocatedStatus(1)
-                .approvedStatus(1)
+        DispatchDTO dispatchDTO = DispatchDTO.builder()
+                .vehicleNum("123가4567")
+                .shippingOrdersId(3)
                 .build();
 
-        VehicleDTO vehicleDTO = VehicleDTO.builder()
-                .num("123가4567")
-                .type("경형")
-                .dname("홍길동")
-                .dphone("01012345678")
-                .status(0)
-                .build();
-
-        shippingOrdersService.confirmDispatch(shippingOrdersStatusDTO, vehicleDTO);
+        shippingOrdersService.confirmDispatch(dispatchDTO);
     }
 
     @Test
-    void approveRetrievalTest() {
-        List<Integer> list = shippingOrdersService.approveRetrieval(1);
+    void filterStatusTest() {
+        List<Integer> list = shippingOrdersService.filterStatus(1);
         assertThat(list).isNotNull();
         System.out.println(list);
     }

@@ -7,8 +7,41 @@
         VALUES (#{uid}, #{postcode}, #{streetNameAddress}, #{streetNumberAddress}, #{detailAddress}, #{expectedDate})
     </insert>
 
-    <select id="selectOneById" parameterType="int" resultType="com.ssg.meowwms.domain.retrieval.ShippingOrdersVO">
-        SELECT * FROM Shipping_Orders WHERE id = #{id}
+    <select id="selectOneById" parameterType="int" resultType="com.ssg.meowwms.dto.retrieval.ShippingOrderDetailsDTO">
+        SELECT DISTINCT
+            so.id AS id,
+            so.uid AS uid,
+            so.postcode AS postcode,
+            so.street_name_address AS streetNameAddress,
+            so.street_number_address AS streetNumberAddress,
+            so.detail_address AS detailAddress,
+            so.expected_date AS expectedDate,
+            sod.product_id AS productId,
+            sod.quantity AS quantity,
+            p.category_id AS categoryId,
+            p.name AS name,
+            p.brand AS brand,
+            p.price AS price,
+            p.sale_price AS salePrice,
+            p.volume AS volume,
+            sos.allocated_status AS allocatedStatus,
+            sos.approved_status AS approvedStatus,
+            rt.request_time AS requestTime,
+            rt.order_time AS orderTime,
+            rt.working_time AS workingTime,
+            rt.finished_time AS finishedTime
+        FROM
+            Shipping_Orders so
+                JOIN
+            Shipping_Orders_Status sos ON so.id = sos.shipping_orders_id
+                JOIN
+            Shipping_Orders_Detail sod ON so.id = sod.shipping_orders_id
+                JOIN
+            Product p ON sod.product_id = p.id
+                JOIN
+            Retrieval_Timeline rt ON so.id = rt.shipping_orders_id
+        WHERE
+            so.id = #{id}
     </select>
 
     <update id="updateShippingOrder" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersVO">
@@ -23,11 +56,12 @@
     </delete>
 
     <select id="selectByOptions" parameterType="java.util.List" resultType="com.ssg.meowwms.dto.retrieval.ShippingOrdersListDTO">
-        SELECT so.id, so.expected_date, so.uid, sod.product_id, p.name as product_name, sos.approved_status,
-        sos.allocated_status
+        SELECT DISTINCT
+        so.id, so.expected_date, so.uid, sod.product_id, sod.quantity, p.name as product_name, sos.approved_status,
+        sos.allocated_status, sos.waybill_status
         FROM Shipping_Orders so
         INNER JOIN Shipping_Orders_Detail sod ON so.id = sod.shipping_orders_id
-        LEFT JOIN Shipping_Orders_Status sos ON so.id = sos.id
+        LEFT JOIN Shipping_Orders_Status sos ON so.id = sos.shipping_orders_id
         INNER JOIN Product p ON sod.product_id = p.id
         <where>
             <if test="options != null">
@@ -55,6 +89,9 @@
                             <if test="option.type == 'allocatedStatus'">
                                 AND sos.allocated_status = #{option.value}
                             </if>
+                            <if test="option.type == 'waybillStatus'">
+                                AND sos.waybill_status = #{option.value}
+                            </if>
                         </otherwise>
                     </choose>
                 </foreach>
@@ -67,6 +104,10 @@
         SELECT *
         FROM Member
         WHERE uid = #{uid}
+    </select>
+
+    <select id="selectLastShippingOrderId" resultType="int">
+        SELECT MAX(id) FROM Shipping_Orders;
     </select>
 
 </mapper>

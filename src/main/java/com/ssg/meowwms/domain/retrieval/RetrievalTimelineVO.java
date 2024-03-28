@@ -26,6 +26,13 @@ public class RetrievalTimelineVO {
     private int id;
 
     /**
+     * 출고 지시서 아이디 : 1 이상, Auto Increment
+     */
+    @NotNull
+    @Min(value = 1, message = "출고 지시서 ID 는 1이상 이여야 합니다")
+    private int shippingOrdersId;
+
+    /**
      * 출고 요청 시간 : yyyy-MM-dd HH:mm:ss 형식, 한국(서울) 시간
      */
     @Nullable

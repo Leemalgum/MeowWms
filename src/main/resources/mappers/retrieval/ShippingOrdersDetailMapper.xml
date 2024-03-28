@@ -10,13 +10,13 @@
         SELECT * FROM Shipping_Orders_Detail WHERE shipping_orders_id = #{shippingOrdersId}
     </select>
 
-    <update id="updateShippingOrderDetailById" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersDetailVO">
+    <update id="updateByShippingOrderId" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersDetailVO">
         UPDATE Shipping_Orders_Detail
-        SET shipping_orders_id = #{shippingOrdersId}, product_id = #{productId}, quantity = #{quantity}
-        WHERE id = #{id}
+        SET  product_id = #{productId}, quantity = #{quantity}
+        WHERE shipping_orders_id = #{shippingOrdersId}
     </update>
 
     <delete id="deleteShippingOrderDetailById" parameterType="int">
-        DELETE FROM Shipping_Orders_Detail WHERE id = #{id}
+        DELETE FROM Shipping_Orders_Detail WHERE shipping_orders_id = #{shippingOrdersId}
     </delete>
 </mapper>

@@ -2,6 +2,7 @@ package com.ssg.meowwms.domain.retrieval;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -63,6 +64,7 @@ public class ShippingOrdersVO {
      * 출고 희망일 : yyyy-MM-dd 형식, 한국(서울) 시간
      */
     @NotNull
+    @Future(message = "출고 희망일은 오늘 이후부터 선택 가능합니다.")
     @JsonFormat(pattern ="yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate expectedDate;
 }

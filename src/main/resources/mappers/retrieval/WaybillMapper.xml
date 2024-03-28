@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.meowwms.mapper.retrieval.WaybillMapper">
+<!--    <insert id="insertWaybill" parameterType="com.ssg.meowwms.domain.retrieval.WaybillVO">
+        INSERT INTO Waybill (shipping_orders_id, vehicle_num, product_id, uid, warehouse_id, shipping_orders_detail_id)
+        VALUES (#{shippingOrdersId}, #{vehicleNum}, #{productId}, #{quantity}, #{uid}, #{warehouseId}, #{shippingOrdersDetailId})
+    </insert>-->
+
+    <insert id="insertWaybill" parameterType="com.ssg.meowwms.domain.retrieval.WaybillVO">
+        INSERT INTO Waybill (shipping_orders_id, vehicle_num, product_id, uid, shipping_orders_detail_id)
+        VALUES (#{shippingOrdersId}, #{vehicleNum}, #{productId}, #{uid},  #{shippingOrdersDetailId})
+    </insert>
+
+    <select id="selectForFillUpWaybill" parameterType="int" resultType="com.ssg.meowwms.dto.retrieval.WaybillDTO">
+        SELECT DISTINCT
+            w.shipping_orders_id     AS shippingOrdersId,
+            so.uid                   AS uid,
+            so.postcode              AS postcode,
+            so.street_name_address   AS streetNameAddress,
+            so.street_number_address AS streetNumberAddress,
+            so.detail_address        AS detailAddress,
+            sod.product_id           AS productId,
+            sod.quantity             AS quantity,
+            p.category_id            AS categoryId,
+            p.name                   AS productName,
+            p.brand                  AS productBrand,
+            p.volume                 AS productVolume,
+            v.num                    AS vehicleNum,
+            v.dname                  AS driverName,
+            v.dphone                 AS driverPhone,
+            v.type                   AS vehicleType
+        FROM Waybill w
+                 JOIN
+             Shipping_Orders so ON w.shipping_orders_id = so.id
+                 JOIN
+             Dispatch d ON w.shipping_orders_id = d.shipping_orders_id
+                 JOIN
+             Shipping_Orders_Detail sod ON w.shipping_orders_id = sod.shipping_orders_id
+                 JOIN
+             Product p ON sod.product_id = p.id
+                 JOIN
+             Vehicle v ON d.vehicle_num = v.num
+        WHERE w.shipping_orders_id = #{shippingOrdersId}
+    </select>
+
+    <select id="selectOneByShippingOrderId" parameterType="int" resultType="com.ssg.meowwms.domain.retrieval.WaybillVO">
+        SELECT * FROM Waybill WHERE shipping_orders_id = #{shippingOrdersId}
+    </select>
+
+    <update id="updateByShippingOrderId" parameterType="com.ssg.meowwms.domain.retrieval.WaybillVO">
+        UPDATE Waybill
+        SET  vehicle_num = #{vehicle_num}, product_id = #{productId}, quantity = #{quantity}, warehouse_id = #{warehouseId}
+        WHERE shipping_orders_id = #{shippingOrdersId}
+    </update>
+
+    <delete id="deleteByShippingOrderId" parameterType="int">
+        DELETE FROM Shipping_Orders_Detail WHERE shipping_orders_id = #{shippingOrdersId}
+    </delete>
+</mapper>

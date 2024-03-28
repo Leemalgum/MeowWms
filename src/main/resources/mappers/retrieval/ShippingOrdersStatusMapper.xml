@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssg.meowwms.mapper.retrieval.ShippingOrdersStatusMapper">
+
+    <insert id="insertShippingOrderStatus" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersStatusVO">
+        INSERT INTO Shipping_Orders_Status (shipping_orders_id)
+        VALUES (#{shippingOrdersId})
+    </insert>
+
     <update id="updateAllocatedStatus" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersStatusVO">
         UPDATE Shipping_Orders_Status
         SET allocated_status = #{allocatedStatus}
-        WHERE id = #{id}
+        WHERE shipping_orders_id = #{shippingOrdersId}
     </update>
 
     <select id="selectAllocatedStatusById" resultType="int">
         SELECT allocated_status
         FROM Shipping_Orders_Status
-        WHERE id = #{id}
+        WHERE shipping_orders_id = #{shippingOrdersId}
+    </select>
+
+    <select id="selectApprovedStatusById" resultType="int">
+        SELECT approved_status
+        FROM Shipping_Orders_Status
+        WHERE shipping_orders_id = #{shippingOrdersId}
     </select>
 
     <update id="updateApprovedStatus" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersStatusVO">
         UPDATE Shipping_Orders_Status
         SET approved_status = #{approvedStatus}
-        WHERE id = #{id}
+        WHERE shipping_orders_id = #{shippingOrdersId}
     </update>
+
+    <delete id="deleteByShippingOrdersId" parameterType="int">
+        DELETE FROM Shipping_Orders_Status WHERE shipping_orders_id = #{shippingOrdersId}
+    </delete>
 
 
 </mapper>

@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShippingOrdersListDTO {
+
+    private int index;
     /**
      * from ShippingOrdersVO
      */
@@ -31,8 +33,7 @@ public class ShippingOrdersListDTO {
     /**
      * from ShippingOrdersStatusVO
      */
-    private int approvedStatus;
     private int allocatedStatus;
-
-
+    private int approvedStatus;
+    private int waybillStatus;
 }
