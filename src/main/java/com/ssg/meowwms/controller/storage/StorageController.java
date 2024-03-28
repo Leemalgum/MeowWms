@@ -12,6 +12,9 @@ import com.ssg.meowwms.service.storage.StorageService;
 import com.ssg.meowwms.service.warehouse.WarehouseService;
 import com.ssg.meowwms.util.StockMovementStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -27,6 +30,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/storage")
 @RequiredArgsConstructor
+@Log4j2
 public class StorageController {
     private final CategoryService categoryService;
     private final WarehouseService warehouseService;
@@ -120,7 +124,7 @@ public class StorageController {
      */
     @PostMapping("request")
     @Transactional(rollbackFor = Exception.class)
-    public String requestStorage(
+    public ResponseEntity<String> requestStorage(
             @RequestParam("productName") String productName,
             @RequestParam("mainType") String mainCategory,
             @RequestParam("middleType") String middleCategory,
@@ -158,10 +162,11 @@ public class StorageController {
                     .build();
 
             storageService.registerStorage(stockMovementDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return "redirect:/storage/incoming";
+            return ResponseEntity.ok().body("{\"success\": true}");
+        } catch (Exception e) {
+            log.error("입고 요청 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"success\": false}");
+        }
     }
 }
