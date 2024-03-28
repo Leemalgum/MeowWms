@@ -61,4 +61,15 @@
         from User
         where rid = 2
     </select>
+
+    <select id="totalUserCount" resultType="int">
+        SELECT COUNT(*)
+        FROM User;
+    </select>
+
+    <select id="nonUserRequest" resultType="int">
+        select count(*)
+        from User
+        where sid = 4
+    </select>
 </mapper>

@@ -13,7 +13,7 @@
     <select id="selectOne" resultType="com.ssg.meowwms.domain.warehouse.WarehouseVO">
         select *
         from Warehouse
-        where id = #{warehouseId}
+        where name = #{name}
     </select>
 
     <resultMap id="warehouseResultMap" type="com.ssg.meowwms.domain.warehouse.WarehouseVO">

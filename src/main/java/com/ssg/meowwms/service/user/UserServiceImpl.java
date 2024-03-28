@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * UserService 를 구현한 클래스입니다
+ */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -19,6 +22,11 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+
+    /**
+     *
+     * @param userDTO
+     */
     @Override
     public void register(UserDTO userDTO) {
         String mpw = userDTO.getUpw();
@@ -70,5 +78,15 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectWarehouseManager().stream()
                 .map(userVO -> modelMapper.map(userVO, UserDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int totalUserCount() {
+        return userMapper.totalUserCount();
+    }
+
+    @Override
+    public int nonUserRequest() {
+        return userMapper.nonUserRequest();
     }
 }

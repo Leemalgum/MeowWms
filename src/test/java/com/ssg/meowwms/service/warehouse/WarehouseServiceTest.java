@@ -23,6 +23,14 @@ public class WarehouseServiceTest {
     private WarehouseService warehouseService;
 
     @Test
+    @DisplayName("창고 1개 조회")
+    void getWarehouse() {
+        String name = "운양동 우유 창고";
+
+        log.info(warehouseService.getWarehouse(name));
+    }
+
+    @Test
     @DisplayName("창고 등록 서비스 테스트")
     void register() {
         WarehouseDTO warehouseDTO = WarehouseDTO.builder()

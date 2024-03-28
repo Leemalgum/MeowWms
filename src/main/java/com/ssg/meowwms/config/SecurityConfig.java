@@ -34,7 +34,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/bootstrap/**").permitAll()
-                        .requestMatchers("/", "/views/user/login","views/user/register", "/item/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/views/user/login","views/user/register","/views/user/findId","/views/user/findPw", "/item/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

@@ -19,7 +19,7 @@
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
     <!-- Custom styles for this template-->
-    <link rel="stylesheet" th:href="@{/bootstrap/css/sb-admin-2.min.css}" />
+    <link rel="stylesheet" th:href="@{/bootstrap/css/sb-admin-2.min.css}"/>
 
 </head>
 
@@ -29,7 +29,8 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" th:fragment="sidebar-fragment">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"
+        th:fragment="sidebar-fragment">
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -69,10 +70,11 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">My page</h6>
                     <a class="collapse-item" href="/views/user/myInfo">내 정보 보기</a>
-                    <a class="collapse-item" href="/views/user/myBusinessInfo">쇼핑몰 정보 보기</a>
                     <div class="collapse-divider"></div>
-                    <h6 class="collapse-header">회원 관리</h6>
-                    <a class="collapse-item" href="/views/user/memberList">회원 조회</a>
+                    <div th:if="${#authorization.expr('hasRole(''ADMIN'')')}">
+                        <h6 class="collapse-header">회원 관리</h6>
+                        <a class="collapse-item" href="/views/user/memberList">회원 조회</a>
+                    </div>
                 </div>
             </div>
         </li>
@@ -219,7 +221,8 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" th:fragment="topbar-fragment">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+                 th:fragment="topbar-fragment">
 
                 <!-- Sidebar Toggle (Topbar) -->
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -439,13 +442,14 @@
 
 <!-- Scroll to Top Button-->
 <div th:fragment="scroll-to-top-fragment">
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 </div>
 
 <!-- Logout Modal-->
-<div th:fragment="logout-modal-fragment" class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div th:fragment="logout-modal-fragment" class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -464,25 +468,25 @@
 </div>
 <div th:fragment="scripts-fragment">
 
-<!-- Bootstrap core JavaScript-->
-<script th:src="@{/bootstrap/vendor/jquery/jquery.min.js}"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script th:src="@{/bootstrap/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/bootstrap/vendor/jquery-easing/jquery.easing.min.js}"></script>
+    <script th:src="@{/bootstrap/vendor/jquery-easing/jquery.easing.min.js}"></script>
     <script th:src="@{/bootstrap/js/sb-admin-2.min.js}"></script>
     <script th:src="@{/bootstrap/vendor/chart.js/Chart.min.js}"></script>
     <script th:src="@{/bootstrap/js/demo/chart-area-demo.js}"></script>
     <script th:src="@{/bootstrap/js/demo/chart-pie-demo.js}"></script>
     <script th:src="@{/bootstrap/vendor/datatables/jquery.dataTables.min.js}"></script>
-<script th:src="@{/bootstrap/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/bootstrap/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 
-<!-- Core plugin JavaScript-->
+    <!-- Core plugin JavaScript-->
 
 
-<!-- Custom scripts for all pages-->
+    <!-- Custom scripts for all pages-->
 
-<!-- Page level plugins -->
+    <!-- Page level plugins -->
 
-<!-- Page level custom scripts -->
+    <!-- Page level custom scripts -->
 </div>
 </body>
 

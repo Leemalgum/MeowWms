@@ -99,43 +99,41 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                <a class="btn btn-primary" href="login.html">아이디 찾기</a>
+                <a id="findIdBtn" class="btn btn-primary" href="/view/user/findId">아이디 찾기</a>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#findIdBtn").click(function (e) {
+            e.preventDefault();
+            // 입력된 이름과 이메일을 가져옵니다.
+            var name = $("#name").val();
+            var email = $("#email").val();
+            // AJAX를 통해 서버로 요청을 보냅니다.
+            $.ajax({
+                type: "POST",
+                url: "/views/user/findId",
+                data: {
+                    name: name,
+                    email: email
+                },
+                success: function (response) {
+                    // 서버로부터의 응답을 처리합니다.
+                    // 예를 들어, 아이디를 찾은 경우 해당 아이디를 화면에 보여줄 수 있습니다.
+                    alert("아이디를 찾았습니다: " + response);
+                },
+                error: function (xhr, status, error) {
+                    // 요청이 실패한 경우 에러를 처리합니다.
+                    alert("아이디를 찾는 도중 오류가 발생했습니다.");
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
 
-<!-- 비밀번호 찾기 Modal -->
-<div class="modal fade" id="searchPw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">비밀번호 찾기</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="user">
-                    <div class="form-group row">
-                        <div class="col">
-                            <input type="text" class="form-control form-control-user" id="uid" placeholder="아이디">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col">
-                            <input type="email" class="form-control form-control-user" id="uemail" placeholder="이메일">
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                <a class="btn btn-primary" href="login.html">비밀번호 찾기</a>
-            </div>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

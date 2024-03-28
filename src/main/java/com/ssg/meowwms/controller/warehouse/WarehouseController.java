@@ -181,8 +181,10 @@ public class WarehouseController {
      *
      * @return
      */
-    @GetMapping("/read")
-    public String getRead() {
+    @GetMapping("/read/{name}")
+    public String getRead(@PathVariable String name, Model model) {
+        model.addAttribute("warehouse", warehouseService.getWarehouse(name));
+
         return "views/warehouse/read";
     }
 }
