@@ -90,4 +90,9 @@
         select *
         from Warehouse
     </select>
+
+    <select id="selectSumOfVolume">
+        select sum(volume)
+        from Warehouse
+    </select>
 </mapper>
