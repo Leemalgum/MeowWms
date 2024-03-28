@@ -215,7 +215,9 @@ public class ShippingOrdersServiceImpl implements ShippingOrdersService {
 
     @Override
     public WaybillDTO fillUpWaybill(WaybillDTO waybillDTO) {
-        return waybillMapper.selectForFillUpWaybill(waybillDTO.getShippingOrdersId());
+        waybillDTO= waybillMapper.selectForFillUpWaybill(waybillDTO.getShippingOrdersId());
+        System.out.println("fillUpWaybill" +waybillDTO);
+        return waybillDTO;
     }
 
     @Override
