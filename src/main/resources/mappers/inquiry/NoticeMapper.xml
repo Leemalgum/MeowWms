@@ -43,6 +43,7 @@
                 </foreach>
             </if>
         </where>
+        order by no desc;
     </select>
 
     <select id="selectNotice" parameterType="int" resultType="com.ssg.meowwms.domain.inquiry.NoticeVO">

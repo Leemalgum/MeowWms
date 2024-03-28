@@ -95,4 +95,9 @@ class InquiryMapperTest {
         assertThat(updatedInquiry.getResponse()).isEqualTo("응???");
     }
 
+    @Test
+    public void selectDoNotResponseInquiry(){
+        System.out.println((inquiryMapper.selectDoNotResponseInquiry()));
+    }
+
 }
