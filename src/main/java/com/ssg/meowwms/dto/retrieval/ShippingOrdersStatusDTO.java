@@ -9,7 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class ShippingOrdersStatusDTO {
     private int id;
-    private int approvedStatus;
+    private int shippingOrdersId;
     private int allocatedStatus;
-
+    private int approvedStatus;
+    private int waybillStatus;
 }

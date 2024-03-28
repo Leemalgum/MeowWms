@@ -23,16 +23,30 @@ public class ShippingOrdersStatusVO {
     private int id;
 
     /**
-     * 승인 상태 : 0 이상
+     * 출고 지시서 아이디 : 1 이상, Auto Increment
+     */
+    @NotNull
+    @Min(value = 1, message = "출고 지시서 ID 는 1이상 이여야 합니다")
+    private int shippingOrdersId;
+
+    /**
+     * 배차 상태 : 0 배차되지 않음, 1 배차됨, 2 배차취소
+     */
+    @NotNull
+    @Positive(message = "배차 상태는 0 이상이여야 합니다.")
+    private int allocatedStatus;
+
+    /**
+     * 출고 승인 상태 : 0 미승인, 1 승인, 2 취소
      */
     @NotNull
     @Positive(message = "승인 상태는 0 이상이여야 합니다.")
     private int approvedStatus;
 
     /**
-     * 배차 상태 : 0 이상
+     * 운송장 등록 상태 : 0 미등록, 1 등록, 2 취소
      */
     @NotNull
-    @Positive(message = "배차 상태는 0 이상이여야 합니다.")
-    private int allocatedStatus;
+    @Positive(message = "운송장 상태는 0 이상이여야 합니다.")
+    private int waybillStatus;
 }
