@@ -138,7 +138,7 @@
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item" >
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStock"
                aria-expanded="true" aria-controls="collapseStock">
                 <i class="fas fa-fw fa-folder"></i>
@@ -147,9 +147,10 @@
             <div id="collapseStock" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">재고 조회</h6>
-                    <a class="collapse-item" href="">품목 현황</a>
-                    <a class="collapse-item" href="">창고 현황</a>
-                    <a class="collapse-item" href="">재고 실사</a>
+                    <a class="collapse-item" href="/stock/list">재고 실사</a>
+                    <a class="collapse-item" href="/stock/productStatus">품목 현황</a>
+                    <a class="collapse-item" th:if="${#authorization.expr('hasRole(''ADMIN'')')}" href="/stock/warehouseStatus">창고 현황</a>
+                    <a class="collapse-item" th:if="${#authorization.expr('hasRole(''ADMIN'')')}" href="/stockTaking/list">재고 실사</a>
                 </div>
             </div>
         </li>
