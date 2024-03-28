@@ -18,6 +18,7 @@ public interface StorageService {
     void modifyStorageRequest(int requestId);
 
     List<ProductDTO> getProductList();
+    int getSumOfVolume();
     List<StockMovementDTO> getStorageList();
     List<StockMovementDTO> selectMovementByStatus(String statusCode);
     List<StockMovementDTO> selectStockMovementsById(int productId);
