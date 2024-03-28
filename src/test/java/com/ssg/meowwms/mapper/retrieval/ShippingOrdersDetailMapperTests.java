@@ -35,7 +35,7 @@ public class ShippingOrdersDetailMapperTests {
     @Test
     void updateShippingOrderDetailTest() {
         ShippingOrdersDetailMapper shippingOrdersDetailMapperMock = mock(ShippingOrdersDetailMapper.class);
-        doNothing().when(shippingOrdersDetailMapperMock).updateShippingOrderDetailById(any(ShippingOrdersDetailVO.class));
+        doNothing().when(shippingOrdersDetailMapperMock).updateByShippingOrderId(any(ShippingOrdersDetailVO.class));
 
         ShippingOrdersDetailVO shippingOrdersDetailVO = ShippingOrdersDetailVO.builder()
                 .id(2)
@@ -43,9 +43,9 @@ public class ShippingOrdersDetailMapperTests {
                 .quantity(100)
                 .build();
 
-        shippingOrdersDetailMapperMock.updateShippingOrderDetailById(shippingOrdersDetailVO);
+        shippingOrdersDetailMapperMock.updateByShippingOrderId(shippingOrdersDetailVO);
 
-        verify(shippingOrdersDetailMapperMock, times(1)).updateShippingOrderDetailById(any(ShippingOrdersDetailVO.class));
+        verify(shippingOrdersDetailMapperMock, times(1)).updateByShippingOrderId(any(ShippingOrdersDetailVO.class));
     }
 
     @Test
