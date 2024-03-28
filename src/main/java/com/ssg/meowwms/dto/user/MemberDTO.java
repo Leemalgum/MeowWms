@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 사용자의 쇼핑몰 정보를 전달하기 위한 데이터 전송 객체 클래스 입니다.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

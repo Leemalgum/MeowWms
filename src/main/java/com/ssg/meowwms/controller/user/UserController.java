@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 사용자 관련 기능을 처리하는 컨트롤러 입니다
+ */
 @Controller
 @RequestMapping("/views/user")
 @RequiredArgsConstructor
@@ -21,7 +24,7 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * 로그인 화면
+     * 로그인 페이지를 보여주고, 사용자의 로그일을 처리
      */
     @GetMapping("/login")
     public void loginGet() {
@@ -29,8 +32,7 @@ public class UserController {
     }
 
     /**
-     * 로그인 요청
-     *
+     * 로그인 페이지를 보여주고, 사용자의 로그인을 처리
      * @return
      */
     @PostMapping("/login")
@@ -40,6 +42,10 @@ public class UserController {
         return "redirect:/views/user/index";
     }
 
+    /**
+     * 로그아웃 기능을 처리
+     * @return
+     */
     @GetMapping("/logout")
     public String logout() {
         return "redirect:/views/user/login";
@@ -51,7 +57,7 @@ public class UserController {
     }
 
     /**
-     * 회원가입 화면
+     * 회원가입 페이지
      */
     @GetMapping("/register")
     public void registerGet() {
@@ -59,8 +65,7 @@ public class UserController {
     }
 
     /**
-     * 회원가입 요청
-     *
+     * 회원가입을 처리
      * @param userDTO
      * @return
      */
@@ -72,7 +77,7 @@ public class UserController {
     }
 
     /**
-     * 로그인한 회원의 정보를 가져오는 JSON으로 제공하는 API
+     * 로그인한 사용자의 정보를 JSON 형식으로 반환
      */
     @GetMapping("/getUserData")
     @ResponseBody
@@ -89,33 +94,27 @@ public class UserController {
     }
 
     /**
-     * 쇼핑몰 정보 보기
-     */
-    @GetMapping("/myBusinessInfo")
-    public String getBusinessInfo() {
-        return "redirect:/views/user/myBusinessInfo";
-    }
-
-    /**
-     * 회원 조회
+     * 회원 목록 페이지
      */
     @GetMapping("/memberList")
     public void getList() {
 
     }
 
+    /**
+     * 전체 회원 데이터를 가져오는 API
+     * @return
+     */
     @GetMapping("/data")
     @ResponseBody
     public List<UserDTO> getUserDataList() {
         List<UserDTO> list = userService.getList();
-
 //        list.forEach(log::info);
         return list;
     }
 
     /**
-     * 이메일 변경하는 API
-     *
+     * 이메일 변경을 처리
      * @param newEmail
      */
     @PostMapping("/change-email")
@@ -127,8 +126,7 @@ public class UserController {
     }
 
     /**
-     * 전화번호 변경하는 API
-     *
+     * 전화번호 변경을 처리
      * @param newTel
      */
     @PostMapping("/change-tel")
@@ -139,6 +137,9 @@ public class UserController {
         userService.modify(userDTO);
     }
 
+    /**
+     * 강제 탈퇴를 처리
+     */
     @PostMapping("/withdraw")
     @ResponseBody
     public void withdrawUser() {
@@ -149,6 +150,11 @@ public class UserController {
         userService.modify(userDTO);
     }
 
+    /**
+     * 사용자 정보를 저장하고 수정을 처리
+     * @param userDTO
+     * @return
+     */
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody UserDTO userDTO) {
         log.info(userDTO);
@@ -161,15 +167,19 @@ public class UserController {
             userSave.setEmail(userDTO.getEmail());
             userService.modify(userSave);
             return ResponseEntity.ok("User saved successfully");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
 
+    /**
+     * 사용자 강제 탈퇴를 처리
+     * @param userId
+     * @return
+     */
     @PostMapping("/forcedWithdrawal")
     @ResponseBody
-    public String forcedWithdrawal(@RequestParam("userId") String userId){
+    public String forcedWithdrawal(@RequestParam("userId") String userId) {
         // 여기서 userId 값을 사용하여 해당 유저를 강제탈퇴 처리하거나 필요한 작업 수행
         UserDTO userDTO = userService.getOne(userId).orElse(null);
         userDTO.setSid(3);
@@ -178,5 +188,17 @@ public class UserController {
         return "User ID: " + userId + " forced withdrawal completed";
     }
 
+    /**
+     * 사용자 아이디 찾기를 처리
+     * @param name
+     * @param email
+     * @return
+     */
+    @PostMapping("/findId")
+    @ResponseBody //JSON 형식으로 응답
+    public String findUserId(@RequestParam("name") String name,
+                             @RequestParam("email") String email) {
+        return userService.searchId(name, email);
+    }
 
 }
