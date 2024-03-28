@@ -23,6 +23,11 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/dashboard")
+    public void main() {
+
+    }
+
     /**
      * 로그인 페이지를 보여주고, 사용자의 로그일을 처리
      */
@@ -33,6 +38,7 @@ public class UserController {
 
     /**
      * 로그인 페이지를 보여주고, 사용자의 로그인을 처리
+     *
      * @return
      */
     @PostMapping("/login")
@@ -44,6 +50,7 @@ public class UserController {
 
     /**
      * 로그아웃 기능을 처리
+     *
      * @return
      */
     @GetMapping("/logout")
@@ -66,6 +73,7 @@ public class UserController {
 
     /**
      * 회원가입을 처리
+     *
      * @param userDTO
      * @return
      */
@@ -103,6 +111,7 @@ public class UserController {
 
     /**
      * 전체 회원 데이터를 가져오는 API
+     *
      * @return
      */
     @GetMapping("/data")
@@ -115,6 +124,7 @@ public class UserController {
 
     /**
      * 이메일 변경을 처리
+     *
      * @param newEmail
      */
     @PostMapping("/change-email")
@@ -127,6 +137,7 @@ public class UserController {
 
     /**
      * 전화번호 변경을 처리
+     *
      * @param newTel
      */
     @PostMapping("/change-tel")
@@ -152,6 +163,7 @@ public class UserController {
 
     /**
      * 사용자 정보를 저장하고 수정을 처리
+     *
      * @param userDTO
      * @return
      */
@@ -174,6 +186,7 @@ public class UserController {
 
     /**
      * 사용자 강제 탈퇴를 처리
+     *
      * @param userId
      * @return
      */
@@ -190,6 +203,7 @@ public class UserController {
 
     /**
      * 사용자 아이디 찾기를 처리
+     *
      * @param name
      * @param email
      * @return
