@@ -5,7 +5,7 @@ import lombok.*;
 import java.sql.Blob;
 import java.util.Date;
 
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

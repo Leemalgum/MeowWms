@@ -7,6 +7,7 @@ import com.ssg.meowwms.dto.stock.StockDTO;
 
 import java.sql.Blob;
 import java.util.List;
+import java.util.Map;
 
 public interface StorageService {
      int registerProduct(ProductDTO productDTO);
@@ -21,6 +22,12 @@ public interface StorageService {
     List<StockMovementDTO> selectMovementByStatus(String statusCode);
     List<StockMovementDTO> selectStockMovementsById(int productId);
     List<MergeDTO> mergeLists();
+    List<ProductDTO> searchProducts(String searchKeyword);
+    List<StockMovementDTO> searchStockMovements(String searchKeyword);
+
+    List<MergeDTO> searchMergedLists(Map<String, Object> searchParams);
+
+
     String generateQrCodeContent(StockMovementDTO stockMovementDTO, ProductDTO productDTO);
     void generateAndSaveQRCode(int productId, String qrCodeContent);
     void getQrCode(byte[] imageData, String filePath);

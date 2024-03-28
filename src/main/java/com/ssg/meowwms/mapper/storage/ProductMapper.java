@@ -12,5 +12,7 @@ public interface ProductMapper {
     int productInsert(ProductVO product);
     void productUpdate(@Param("requestId") int requestId, @Param("product") ProductVO product);
     List<ProductVO> selectAllProducts();
+    List<ProductVO> searchProducts(@Param("searchKeyword") String searchKeyword);
+
 
 }

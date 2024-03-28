@@ -17,7 +17,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Log4j2
 @ExtendWith(SpringExtension.class)
@@ -57,12 +61,12 @@ public class StorageServiceTests {
     }
     @Test
     public void testApproveStorageRequest(){
-        storageService.approveStorageRequest(125);
+        storageService.approveStorageRequest(37);
 
     }
     @Test
     public void testCancelStorageRequest(){
-        storageService.cancelStorageRequest(125);
+        storageService.cancelStorageRequest(27);
     }
     @Test
     public void testModifyStorageRequest(){
@@ -141,5 +145,17 @@ public class StorageServiceTests {
         for (MergeDTO mergeDTO : mergedList){
             log.info(mergeDTO);
         }
+    }
+    @Test
+    public void testSearchMergedLists() {
+        // 검색 조건 설정
+        Map<String, Object> searchParams = new HashMap<>();
+        searchParams.put("productId", 31); // 예시 검색 조건
+
+        // 검색 실행
+        List<MergeDTO> results = storageService.searchMergedLists(searchParams);
+
+        // 결과 검증
+        assertFalse(results.isEmpty(), "검색 결과가 비어 있어서는 안 됩니다.");
     }
 }

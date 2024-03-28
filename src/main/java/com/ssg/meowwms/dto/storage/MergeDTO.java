@@ -13,26 +13,26 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class MergeDTO {
-    @JsonProperty("product_id")
+    //@JsonProperty("product_id")
     private int productId;
-    @JsonProperty("user_id")
+    //@JsonProperty("user_id")
     private String movementUserId;
-    @JsonProperty("name")
+    //@JsonProperty("name")
     private String productName;
-    @JsonProperty("category_id")
+    //@JsonProperty("category_id")
     private int productCategory;
-    @JsonProperty("price")
+    //@JsonProperty("price")
     private int productPrice;
-    @JsonProperty("sale_price")
+    //@JsonProperty("sale_price")
     private int productSalePrice;
-    @JsonProperty("quantity")
+    //@JsonProperty("quantity")
     private int productQuantity;
-    @JsonProperty("status_code")
+    //@JsonProperty("status_code")
     private String movementStatusCode;
-    @JsonProperty("request_datetime")
+    //@JsonProperty("request_datetime")
     private LocalDate movementRequestDate;
-    @JsonProperty("approved_datetime")
+    //@JsonProperty("approved_datetime")
     private Date movementApprovedDate;
-    @JsonProperty("warehouse_id")
+    //@JsonProperty("warehouse_id")
     private int movementWarehouseId;
 }

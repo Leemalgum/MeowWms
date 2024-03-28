@@ -5,6 +5,8 @@
     <title>Meow Warehouse Management System</title>
     <!-- Header 프래그먼트 포함 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
     <th:block th:replace="common/fragments/index :: header-fragment"></th:block>
 </head>
 <body>
@@ -29,122 +31,51 @@
                 <h1 class="h3 mb-2 text-gray-800">입고 현황</h1>
                 <p class="mb-4">입고관리 페이지 입니다.</p>
                 <!-- Row for date selection -->
-                <div class="row mb-4">
-                    <!-- Left column for date selection, search boxes, and dropdowns -->
-                    <div class="col-md-10">
-                        <!-- Row for date selection -->
-                        <div class="row align-items-center">
-                            <div class="col-md-auto mt-2">
-                                <label for="requestDateLabel"> 요청 날짜</label>
-                            </div>
-                            <div class="col-md-3">
-                                <input type="date" id="requestDateLabel" class="form-control">
-                            </div>
-                            <div class="col-md-auto mt-2">
-                                <label for="approvedDateLabel"> 승인 날짜</label>
-                            </div>
-                            <div class="col-md-3">
-                                <input type="date" id="approvedDateLabel" class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- Row for warehouse and product categories -->
-                        <div class="row align-items-center">
-                            <div class="col-md-auto mt-2">
-                                <label for="mainType"> 상품 분류</label>
-                            </div>
-                            <div class="col-md-2">
-                                <select id="mainType" class="form-control">
-                                    <option value="" selected disabled hidden>--- 대분류 ---</option>
-                                    <th:block th:each="category : ${mainCategories}">
-                                        <option th:text="${category}"></option>
-                                    </th:block>
-                                </select>
-                            </div>
-
-                            <!-- 중분류 -->
-                            <div class="col-md-2">
-                                <select id="middleType" class="form-control" disabled>
-                                    <option value="" selected disabled hidden>
-                                        --- 중분류 ---
-                                    </option>
-                                </select>
-                            </div>
-
-                            <!-- 소분류 -->
-                            <div class="col-md-2">
-                                <select id="subType" class="form-control" disabled required>
-                                    <option value="" selected disabled hidden>
-                                        --- 소분류 ---
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <select class="custom-select" id="searchType">
-                                            <option selected>검색 타입 선택</option>
-                                            <option value="productId">제품 아이디</option>
-                                            <option value="userId">회원 아이디</option>
-                                            <option value="productName">제품명</option>
-                                            <option value="warehouseId">창고 아이디</option>
-                                        </select>
-                                    </div>
-                                    <input type="text" class="form-control" id="searchKeyword" placeholder="검색어를 입력하세요...">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-primary" type="button" id="button-search">검색</button>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <!-- Button 1: 요청 승인 -->
+                        <div class="col-md-4 mb-3">
+                            <button type="button" class="btn btn-primary btn-block" id="requestBtn" onclick="approveStorageRequest()">요청 승인</button>
+                            <!-- Modal for 요청 승인 -->
+                            <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">요청 승인</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            승인 되었습니다.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-2">
-                        <!-- Button row 1 -->
-                        <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">요청 승인</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        승인 되었습니다.
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">닫기</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-2 justify-content-center">
-                            <button type="button" class="btn btn-primary btn-block" id="requestBtn">요청
-                                승인</button>
-                        </div>
-                        <!-- Button row 2 -->
-                        <div class="modal fade" id="printBillModal" tabindex="-1"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">입고 상세 내역 조회</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
+
+                        <!-- Button 2: 고지서 출력 -->
+                        <div class="col-md-4 mb-3">
+                            <button type="button" class="btn btn-primary btn-block" id="printBillBtn">고지서 출력</button>
+                            <!-- Modal for 고지서 출력 -->
+                            <div class="modal fade" id="printBillModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">입고 상세 내역 조회</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
                                         <div class="modal-body">
                                             <h5>요청 정보</h5>
                                             <hr>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <p><strong>주문 번호:</strong> <span id="orderId">(요청 아이디)</span>
-                                                    </p>
+                                                    <p><strong>주문 번호:</strong> <span id="orderId">(요청 아이디)</span></p>
                                                     <p><strong>요청 일자:</strong> 2024-03-20</p>
                                                     <p><strong>승인 일자:</strong> 2024-03-21</p>
                                                     <p><strong>주문자:</strong> <span id="userId-">(회원 아이디)</span></p>
@@ -160,85 +91,43 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" id="billDownload">고지서
-                                            다운로드</button>
-                                        <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">닫기</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-2 justify-content-center">
-                            <button type="button" class="btn btn-primary btn-block" id="printBillBtn">고지서
-                                출력</button>
-                        </div>
-                        <!-- Button row 3 -->
-                        <div class="modal fade" id="QRModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">QRcode 출력</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="modal-body">
-                                            <h5>요청 정보</h5>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <p><strong>사용자 아이디:</strong> <span id="userId">(아이디)</span></p>
-                                                    <p><strong>창고 아이디:</strong> <span id="warehouseId">(아이디)</span>
-                                                    </p>
-                                                    <p><strong>요청 날짜:</strong> <span
-                                                            id="requestDate">yyyy-MM-dd</span></p>
-                                                    <p><strong>승인 날짜:</strong> <span
-                                                            id="approvalDate">yyyy-MM-dd</span></p>
-                                                </div>
-                                            </div><br>
-                                            <h5>상품 정보</h5>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <p><strong>상품명:</strong> <span id="productName">(제품명)</span></p>
-                                                    <p><strong>수량:</strong> <span id="quantity">(수량)</span></p>
-                                                    <p><strong>종류:</strong> <span id="category">(식품의류뭐어쩌고)</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <img src="(QR 이미지 경로)" alt="QR 이미지">
-                                                </div>
-                                            </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" id="downloadBillBtn" onclick="downloadBill()">고지서 다운로드</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                                         </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" id="QRDownload">QR code
-                                            다운로드</button>
-                                        <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">닫기</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-2 justify-content-center">
-                            <button type="button" class="btn btn-primary btn-block" id="QRBtn">QR code
-                                생성</button>
+
+                        <!-- Button 3: QR code 생성 -->
+                        <div class="col-md-4 mb-3">
+                            <button type="button" class="btn btn-primary btn-block" id="qRBtn">QR code 생성</button>
+                            <!-- Modal for 요청 승인 -->
+                            <div class="modal fade" id="qRModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">요청 승인</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            승인 되었습니다.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" onclick="downloadQRCode()">QR 다운로드</button>
+
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
-
-            </div>
-
 
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
@@ -260,9 +149,12 @@
                                 <th class="approvedDate">승인 날짜</th>
                                 <th class="warehouseId">창고 아이디</th>
                             </tr>
+                            </thead>
+                            <tfoot>
+                            <tbody id="dataTable tbody">
                             <tr th:each="merge : ${mergeLists}">
-                                <td><input type="checkbox"></td>
-                                <td th:class="productId"th:text="${merge.productId}"> </td>
+                                <td><input type="checkbox" data-product-id="${merge.productId}"></td>
+                                <td th:class="productId" th:text="${merge.productId}"> </td>
                                 <td th:class="userId" th:text="${merge.movementUserId}">  </td>
                                 <td th:class="productName" th:text="${merge.productName}"> </td>
                                 <td th:class="category" th:text="${merge.productCategory}"> </td>
@@ -274,18 +166,13 @@
                                 <td th:class="approvedDate" th:text="${#dates.format(merge.movementApprovedDate, 'yyyy-MM-dd')}"></td>
                                 <td th:class="warehouseId" th:text="${merge.movementWarehouseId}">  </td>
                             </tr>
-                            </thead>
-                            <tbody>
-
                             </tbody>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
             </div>
-
         </div>
-
-        <!-- 푸터 -->
         <th:block th:replace="common/fragments/index :: footer-fragment"></th:block>
     </div>
 </div>
@@ -298,192 +185,272 @@
 
 <!-- 스크립트 -->
 <script th:inline="javascript">
-    const warehouse = [];
-
-    // 대분류 선택 시 중분류 데이터 요청
-    document.getElementById("mainType").addEventListener("change", function () {
-        // 선택된 대분류 값 가져오기
-        const selectedMainCategory = this.value;
-
-        // Ajax 요청
-        $.ajax({
-            type: "GET",
-            url: "/storage/getMiddleCategories",
-            data: {
-                mainCategory: selectedMainCategory
+    $(document).ready(function () {
+        // Initialize DataTable with render function for date columns
+        $('#dataTable').DataTable({
+            language: {
+                "lengthMenu": "페이지당 _MENU_ 개 항목 표시",
+                "zeroRecords": "검색 결과가 없습니다",
+                "info": "페이지 _PAGE_ / _PAGES_",
+                "infoEmpty": "사용 가능한 기록이 없습니다",
+                "infoFiltered": "(총 _MAX_ 개 기록에서 필터링됨)",
+                "search": "검색:",
+                "paginate": {
+                    "first": "처음",
+                    "last": "마지막",
+                    "next": "다음",
+                    "previous": "이전"
+                }
             },
-            success: function (response) {
-                // 성공적으로 데이터를 받았을 때 중분류 select 업데이트
-                const middleTypeSelect = document.getElementById("middleType");
-                middleTypeSelect.disabled = false;
-                middleTypeSelect.innerHTML = "<option value='' selected disabled hidden>--- 중분류 ---</option>";
+        });
 
-                // 받은 데이터로 중분류 option 업데이트
-                response.forEach(function (middleCategory) {
-                    const option = document.createElement("option");
-                    option.value = middleCategory
-                    option.textContent = middleCategory; // 중분류 이름
-                    middleTypeSelect.appendChild(option);
-                });
-            },
-            error: function (xhr, status, error) {
-                // 에러 처리
-                console.error(error);
-                alert("중분류 데이터를 가져오는 중 오류가 발생했습니다.");
-            }
+        // AJAX request on button click
+        $('#retrieval-register-button').click(function () {
+            console.log("Button clicked!"); // Add this line for debugging
+
+            $.ajax({
+                url: '/storage/incoming',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    // Clear existing table data
+                    $('#dataTable tbody').empty();
+
+                    // Loop through the response data and append rows to the table
+                    $.each(response, function (index, merge) {
+                        var row = '<tr>' +
+                            '<td>' + merge.productId + '</td>' +
+                            '<td>' + merge.movementUserId + '</td>' +
+                            '<td>' + merge.productName + '</td>' +
+                            '<td>' + merge.productCategory + '</td>' +
+                            '<td>' + merge.productPrice + '</td>' +
+                            '<td>' + merge.productSalePrice + '</td>' +
+                            '<td>' + merge.productQuantity + '</td>' +
+                            '<td>' + merge.movementStatusCode + '</td>' +
+                            '<td>' + merge.movementRequestDate + '</td>' +
+                            '</tr>';
+                        $('#dataTable tbody').append(row);
+
+                    });
+
+
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.error(xhr.responseText);
+                    alert('Error occurred: ' + xhr.responseText);
+                }
+            });
         });
     });
-    // 중분류 선택 시 소분류 활성화 및 옵션 추가
-    document.getElementById("middleType").addEventListener("change", function () {
-        // 선택된 대분류와 중분류 값 가져오기
-        const selectedMainCategory = document.getElementById("mainType").value;
-        const selectedMiddleCategory = this.value;
-
-        // Ajax 요청
-        $.ajax({
-            type: "GET",
-            url: "/storage/getSubCategories",
-            data: {
-                mainCategory: selectedMainCategory,
-                middleCategory: selectedMiddleCategory
-            },
-            success: function (response) {
-                const subTypeSelect = document.getElementById("subType");
-                subTypeSelect.disabled = false;
-                subTypeSelect.innerHTML = "<option value='' selected disabled hidden>--- 소분류 ---</option>";
-
-                // 받은 데이터로 중분류 option 업데이트
-                response.forEach(function (subCategory) {
-                    const option = document.createElement("option");
-                    option.value = subCategory
-                    option.textContent = subCategory; // 소분류 이름
-                    subTypeSelect.appendChild(option);
-                });
-            },
-            error: function (xhr, status, error) {
-                // 에러 처리
-                console.error(error);
-                alert("소분류 데이터를 가져오는 중 오류가 발생했습니다.");
-            }
-        });
-    });
-
-    document.getElementById("subType").addEventListener("change", function () {
-        // 선택된 대분류와 중분류, 소분류 값 가져오기
-        const selectedMainCategory = document.getElementById("mainType").value;
-        const selectedMiddleCategory = document.getElementById("middleType").value;
-        const selectedSubCategory = this.value;
-
-        // Ajax 요청
-        $.ajax({
-            type: "GET",
-            url: "/storage/getWarehouseWithCategory",
-            data: {
-                mainCategory: selectedMainCategory,
-                middleCategory: selectedMiddleCategory,
-                subCategory: selectedSubCategory
-            },
-            success: function (response) {
-                const warehouseListSelect = document.getElementById("warehouseList");
-
-                warehouseListSelect.disabled = false;
-                warehouseListSelect.innerHTML = "<option value='' selected disabled hidden>--- 창고를 선택하세요. ---</option>";
-
-                // 받은 데이터로 중분류 option 업데이트
-                // 받은 데이터로 창고 정보 업데이트
-                response.forEach(function (warehouseData) {
-                    // 중복 체크
-                    const isWarehouseExist = warehouse.find(w => w.id === warehouseData.id);
-                    if (!isWarehouseExist) {
-                        // 창고 정보 객체 생성
-                        const newWarehouse = {
-                            id: warehouseData.id,
-                            name: warehouseData.name,
-                            latitude: warehouseData.latitude,
-                            longitude: warehouseData.longitude
-                        };
-
-                        // warehouse 배열에 추가
-                        warehouse.push(newWarehouse);
-
-                        // 창고 목록 select 업데이트
-                        const option = document.createElement("option");
-                        option.value = newWarehouse.id;
-                        option.textContent = newWarehouse.name; // 창고 이름
-                        warehouseListSelect.appendChild(option);
-                    }
-                });
-
-            },
-            error: function (xhr, status, error) {
-                // 에러 처리
-                console.error(error);
-                alert("소분류 데이터를 가져오는 중 오류가 발생했습니다.");
-            }
-        });
-    });
-    // 검색 버튼 클릭 시 이벤트 처리
-    document.getElementById('button-search').addEventListener('click', function() {
-        // 검색 조건 가져오기
-        var requestDate = document.getElementById('requestDateLabel').value;
-        var approvedDate = document.getElementById('approvedDateLabel').value;
-        var mainType = document.getElementById('mainType').value;
-        var middleType = document.getElementById('middleType').value;
-        var subType = document.getElementById('subType').value;
-
-        var results = document.querySelectorAll('#dataTable tbody tr');
-
-        results.forEach(function(row) {
-            // 행의 데이터를 기반으로 검색 조건과 일치하는지 확인
-            var rowRequestDate = row.querySelector('.requestDate').textContent;
-            var rowApprovedDate = row.querySelector('.approvedDate').textContent;
-            var rowMainType = row.querySelector('.mainType').textContent;
-            var rowMiddleType = row.querySelector('.middleType').textContent;
-            var rowSubType = row.querySelector('.subType').textContent;
-
-            // 조건에 맞는 행만 보이도록 설정
-            if ((requestDate === '' || rowRequestDate === requestDate) &&
-                (approvedDate === '' || rowApprovedDate === approvedDate) &&
-                (mainType === '' || rowMainType === mainType) &&
-                (middleType === '' || rowMiddleType === middleType) &&
-                (subType === '' || rowSubType === subType)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    });
-
-
 
 
     document.getElementById('requestBtn').addEventListener('click', function () {
+        //체크된 모든 체크박스 찾기
+        const checkedBoxes = document.querySelectorAll('#dataTable tbody input[type="checkbox"]:checked');
+
+        // 모달의 내용을 담을 변수 초기화
+        let modalContent = '';
+
+        // 각 체크된 항목에 대해 반복
+        checkedBoxes.forEach(function(checkbox) {
+            const row = checkbox.closest('tr');
+            const orderId = row.querySelector('.productId').textContent;
+            const userId = row.querySelector('.userId').textContent;
+            const productName = row.querySelector('.productName').textContent;
+            const requestDate = row.querySelector('.requestDate').textContent;
+            const approvedDate = row.querySelector('.approvedDate').textContent;
+            const quantity = row.querySelector('.quantity').textContent;
+            const categoryId = row.querySelector('.category').textContent;
+            const warehouseId = row.querySelector('.warehouseId').textContent;
+
+
+            // 모달 내용 업데이트
+            modalContent += `
+                승인 되었습니다.
+            `;
+        });
+
+            // 모달의 내용을 채우기
+            document.querySelector('#requestModal .modal-body').innerHTML = modalContent;
+
         $('#requestModal').modal('show');
     });
 
-    document.getElementById('printBillBtn').addEventListener('click', function () {
+    document.getElementById('printBillBtn').addEventListener('click', function() {
+        // 체크된 모든 체크박스 찾기
+        const checkedBoxes = document.querySelectorAll('#dataTable tbody input[type="checkbox"]:checked');
+
+        // 모달의 내용을 담을 변수 초기화
+        let modalContent = '';
+
+        // 각 체크된 항목에 대해 반복
+        checkedBoxes.forEach(function(checkbox) {
+            const row = checkbox.closest('tr');
+            const orderId = row.querySelector('.productId').textContent;
+            const userId = row.querySelector('.userId').textContent;
+            const productName = row.querySelector('.productName').textContent;
+            const requestDate = row.querySelector('.requestDate').textContent;
+            const approvedDate = row.querySelector('.approvedDate').textContent;
+            const quantity = row.querySelector('.quantity').textContent;
+            const categoryId = row.querySelector('.category').textContent;
+
+            // 모달 내용 업데이트
+            modalContent += `
+            <p><strong>제품 아이디:</strong> ${orderId}</p>
+            <p><strong>요청 일자:</strong> ${requestDate}</p>
+            <p><strong>승인 일자:</strong> ${approvedDate}</p>
+            <p><strong>회원 아이디:</strong> ${userId}</p>
+            <p><strong>제품명:</strong> ${productName}</p>
+            <p><strong>수량:</strong> ${quantity}</p>
+            <p><strong>분류:</strong> ${categoryId}</p>
+            <br>
+
+        `;
+        });
+
+        // 모달의 내용을 채우기
+        document.querySelector('#printBillModal .modal-body').innerHTML = modalContent;
+
+        // 모달 열기
         $('#printBillModal').modal('show');
     });
-    document.getElementById('billDownload').addEventListener('click', function () {
-        // 모달을 닫을 수 있는 코드 추가
-        $('#printBillModal').modal('hide');
-        // 여기에 버튼을 클릭했을 때 수행할 작업 추가
-        // 현재는 hide로 설정해둠.
+
+    document.getElementById('qRBtn').addEventListener('click', function() {
+        //체크된 모든 체크박스 찾기
+        const checkedBoxes = document.querySelectorAll('#dataTable tbody input[type="checkbox"]:checked');
+
+        // 모달의 내용을 담을 변수 초기화
+        let modalContent = '';
+
+        // 각 체크된 항목에 대해 반복
+        checkedBoxes.forEach(function(checkbox) {
+            const row = checkbox.closest('tr');
+            const orderId = row.querySelector('.productId').textContent;
+            const userId = row.querySelector('.userId').textContent;
+            const productName = row.querySelector('.productName').textContent;
+            const requestDate = row.querySelector('.requestDate').textContent;
+            const approvedDate = row.querySelector('.approvedDate').textContent;
+            const quantity = row.querySelector('.quantity').textContent;
+            const categoryId = row.querySelector('.category').textContent;
+            const warehouseId = row.querySelector('.warehouseId').textContent;
+
+
+            // 모달 내용 업데이트
+            modalContent += `
+                <h5>요청 정보 ------------------------</h5>
+                <p><strong>사용자 아이디:</strong> ${userId}</p>
+                <p><strong>창고 아이디:</strong> ${warehouseId}</p>
+                <p><strong>제품 아이디:</strong> ${orderId}</p>
+                <p><strong>요청 날짜:</strong> ${requestDate}</p>
+                <p><strong>승인 날짜:</strong> ${approvedDate}</p>
+                <h5>상품 정보 ------------------------</h5>
+                <p><strong>상품명:</strong> ${productName}</p>
+                <p><strong>수량:</strong> ${quantity}</p>
+                <p><strong>분류:</strong> ${categoryId}</p>
+                <br>
+            `;
+        });
+
+        // 모달의 내용을 채우기
+        document.querySelector('#qRModal .modal-body').innerHTML = modalContent;
+
+        // 모달 열기
+        $('#qRModal').modal('show');
     });
-    document.getElementById('QRDownload').addEventListener('click', function () {
-        // 모달을 닫을 수 있는 코드 추가
-        $('#QRModal').modal('hide');
-        // 여기에 버튼을 클릭했을 때 수행할 작업 추가
-        // 현재는 hide로 설정해둠.
-    });
-    document.getElementById('QRBtn').addEventListener('click', function () {
-        $('#QRModal').modal('show');
-    });
+
+
+
+
+    // document.getElementById('billDownload').addEventListener('click', function () {
+    //     // 모달을 닫을 수 있는 코드 추가
+    //     $('#billDownload').modal('hide');
+    //     // 여기에 버튼을 클릭했을 때 수행할 작업 추가
+    //     // 현재는 hide로 설정해둠.
+    // });
+    // document.getElementById('QRDownload').addEventListener('click', function () {
+    //     // 모달을 닫을 수 있는 코드 추가
+    //     $('#QRModal').modal('hide');
+    //     // 여기에 버튼을 클릭했을 때 수행할 작업 추가
+    //     // 현재는 hide로 설정해둠.
+    // });
+
+    function downloadQRCode() {
+        // 예시 URL - 백엔드에 구현된 실제 경로로 변경해야 합니다.
+        const url = '/download-qr-code?productId=123';
+
+        // 파일 다운로드를 위한 요청
+        fetch(url)
+            .then(response => response.blob())
+            .then(blob => {
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.setAttribute('download', 'qrcode.png'); // 다운로드 파일 이름 설정
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            })
+            .catch(error => console.error('QR 코드 다운로드 중 오류 발생:', error));
+    }
+    function approveStorageRequest() {
+        const selectedProductIds = [];
+        document.querySelectorAll('#dataTable tbody input[type="checkbox"]:checked').forEach(function(checkbox) {
+            selectedProductIds.push(checkbox.getAttribute('data-product-id'));
+        });
+
+        // AJAX 요청으로 선택된 product ID들을 백엔드로 전송
+        fetch('/storage/incoming', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify([14]) // 수정: 객체 대신 배열을 전송
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(selectedProductIds);
+                console.log('Success:', data);
+                // 성공 처리 로직 (예: 페이지 새로고침)
+                // location.reload();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+    function downloadBill() {
+        // 모달창 안의 내용을 가져옵니다.
+        const modalContent = document.querySelector('#printBillModal .modal-body').innerText;
+
+        // Blob 객체를 사용하여 텍스트 파일을 생성합니다.
+        const blob = new Blob([modalContent], { type: 'text/plain' });
+
+        // Blob 객체로부터 다운로드 링크를 생성합니다.
+        const downloadUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = '고지서.txt'; // 다운로드될 파일명 설정
+
+        // 생성된 링크를 클릭하여 파일 다운로드를 실행하고, 링크를 문서에서 제거합니다.
+        document.body.appendChild(link); // 링크를 DOM에 추가
+        link.click(); // 링크 클릭
+        document.body.removeChild(link); // 링크 제거
+    }
+
+
+
+
+
+
 </script>
-
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <th:block th:replace="common/fragments/index :: scripts-fragment"></th:block>
 
+</div>
 </body>
 </html>

@@ -23,4 +23,27 @@
     <select id="selectAllProducts" resultType="com.ssg.meowwms.domain.storage.ProductVO">
         SELECT * FROM Product
     </select>
+<!--<resultMap id="productResultMap" type="com.ssg.meowwms.domain.product.ProductVO">-->
+<!--        <result property="id" column="id"/>-->
+<!--        <result property="name" column="name"/>-->
+<!--        <result property="categoryId" column="category_id"/>-->
+<!--        <result property="price" column="price"/>-->
+<!--        &lt;!&ndash; 추가 필드 매핑 &ndash;&gt;-->
+<!--</resultMap>-->
+
+<!--<select id="searchProducts" parameterType="map" resultMap="productResultMap">-->
+<!--SELECT * FROM Product-->
+<!--<where>-->
+<!--    <if test="name != null and name != ''">-->
+<!--        AND name LIKE CONCAT('%', #{name}, '%')-->
+<!--    </if>-->
+<!--    <if test="categoryId != null">-->
+<!--        AND category_id = #{categoryId}-->
+<!--    </if>-->
+<!--    <if test="id != null">-->
+<!--        AND id = #{id}-->
+<!--    </if>-->
+<!--</where>-->
+<!--</select>-->
+
 </mapper>
