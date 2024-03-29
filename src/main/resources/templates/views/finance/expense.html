@@ -98,7 +98,6 @@
                     <div class="col-md-2">
                         <label for="expenseYearForGraph">년도 선택</label>
                         <select class="form-control" id="expenseYearForGraph">
-                            <option value="">전체</option>
                             <th:block th:each="year : ${years}">
                                 <option th:value="${year}" th:text="${year}"></option>
                             </th:block>

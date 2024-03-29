@@ -116,8 +116,8 @@
                             <div class="card-body info-card-body">
                                 <i class="fas fa-chart-line info-card-icon"></i>
                                 <div>
-                                    <h5 class="card-title">당기순이익: <span th:text="${sumSettlement}">0</span>원</h5>
-                                    <p class="info-card-text">당해년도 순이익에서 지출을 차감한 값입니다.</p>
+                                    <h5 class="card-title">순이익: <span th:text="${sumSettlement}">0</span>원</h5>
+                                    <p class="info-card-text">당해년도 매출에서 지출을 차감한 값입니다.</p>
                                 </div>
                             </div>
                         </div>
@@ -230,34 +230,35 @@
         });
     }
 
-    // document.getElementById('downloadExcel').addEventListener('click', function () {
-    //     var year = $('#settlementYear').val() || ''; // 년도 선택 값
-    //     var warehouseId = $('#warehouseNo').val() || 0; // 창고 번호 선택 값
-    //     console.log(year);
-    //     console.log(warehouseId);
-    //
-    //     // 서버로부터 데이터를 받아오는 AJAX 요청
-    //         fetch('/finance/allfinance/graph', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ year: year, warehouseId: warehouseId }),
-    //         })
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 console.log(data);
-    //                 // 데이터를 엑셀 파일로 변환
-    //                 var worksheet = XLSX.utils.json_to_sheet(data);
-    //                 var workbook = XLSX.utils.book_new();
-    //                 XLSX.utils.book_append_sheet(workbook, worksheet, "정산 내역");
-    //
-    //                 // 엑셀 파일 다운로드
-    //                 XLSX.writeFile(workbook, "정산내역.xlsx");
-    //             })
-    //             .catch(error => console.error('Error:', error));
-    //
-    // }); 임시 오류로 주석처리
+    document.getElementById('downloadExcel').addEventListener('click', function () {
+        var year = $('#settlementYear').val() || ''; // 년도 선택 값
+        var warehouseId = $('#warehouseNo').val() || 0; // 창고 번호 선택 값
+        console.log(year);
+        console.log(warehouseId);
+
+        // 서버로부터 데이터를 받아오는 AJAX 요청
+            fetch(
+                '/finance/allfinance/graph', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ year: year, warehouseId: warehouseId}),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // 데이터를 엑셀 파일로 변환
+                    var worksheet = XLSX.utils.json_to_sheet(data);
+                    var workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, "정산 내역");
+
+                    // 엑셀 파일 다운로드
+                    XLSX.writeFile(workbook, "정산내역.xlsx");
+                })
+                .catch(error => console.error('Error:', error));
+
+    });
 
 
     /*]]>*/

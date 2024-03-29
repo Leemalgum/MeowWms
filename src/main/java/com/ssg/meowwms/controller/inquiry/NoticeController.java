@@ -68,7 +68,7 @@ public class NoticeController {
         } else { // postNum이 0이 아니면 기존 글 수정
             noticeService.updateNotice(notice);
         }
-        return "views/inquiry/read-notice/" + notice.getNo();
+        return "views/inquiry/inquiry";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
