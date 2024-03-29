@@ -29,7 +29,8 @@
             v.dname                  AS driverName,
             v.dphone                 AS driverPhone,
             v.type                   AS vehicleType
-        FROM Waybill w
+        FROM
+            Waybill w
                  JOIN
              Shipping_Orders so ON w.shipping_orders_id = so.id
                  JOIN

@@ -211,11 +211,19 @@ public class ShippingOrdersServiceImpl implements ShippingOrdersService {
                 .build();
 
         retrievalTimelineMapper.updateWorkingTime(retrievalTimelineVO);
+
+        ShippingOrdersStatusVO shippingOrdersStatusVO = ShippingOrdersStatusVO.builder()
+                .shippingOrdersId(waybillDTO.getShippingOrdersId())
+                .waybillStatus(1)
+                .build();
+        shippingOrdersStatusMapper.updateWaybillStatus(shippingOrdersStatusVO);
     }
 
     @Override
     public WaybillDTO fillUpWaybill(WaybillDTO waybillDTO) {
-        return waybillMapper.selectForFillUpWaybill(waybillDTO.getShippingOrdersId());
+        waybillDTO= waybillMapper.selectForFillUpWaybill(waybillDTO.getShippingOrdersId());
+        System.out.println("fillUpWaybill" +waybillDTO);
+        return waybillDTO;
     }
 
     @Override

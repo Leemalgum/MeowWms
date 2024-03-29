@@ -153,24 +153,37 @@ public class ShippingOrdersController {
         return "redirect:/retrieval/main";
     }
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/registerwaybill")
+    @PostMapping("/registerwaybill/{shippingOrdersId}")
     public String registerWaybill(@RequestBody Map<String, Object> requestData) {
         Map<String, Object> data = (Map<String, Object>) requestData.get("waybill");
 
         WaybillDTO waybillDTO = new WaybillDTO();
 
-        waybillDTO.setId(Integer.parseInt((String) data.get("id")));
-        waybillDTO.setUid((String) data.get("uid"));
+        waybillDTO.setShippingOrdersId(Integer.parseInt((String) data.get("shippingOrdersId")));
+        String uid = "user2";
+        UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
+        if (userDetails != null && userDetails.getUsername() != null) {
+            uid = userDetails.getUsername();
+        }
+
+      /*  waybillDTO.setId(Integer.parseInt((String) data.get("id")));
         waybillDTO.setProductId(Integer.parseInt((String) data.get("productId")));
         waybillDTO.setVehicleNum((String) data.get("vehicleNum"));
         waybillDTO.setWarehouseId(Integer.parseInt((String) data.get("warehouseId")));
-        waybillDTO.setShippingOrdersId(Integer.parseInt((String) data.get("shippingOrdersId")));
-        //waybillDTO.setShippingOrdersDetailId(Integer.parseInt((String) data.get("shippingOrdersDetailId")));
+        waybillDTO.setShippingOrdersDetailId(Integer.parseInt((String) data.get("shippingOrdersDetailId")));*/
 
-        System.out.println("waybill post : " + waybillDTO);
         shippingOrdersService.registerWaybill(waybillDTO);
+        waybillDTO = fillUpWaybill(waybillDTO);
+        System.out.println("waybill post : " + waybillDTO);
+
         return "redirect:/retrieval/main";
     }
+    private WaybillDTO fillUpWaybill(WaybillDTO waybillDTO) {
+        waybillDTO = shippingOrdersService.fillUpWaybill(waybillDTO);
+        return waybillDTO;
+    }
+
+
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     @GetMapping("/managedispatch")
@@ -236,8 +249,8 @@ public class ShippingOrdersController {
         waybillDTO.setUid(uid);
 
         System.out.println("waybill retrieval post : " + waybillDTO);
-        waybillDTO = shippingOrdersService.fillUpWaybill(waybillDTO);
         shippingOrdersService.registerWaybill(waybillDTO);
+        waybillDTO = shippingOrdersService.fillUpWaybill(waybillDTO);
 
         return "redirect:/retrieval/main";
     }

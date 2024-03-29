@@ -36,7 +36,7 @@ public interface ShippingOrdersService {
     /**
      * 출고 지시서 단건 조회 : 출고번호를 누르면 뜨는 창으로 해당 건의 상세 정보 (페이지)를 보여줍니다.
      */
-    ShippingOrderDetailsDTO getShippingOrderDetails(int id);
+    ShippingOrderDetailsDTO getShippingOrderDetails(int shippingOrderId);
 
     /**
      * 출고 지시서 수정 : 출고 지시서 상세 페이지에서 출고 지시서 내용을 수정할 수 있는 메서드입니다.
@@ -51,7 +51,7 @@ public interface ShippingOrdersService {
     /**
      * 출고 지시서 삭제 : 출고 지시서 상세 페이지에서 지시를 삭제 할 수 있는 메서드입니다.
      */
-    void deleteShippingOrder(int id);
+    void deleteShippingOrder(int shippingOrderId);
 
     /**
      * 배차 관리 : 출고 번호를 누르면 모달창에서 현재 배차 가능한 차량들의 리스트를 보여줍니다.
@@ -84,5 +84,5 @@ public interface ShippingOrdersService {
      * */
     WaybillDTO fillUpWaybill(WaybillDTO waybillDTO);
 
-    WaybillDTO getWaybill(int shippingOrdersId);
+    WaybillDTO getWaybill(int shippingOrderId);
 }

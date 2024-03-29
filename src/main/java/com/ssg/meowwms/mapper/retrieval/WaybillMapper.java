@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface WaybillMapper {
     void insertWaybill(WaybillVO waybillVO);
-    WaybillVO selectOneByShippingOrderId(int shippingOrderId);
+    WaybillVO selectOneByShippingOrderId(int shippingOrdersId);
     List<WaybillVO> selectByOptions(@Param("option") OptionDTO option);
     void updateByShippingOrderId(WaybillVO waybillVO);
     void deleteByShippingOrderId(int shippingOrdersId);
