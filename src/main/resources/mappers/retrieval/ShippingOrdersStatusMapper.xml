@@ -31,6 +31,12 @@
         WHERE shipping_orders_id = #{shippingOrdersId}
     </update>
 
+    <update id="updateWaybillStatus" parameterType="com.ssg.meowwms.domain.retrieval.ShippingOrdersStatusVO">
+        UPDATE Shipping_Orders_Status
+        SET waybill_status = #{waybillStatus}
+        WHERE shipping_orders_id = #{shippingOrdersId}
+    </update>
+
     <delete id="deleteByShippingOrdersId" parameterType="int">
         DELETE FROM Shipping_Orders_Status WHERE shipping_orders_id = #{shippingOrdersId}
     </delete>

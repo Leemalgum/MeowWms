@@ -1,6 +1,7 @@
 package com.ssg.meowwms.mapper.retrieval;
 
 import com.ssg.meowwms.domain.retrieval.ShippingOrdersStatusVO;
+import com.ssg.meowwms.domain.retrieval.WaybillVO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -31,6 +32,7 @@ public interface ShippingOrdersStatusMapper {
      * 출고 승인 업데이트 : 출고 승인을 확정했을 시 출고 지시서의 상태를 승인 완료로 바꿔줍니다.
      * */
     void updateApprovedStatus(ShippingOrdersStatusVO shippingOrdersStatusVO);
+    void updateWaybillStatus(ShippingOrdersStatusVO shippingOrdersStatusV);
 
     void deleteByShippingOrdersId(int shippingOrdersId);
 }

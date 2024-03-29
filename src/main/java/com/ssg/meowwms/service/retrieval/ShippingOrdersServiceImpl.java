@@ -211,6 +211,12 @@ public class ShippingOrdersServiceImpl implements ShippingOrdersService {
                 .build();
 
         retrievalTimelineMapper.updateWorkingTime(retrievalTimelineVO);
+
+        ShippingOrdersStatusVO shippingOrdersStatusVO = ShippingOrdersStatusVO.builder()
+                .shippingOrdersId(waybillDTO.getShippingOrdersId())
+                .waybillStatus(1)
+                .build();
+        shippingOrdersStatusMapper.updateWaybillStatus(shippingOrdersStatusVO);
     }
 
     @Override
