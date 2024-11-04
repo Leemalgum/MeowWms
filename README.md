@@ -26,7 +26,7 @@
     로그인시 해당 회원의 권한을 검사하여 관리자와 일반 회원의 접근 화면을 구분하였습니다. <br>
 ## ERD
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/812cc2fe-4e16-45b8-a82e-a5b5eb474c32" width="800">
+  <img src="https://github.com/user-attachments/assets/a4ffa177-bdff-41c2-b098-b96d01990d51" width="800">
 </p>
 
 ## Wireframe
