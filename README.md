@@ -1,4 +1,4 @@
-# Tomcat is Meow🏗️
+# Tomcat is Meow
 <p align="center">
   <img src="https://github.com/user-attachments/assets/5ca05908-adbb-4a13-b064-c316e53df675" width="800">
   <br>
