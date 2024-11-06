@@ -1,7 +1,6 @@
 # Tomcat is Meow
 <p align="center">
-  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202024-09-10%2004.31.44.png" width="800">
-
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/logo.png?raw=true" width="800">
   <br>
   <strong>WMS : Warehouse Management System</strong>
 </p>
