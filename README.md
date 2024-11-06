@@ -26,22 +26,23 @@
     로그인시 해당 회원의 권한을 검사하여 관리자와 일반 회원의 접근 화면을 구분하였습니다. <br>
 ## ERD
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a4ffa177-bdff-41c2-b098-b96d01990d51" width="800">
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/ERD.png?raw=true" width="800">
+  
 </p>
 
 ## Wireframe
 <p align="center" >
   로그인 화면<br>
-  <img src="https://github.com/user-attachments/assets/83517c20-4370-4c4b-aca1-367c960352a2" width="800"> <br>
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/signin.png?raw=true" width="800"> <br>
   회원가입 화면<br>
-  <img src="https://github.com/user-attachments/assets/481d3460-5935-40e0-9500-14cc7f547cec" width="800"> <br>
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/signup.png?raw=true" width="800"> <br>
   일반 회원의 기본 화면<br>
-  <img src="https://github.com/user-attachments/assets/b0839d25-c57c-432a-b855-f70b55697f4c" width="800"> <br>
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/user-page.png?raw=true" width="800"> <br>
   일반 회원의 정보 수정 화면<br>
-  <img src="https://github.com/user-attachments/assets/bd5df070-4a29-4df0-b265-9264aa3bedc0" width="800"> <br>
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/user-info.png?raw=true" width="800"> <br>
   관리자 회원의 기본 화면<br>
-  <img src="https://github.com/user-attachments/assets/313b05a9-f011-4c1f-bf64-524876bacb29" width="800"> <br>
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/admin-page.png?raw=true" width="800"> <br>
   관리자 회원의 전체 회원 정보 조회 및 수정 화면<br>
-  <img src="https://github.com/user-attachments/assets/c10376a4-673a-418f-91e9-9f1db901bff9" width="800">
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/admin-info.png?raw=true" width="800">
 </p>
 
