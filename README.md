@@ -36,13 +36,21 @@
   <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/signin.png?raw=true" width="800"> <br>
   회원가입 화면<br>
   <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/signup.png?raw=true" width="800"> <br>
-  일반 회원의 기본 화면<br>
+  아이디 찾기 화면<br>
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/findId.png?raw=true" width="800"> <br>
+  일반 회원의 기본 화면1<br>
   <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/user-page.png?raw=true" width="800"> <br>
-  일반 회원의 정보 수정 화면<br>
+  일반 회원의 기본 화면2<br>
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/user-signout.png?raw=true" width="800"> <br>
+  일반 회원의 정보 수정 화면1<br>
   <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/user-info.png?raw=true" width="800"> <br>
-  관리자 회원의 기본 화면<br>
+  일반 회원의 정보 수정 화면2<br>
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/user-info-edit.png?raw=true" width="800"> <br>
+  관리자의 기본 화면<br>
   <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/admin-page.png?raw=true" width="800"> <br>
-  관리자 회원의 전체 회원 정보 조회 및 수정 화면<br>
-  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/admin-info.png?raw=true" width="800">
+  관리자의 회원 정보 조회 화면<br>
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/admin-info.png?raw=true" width="800"> <br>
+  관리자의 회원 정보 수정 화면<br>
+  <img src="https://github.com/Leemalgum/MeowWms/blob/main/images/admin-info-edit.png?raw=true" width="800">
 </p>
 
